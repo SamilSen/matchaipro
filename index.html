@@ -14,9 +14,7 @@ color:#111827;
 }
 
 /* HERO */
-.hero{
-padding:39px 26px 13px;
-}
+.hero{padding:39px 26px 13px;}
 
 .logo{
 width:92.4%;
@@ -62,9 +60,7 @@ color:#374151;
 }
 
 /* INPUTS */
-.form-box{
-margin-top:36px;
-}
+.form-box{margin-top:36px}
 
 .input-box{
 width:340px;
@@ -76,15 +72,8 @@ border:2px solid #d1d5db;
 outline:none;
 }
 
-#team1{
-background:#ecfdf5;
-border-color:#22c55e;
-}
-
-#team2{
-background:#eff6ff;
-border-color:#3b82f6;
-}
+#team1{background:#ecfdf5;border-color:#22c55e}
+#team2{background:#eff6ff;border-color:#3b82f6}
 
 /* BUTTON */
 .predict-btn{
@@ -126,15 +115,12 @@ from{opacity:0;transform:translateY(18px)}
 to{opacity:1;transform:translateY(0)}
 }
 
-.card h2{
-font-size:45px;
-margin-bottom:13px;
-}
+.card h2{font-size:45px;margin-bottom:13px;}
 
 .card h3{
 font-size:41px;
 margin:18px 0 26px;
-color:#e11d48;
+color:#7c3aed;
 font-weight:900;
 animation:heartbeat 1s infinite;
 }
@@ -148,15 +134,10 @@ animation:heartbeat 1s infinite;
 100%{transform:scale(1);}
 }
 
-.gold{
-color:#f59e0b;
-text-shadow:0 0 10px rgba(245,158,11,.4);
-font-weight:900;
-}
+.gold{color:#f59e0b;font-weight:900;}
 
 .flag{
-width:52px;
-height:36px;
+width:52px;height:36px;
 margin:0 10px;
 border-radius:5px;
 vertical-align:middle;
@@ -187,7 +168,7 @@ transition:width 1.2s ease;
 .draw{background:#f59e0b;}
 .away{background:#ef4444;}
 
-/* FOOTER BUTTONS */
+/* FOOTER - YENİ TASARIM */
 .footer{
 margin-top:46px;
 padding:26px;
@@ -196,20 +177,23 @@ border-top:1px solid #e5e7eb;
 
 .footer a{
 display:inline-block;
-margin:8px;
-padding:14px 24px;
-font-size:20px;
+margin:10px;
+padding:14px 32px;      /* %15 geniş */
+min-width:220px;
+font-size:22px;         /* +2px */
 font-weight:900;
-color:white;
+color:#7c3aed;          /* mor yazı */
 text-decoration:none;
 border-radius:14px;
-background:linear-gradient(135deg,#7c3aed,#2563eb);
-box-shadow:0 8px 18px rgba(0,0,0,.18);
+background:#ffffff;     /* içi boş */
+border:2px solid #7c3aed;
+box-shadow:0 8px 18px rgba(0,0,0,.12);
 transition:.25s;
 }
 
 .footer a:hover{
 transform:translateY(-3px) scale(1.05);
+background:#f5f3ff;
 }
 
 /* COPYRIGHT */
@@ -227,24 +211,18 @@ color:black;
 <body>
 
 <div class="hero">
-
 <img src="https://raw.githubusercontent.com/MatchAIPro/matchai/main/image.png" class="logo">
 
 <div class="title">World Cup 2026</div>
 <div class="subtitle">AI Prediction Engine</div>
 <div class="trust">📈 Trusted by 10,000+ users worldwide</div>
-
 </div>
 
 <div class="form-box">
-
 <input id="team1" class="input-box" placeholder="🏠 Home Team">
 <input id="team2" class="input-box" placeholder="✈️ Away Team">
-
 <br>
-
 <button class="predict-btn" onclick="predict()">PREDICT</button>
-
 </div>
 
 <div id="status">Loading...</div>
@@ -262,48 +240,26 @@ color:black;
 </div>
 
 <script>
-
 let data=[];
 
 fetch("https://raw.githubusercontent.com/MatchAIPro/matchai/main/predictions.csv")
 .then(r=>r.text())
 .then(t=>{
-
 const rows=t.split("\n").slice(1);
-
 data=rows.map(r=>{
 const c=r.split(",");
-return {
-t1:c[0],
-t2:c[1],
-h:+c[4],
-d:+c[5],
-a:+c[6]
-};
+return {t1:c[0],t2:c[1],h:+c[4],d:+c[5],a:+c[6]};
 });
-
 status.innerHTML="✅ Ready";
-
 });
 
 function getCode(team){
-
 const map={
-"germany":"de",
-"turkey":"tr",
-"usa":"us",
-"brazil":"br",
-"france":"fr",
-"spain":"es",
-"england":"gb",
-"italy":"it",
-"argentina":"ar",
-"portugal":"pt",
-"netherlands":"nl"
+"germany":"de","turkey":"tr","usa":"us","brazil":"br",
+"france":"fr","spain":"es","england":"gb","italy":"it",
+"argentina":"ar","portugal":"pt","netherlands":"nl"
 };
-
 return map[team.toLowerCase()] || team.slice(0,2).toLowerCase();
-
 }
 
 function flag(code){
@@ -315,10 +271,7 @@ function predict(){
 const t1=team1.value.toLowerCase();
 const t2=team2.value.toLowerCase();
 
-const m=data.find(x =>
-x.t1.toLowerCase()==t1 &&
-x.t2.toLowerCase()==t2
-);
+const m=data.find(x=>x.t1.toLowerCase()==t1 && x.t2.toLowerCase()==t2);
 
 if(!m){
 result.innerHTML="<h2>Match Not Found</h2>";
@@ -340,37 +293,24 @@ pred="Draw";
 }
 
 result.innerHTML=`
-
 <div class="card">
 
 <h2>
-<span class="${w1}">
-${flag(getCode(m.t1))} ${m.t1}
-</span>
-
+<span class="${w1}">${flag(getCode(m.t1))} ${m.t1}</span>
 vs
-
-<span class="${w2}">
-${m.t2} ${flag(getCode(m.t2))}
-</span>
+<span class="${w2}">${m.t2} ${flag(getCode(m.t2))}</span>
 </h2>
 
 <h3>${pred}</h3>
 
 <p>Home (${m.h}%)</p>
-<div class="bar-bg">
-<div id="b1" class="bar home"></div>
-</div>
+<div class="bar-bg"><div id="b1" class="bar home"></div></div>
 
 <p>Draw (${m.d}%)</p>
-<div class="bar-bg">
-<div id="b2" class="bar draw"></div>
-</div>
+<div class="bar-bg"><div id="b2" class="bar draw"></div></div>
 
 <p>Away (${m.a}%)</p>
-<div class="bar-bg">
-<div id="b3" class="bar away"></div>
-</div>
+<div class="bar-bg"><div id="b3" class="bar away"></div></div>
 
 </div>
 `;
@@ -382,7 +322,6 @@ b3.style.width=m.a+"%";
 },120);
 
 }
-
 </script>
 
 </body>
