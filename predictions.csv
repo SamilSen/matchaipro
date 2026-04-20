@@ -1,11 +1,6 @@
-"team1,team2,code1,code2,home_win,draw,away_win"
-"Mexico,South Africa,mx,za,55,25,20"
-"Korea Republic,Czechia,kr,cz,40,30,30"
-"Canada,Bosnia-Herzegovina,ca,ba,35,30,35"
-"USA,Paraguay,us,py,50,25,25"
-"Qatar,Switzerland,qa,ch,30,25,45"
-"Brazil,Morocco,br,ma,65,20,15"
-"Germany,Japan,de,jp,60,25,15"
-"France,England,fr,gb,50,25,25"
-"Spain,Portugal,es,pt,48,27,25"
-"Argentina,Italy,ar,it,52,28,20"
+team1,team2,code1,code2,home_win,draw,away_win
+Brazil,Germany,BR,DE,58,22,20
+France,Argentina,FR,AR,45,30,25
+England,Spain,GB,ES,40,35,25
+Portugal,Netherlands,PT,NL,50,25,25
+Italy,Croatia,IT,HR,55,20,25
