@@ -24,37 +24,18 @@ margin-bottom:30px;
 }
 
 .title{
-font-size:64px;
+font-size:60px;
 font-weight:900;
-background:linear-gradient(90deg,#6d28d9,#a855f7,#ec4899,#6d28d9);
-background-size:300% 300%;
+background:linear-gradient(90deg,#6d28d9,#a855f7,#ec4899);
 -webkit-background-clip:text;
 -webkit-text-fill-color:transparent;
-animation:move 5s ease infinite;
 }
 
 .subtitle{
-font-size:48px;
+font-size:44px;
 font-weight:800;
 margin-top:10px;
-background:linear-gradient(90deg,#2563eb,#7c3aed,#ec4899,#2563eb);
-background-size:300% 300%;
--webkit-background-clip:text;
--webkit-text-fill-color:transparent;
-animation:move 5s ease infinite;
-}
-
-.trust{
-margin-top:14px;
-font-size:24px;
-font-weight:700;
-color:#374151;
-}
-
-@keyframes move{
-0%{background-position:0% 50%}
-50%{background-position:100% 50%}
-100%{background-position:0% 50%}
+color:#7c3aed;
 }
 
 .input-box{
@@ -64,29 +45,21 @@ margin:10px;
 font-size:28px;
 border-radius:12px;
 border:2px solid #d1d5db;
-outline:none;
 }
 
 #team1{background:#ecfdf5;border-color:#22c55e}
 #team2{background:#eff6ff;border-color:#3b82f6}
 
-.predict-btn{
-margin-top:22px;
-padding:26px 60px;
-font-size:34px;
+button{
+margin-top:20px;
+padding:22px 55px;
+font-size:30px;
 font-weight:900;
 border:none;
 border-radius:14px;
 cursor:pointer;
 color:white;
-background:linear-gradient(90deg,#e11d48,#f43f5e,#e11d48);
-box-shadow:0 0 16px rgba(225,29,72,.4);
-}
-
-#status{
-margin-top:18px;
-font-size:22px;
-font-weight:800;
+background:#e11d48;
 }
 
 .card{
@@ -94,43 +67,29 @@ margin-top:30px;
 display:inline-block;
 width:600px;
 padding:40px;
-border-radius:22px;
-background:rgba(255,255,255,.65);
-backdrop-filter:blur(12px);
-box-shadow:0 18px 40px rgba(0,0,0,.16);
+border-radius:20px;
+background:white;
+box-shadow:0 10px 30px rgba(0,0,0,.15);
 }
 
-.card h2{font-size:40px;}
-.card h3{font-size:38px;color:#7c3aed;font-weight:900;}
-
-.gold{color:#f59e0b;font-weight:900;}
-
 .flag{
-width:50px;
-height:34px;
-margin:0 8px;
-border-radius:5px;
+width:45px;
+height:30px;
+margin:0 6px;
 vertical-align:middle;
 }
 
-p{
-font-size:25px;
-font-weight:700;
-margin:10px 0 6px;
-}
-
 .bar-bg{
-height:20px;
+height:18px;
 background:#e5e7eb;
-border-radius:12px;
+border-radius:10px;
 overflow:hidden;
-margin-bottom:12px;
+margin-bottom:10px;
 }
 
 .bar{
-height:20px;
+height:18px;
 width:0%;
-border-radius:12px;
 transition:width 1s ease;
 }
 
@@ -138,31 +97,9 @@ transition:width 1s ease;
 .draw{background:#f59e0b;}
 .away{background:#ef4444;}
 
-.footer{
-margin-top:40px;
-padding:20px;
-border-top:1px solid #e5e7eb;
-display:flex;
-justify-content:center;
-gap:10px;
-}
-
-.footer a{
-padding:12px 26px;
-font-size:20px;
-font-weight:900;
-color:#7c3aed;
-text-decoration:none;
-border-radius:12px;
-background:#fff;
-border:2px solid #000;
-}
-
-.copy{
+#status{
 margin-top:15px;
-padding-bottom:25px;
-font-size:18px;
-font-weight:900;
+font-weight:800;
 }
 </style>
 </head>
@@ -170,49 +107,35 @@ font-weight:900;
 <body>
 
 <div class="hero">
-<img src="https://raw.githubusercontent.com/MatchAIPro/matchai/main/image.png" class="logo">
+<img class="logo" src="https://raw.githubusercontent.com/MatchAIPro/matchai/main/image.png">
 
-<div class="title">World Cup 2026</div>
-<div class="subtitle">AI Prediction Engine</div>
-<div class="trust">📈 Trusted by 10,000+ users worldwide</div>
+<div class="title">MatchAI Pro</div>
+<div class="subtitle">World Cup Prediction Engine</div>
 </div>
 
-<input id="team1" class="input-box" placeholder="🏠 Home Team">
-<input id="team2" class="input-box" placeholder="✈️ Away Team">
+<input id="team1" class="input-box" placeholder="Home Team">
+<input id="team2" class="input-box" placeholder="Away Team">
 <br>
-<button class="predict-btn" onclick="predict()">PREDICT</button>
+<button onclick="predict()">PREDICT</button>
 
 <div id="status">Loading...</div>
 <div id="result"></div>
-
-<div class="footer">
-<a href="#">Legal</a>
-<a href="#">Price</a>
-<a href="#">About</a>
-</div>
-
-<div class="copy">© 2026 MatchAI Pro</div>
 
 <script>
 
 let data=[];
 
 /* =========================
-   CSV LOADER (ULTRA ROBUST)
+   CSV LOADER (STRICT FORMAT)
 ========================= */
 fetch("https://raw.githubusercontent.com/MatchAIPro/matchai/main/predictions.csv")
 .then(r=>r.text())
 .then(t=>{
 
-const rows = t.replace(/\r/g,'').split("\n");
+const rows = t.trim().split("\n").slice(1);
 
-data = rows.slice(1)
-.map(r=>r.trim())
-.filter(r=>r.length>5)
-.map(r=>{
-
-// supports TAB / comma / multiple spaces
-const c = r.split(/[\t,]+|\s{2,}/).map(x=>x.trim());
+data = rows.map(r=>{
+const c = r.split(",").map(x=>x.trim());
 
 return {
 t1:c[0],
@@ -223,32 +146,26 @@ h:parseFloat(c[4]),
 d:parseFloat(c[5]),
 a:parseFloat(c[6])
 };
-})
-.filter(x=>x.t1 && x.t2 && !isNaN(x.h));
+});
 
 document.getElementById("status") =
-"✅ Ready | Matches: " + data.length;
+"Ready ✔ ("+data.length+" matches)";
 });
 
 /* FLAGS */
 function flag(code){
-return `<img class="flag" src="https://flagcdn.com/w40/${code.toLowerCase()}.png">`;
+return `<img class="flag" src="https://flagcdn.com/w40/${code}.png">`;
 }
 
-/* NORMALIZE */
-function norm(s){
-return (s||"").toLowerCase().trim();
-}
-
-/* MATCH ENGINE */
+/* FIND MATCH (BOTH DIRECTIONS) */
 function findMatch(t1,t2){
 
-t1 = norm(t1);
-t2 = norm(t2);
+t1=t1.toLowerCase().trim();
+t2=t2.toLowerCase().trim();
 
 return data.find(x =>
-(norm(x.t1)===t1 && norm(x.t2)===t2) ||
-(norm(x.t1)===t2 && norm(x.t2)===t1)
+(x.t1.toLowerCase()==t1 && x.t2.toLowerCase()==t2) ||
+(x.t1.toLowerCase()==t2 && x.t2.toLowerCase()==t1)
 );
 }
 
@@ -261,56 +178,52 @@ const t2 = team2.value;
 const m = findMatch(t1,t2);
 
 if(!m){
-result.innerHTML = "<h2 style='color:red'>❌ Match Not Found</h2>";
+result.innerHTML = "<h2>Match Not Found</h2>";
 return;
 }
 
 let pred,w1="",w2="";
 
-if(m.h > m.d && m.h > m.a){
-pred = m.t1 + " Win";
+if(m.h>m.d && m.h>m.a){
+pred=m.t1+" Win";
 w1="gold";
 }
-else if(m.a > m.h && m.a > m.d){
-pred = m.t2 + " Win";
+else if(m.a>m.h && m.a>m.d){
+pred=m.t2+" Win";
 w2="gold";
 }
 else{
-pred = "Draw";
+pred="Draw";
 }
 
-result.innerHTML = `
+result.innerHTML=`
 <div class="card">
 
 <h2>
-<span class="${w1}">
 ${flag(m.code1)} ${m.t1}
-</span>
 vs
-<span class="${w2}">
 ${m.t2} ${flag(m.code2)}
-</span>
 </h2>
 
 <h3>${pred}</h3>
 
-<p>Home (${(m.h*100).toFixed(0)}%)</p>
+<p>Home ${(m.h*100).toFixed(0)}%</p>
 <div class="bar-bg"><div id="b1" class="bar home"></div></div>
 
-<p>Draw (${(m.d*100).toFixed(0)}%)</p>
+<p>Draw ${(m.d*100).toFixed(0)}%</p>
 <div class="bar-bg"><div id="b2" class="bar draw"></div></div>
 
-<p>Away (${(m.a*100).toFixed(0)}%)</p>
+<p>Away ${(m.a*100).toFixed(0)}%</p>
 <div class="bar-bg"><div id="b3" class="bar away"></div></div>
 
 </div>
 `;
 
 setTimeout(()=>{
-b1.style.width = (m.h*100)+"%";
-b2.style.width = (m.d*100)+"%";
-b3.style.width = (m.a*100)+"%";
-},120);
+b1.style.width=(m.h*100)+"%";
+b2.style.width=(m.d*100)+"%";
+b3.style.width=(m.a*100)+"%";
+},100);
 }
 
 </script>
