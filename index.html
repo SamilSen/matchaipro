@@ -13,15 +13,14 @@ background:linear-gradient(135deg,#eef2ff,#f8fafc,#ede9fe);
 color:#111827;
 }
 
-/* HERO */
 .hero{padding:39px 26px 13px;}
 
 .logo{
-width:92.4%;
-max-width:990px;
+width:92%;
+max-width:980px;
 border-radius:18px;
 box-shadow:0 18px 40px rgba(0,0,0,.18);
-margin-bottom:36px;
+margin-bottom:30px;
 }
 
 .title{
@@ -35,7 +34,7 @@ animation:move 5s ease infinite;
 }
 
 .subtitle{
-font-size:49px;
+font-size:48px;
 font-weight:800;
 margin-top:10px;
 background:linear-gradient(90deg,#2563eb,#7c3aed,#ec4899,#2563eb);
@@ -46,8 +45,8 @@ animation:move 5s ease infinite;
 }
 
 .trust{
-margin-top:16px;
-font-size:26px;
+margin-top:14px;
+font-size:24px;
 font-weight:700;
 color:#374151;
 }
@@ -58,13 +57,12 @@ color:#374151;
 100%{background-position:0% 50%}
 }
 
-/* INPUT */
 .input-box{
-width:340px;
-padding:26px;
-margin:12px;
-font-size:30px;
-border-radius:14px;
+width:320px;
+padding:22px;
+margin:10px;
+font-size:28px;
+border-radius:12px;
 border:2px solid #d1d5db;
 outline:none;
 }
@@ -72,70 +70,67 @@ outline:none;
 #team1{background:#ecfdf5;border-color:#22c55e}
 #team2{background:#eff6ff;border-color:#3b82f6}
 
-/* BUTTON */
 .predict-btn{
-margin-top:25px;
-padding:28px 65px;
-font-size:36px;
+margin-top:22px;
+padding:26px 60px;
+font-size:34px;
 font-weight:900;
 border:none;
-border-radius:16px;
+border-radius:14px;
 cursor:pointer;
 color:white;
 background:linear-gradient(90deg,#e11d48,#f43f5e,#e11d48);
-background-size:200% 200%;
-box-shadow:0 0 18px rgba(225,29,72,.45);
+box-shadow:0 0 16px rgba(225,29,72,.4);
 }
 
 #status{
-margin-top:20px;
+margin-top:18px;
 font-size:22px;
 font-weight:800;
 }
 
-/* CARD */
 .card{
-margin-top:36px;
+margin-top:30px;
 display:inline-block;
-width:620px;
-padding:44px;
-border-radius:24px;
-background:rgba(255,255,255,.62);
+width:600px;
+padding:40px;
+border-radius:22px;
+background:rgba(255,255,255,.65);
 backdrop-filter:blur(12px);
 box-shadow:0 18px 40px rgba(0,0,0,.16);
 }
 
-.card h2{font-size:42px;}
-.card h3{font-size:40px;color:#7c3aed;font-weight:900;}
+.card h2{font-size:40px;}
+.card h3{font-size:38px;color:#7c3aed;font-weight:900;}
 
 .gold{color:#f59e0b;font-weight:900;}
 
 .flag{
-width:52px;
-height:36px;
+width:50px;
+height:34px;
 margin:0 8px;
 border-radius:5px;
 vertical-align:middle;
 }
 
 p{
-font-size:27px;
+font-size:25px;
 font-weight:700;
-margin:12px 0 6px;
+margin:10px 0 6px;
 }
 
 .bar-bg{
-height:22px;
+height:20px;
 background:#e5e7eb;
-border-radius:14px;
+border-radius:12px;
 overflow:hidden;
-margin-bottom:14px;
+margin-bottom:12px;
 }
 
 .bar{
-height:22px;
+height:20px;
 width:0%;
-border-radius:14px;
+border-radius:12px;
 transition:width 1s ease;
 }
 
@@ -153,8 +148,8 @@ gap:10px;
 }
 
 .footer a{
-padding:14px 28px;
-font-size:22px;
+padding:12px 26px;
+font-size:20px;
 font-weight:900;
 color:#7c3aed;
 text-decoration:none;
@@ -164,9 +159,9 @@ border:2px solid #000;
 }
 
 .copy{
-margin-top:18px;
+margin-top:15px;
 padding-bottom:25px;
-font-size:20px;
+font-size:18px;
 font-weight:900;
 }
 </style>
@@ -182,55 +177,57 @@ font-weight:900;
 <div class="trust">📈 Trusted by 10,000+ users worldwide</div>
 </div>
 
-<div>
 <input id="team1" class="input-box" placeholder="🏠 Home Team">
 <input id="team2" class="input-box" placeholder="✈️ Away Team">
 <br>
 <button class="predict-btn" onclick="predict()">PREDICT</button>
-</div>
 
 <div id="status">Loading...</div>
 <div id="result"></div>
 
 <div class="footer">
-<a href="legal.html">Legal</a>
-<a href="price.html">Price</a>
-<a href="about.html">About</a>
+<a href="#">Legal</a>
+<a href="#">Price</a>
+<a href="#">About</a>
 </div>
 
-<div class="copy">
-© 2026 MatchAI Pro
-</div>
+<div class="copy">© 2026 MatchAI Pro</div>
 
 <script>
 
 let data=[];
 
 /* =========================
-   FIXED CSV LOADER
+   CSV LOADER (ULTRA ROBUST)
 ========================= */
 fetch("https://raw.githubusercontent.com/MatchAIPro/matchai/main/predictions.csv")
 .then(r=>r.text())
 .then(t=>{
 
-const rows = t.replace(/\r/g,'').split("\n").slice(1);
+const rows = t.replace(/\r/g,'').split("\n");
 
-data = rows.map(r=>{
-const c = r.split(/[\t,]+/).map(x=>x.trim());
+data = rows.slice(1)
+.map(r=>r.trim())
+.filter(r=>r.length>5)
+.map(r=>{
+
+// supports TAB / comma / multiple spaces
+const c = r.split(/[\t,]+|\s{2,}/).map(x=>x.trim());
 
 return {
-t1: c[0],
-t2: c[1],
-code1: c[2],
-code2: c[3],
-h: parseFloat(c[4]),
-d: parseFloat(c[5]),
-a: parseFloat(c[6])
+t1:c[0],
+t2:c[1],
+code1:c[2],
+code2:c[3],
+h:parseFloat(c[4]),
+d:parseFloat(c[5]),
+a:parseFloat(c[6])
 };
-});
+})
+.filter(x=>x.t1 && x.t2 && !isNaN(x.h));
 
 document.getElementById("status") =
-    "✅ Ready (" + data.length + " matches)";
+"✅ Ready | Matches: " + data.length;
 });
 
 /* FLAGS */
@@ -238,12 +235,12 @@ function flag(code){
 return `<img class="flag" src="https://flagcdn.com/w40/${code.toLowerCase()}.png">`;
 }
 
-/* NORMALIZER */
+/* NORMALIZE */
 function norm(s){
-return s.toLowerCase().trim();
+return (s||"").toLowerCase().trim();
 }
 
-/* MATCH FINDER (BOTH DIRECTIONS) */
+/* MATCH ENGINE */
 function findMatch(t1,t2){
 
 t1 = norm(t1);
@@ -255,7 +252,7 @@ return data.find(x =>
 );
 }
 
-/* MAIN PREDICT */
+/* PREDICT */
 function predict(){
 
 const t1 = team1.value;
@@ -264,7 +261,7 @@ const t2 = team2.value;
 const m = findMatch(t1,t2);
 
 if(!m){
-result.innerHTML = "<h2>❌ Match Not Found</h2>";
+result.innerHTML = "<h2 style='color:red'>❌ Match Not Found</h2>";
 return;
 }
 
@@ -272,11 +269,11 @@ let pred,w1="",w2="";
 
 if(m.h > m.d && m.h > m.a){
 pred = m.t1 + " Win";
-w1 = "gold";
+w1="gold";
 }
 else if(m.a > m.h && m.a > m.d){
 pred = m.t2 + " Win";
-w2 = "gold";
+w2="gold";
 }
 else{
 pred = "Draw";
@@ -310,10 +307,10 @@ ${m.t2} ${flag(m.code2)}
 `;
 
 setTimeout(()=>{
-b1.style.width = (m.h*100) + "%";
-b2.style.width = (m.d*100) + "%";
-b3.style.width = (m.a*100) + "%";
-},100);
+b1.style.width = (m.h*100)+"%";
+b2.style.width = (m.d*100)+"%";
+b3.style.width = (m.a*100)+"%";
+},120);
 }
 
 </script>
