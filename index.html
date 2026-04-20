@@ -206,73 +206,83 @@ font-weight:900;
 
 let data=[];
 
-// ✅ TAB-separated CSV FIX
+/* =========================
+   FIXED CSV LOADER
+========================= */
 fetch("https://raw.githubusercontent.com/MatchAIPro/matchai/main/predictions.csv")
 .then(r=>r.text())
 .then(t=>{
 
-const rows=t.trim().split("\n").slice(1);
+const rows = t.replace(/\r/g,'').split("\n").slice(1);
 
-data=rows.map(r=>{
-const c=r.split("\t").map(x=>x.trim());
+data = rows.map(r=>{
+const c = r.split(/[\t,]+/).map(x=>x.trim());
 
 return {
-t1:c[0],
-t2:c[1],
-code1:c[2],
-code2:c[3],
-h:parseFloat(c[4]),
-d:parseFloat(c[5]),
-a:parseFloat(c[6])
+t1: c[0],
+t2: c[1],
+code1: c[2],
+code2: c[3],
+h: parseFloat(c[4]),
+d: parseFloat(c[5]),
+a: parseFloat(c[6])
 };
 });
 
-document.getElementById("status").innerHTML="✅ Ready";
+document.getElementById("status") =
+    "✅ Ready (" + data.length + " matches)";
 });
 
+/* FLAGS */
 function flag(code){
 return `<img class="flag" src="https://flagcdn.com/w40/${code.toLowerCase()}.png">`;
 }
 
-// ✅ BOTH DIRECTION MATCH FIX
+/* NORMALIZER */
+function norm(s){
+return s.toLowerCase().trim();
+}
+
+/* MATCH FINDER (BOTH DIRECTIONS) */
 function findMatch(t1,t2){
 
-t1=t1.toLowerCase().trim();
-t2=t2.toLowerCase().trim();
+t1 = norm(t1);
+t2 = norm(t2);
 
 return data.find(x =>
-(x.t1.toLowerCase()==t1 && x.t2.toLowerCase()==t2) ||
-(x.t1.toLowerCase()==t2 && x.t2.toLowerCase()==t1)
+(norm(x.t1)===t1 && norm(x.t2)===t2) ||
+(norm(x.t1)===t2 && norm(x.t2)===t1)
 );
 }
 
+/* MAIN PREDICT */
 function predict(){
 
-const t1=team1.value;
-const t2=team2.value;
+const t1 = team1.value;
+const t2 = team2.value;
 
-const m=findMatch(t1,t2);
+const m = findMatch(t1,t2);
 
 if(!m){
-result.innerHTML="<h2>Match Not Found</h2>";
+result.innerHTML = "<h2>❌ Match Not Found</h2>";
 return;
 }
 
 let pred,w1="",w2="";
 
-if(m.h>m.d && m.h>m.a){
-pred=m.t1+" Win";
-w1="gold";
+if(m.h > m.d && m.h > m.a){
+pred = m.t1 + " Win";
+w1 = "gold";
 }
-else if(m.a>m.h && m.a>m.d){
-pred=m.t2+" Win";
-w2="gold";
+else if(m.a > m.h && m.a > m.d){
+pred = m.t2 + " Win";
+w2 = "gold";
 }
 else{
-pred="Draw";
+pred = "Draw";
 }
 
-result.innerHTML=`
+result.innerHTML = `
 <div class="card">
 
 <h2>
@@ -300,9 +310,9 @@ ${m.t2} ${flag(m.code2)}
 `;
 
 setTimeout(()=>{
-b1.style.width=(m.h*100)+"%";
-b2.style.width=(m.d*100)+"%";
-b3.style.width=(m.a*100)+"%";
+b1.style.width = (m.h*100) + "%";
+b2.style.width = (m.d*100) + "%";
+b3.style.width = (m.a*100) + "%";
 },100);
 }
 
