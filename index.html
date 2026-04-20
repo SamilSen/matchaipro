@@ -90,7 +90,6 @@ background-size:200% 200%;
 box-shadow:0 0 18px rgba(225,29,72,.45);
 }
 
-/* STATUS */
 #status{
 margin-top:23px;
 font-size:25px;
@@ -107,12 +106,6 @@ border-radius:24px;
 background:rgba(255,255,255,.62);
 backdrop-filter:blur(12px);
 box-shadow:0 18px 40px rgba(0,0,0,.16);
-animation:fade .6s ease;
-}
-
-@keyframes fade{
-from{opacity:0;transform:translateY(18px)}
-to{opacity:1;transform:translateY(0)}
 }
 
 .card h2{font-size:45px;margin-bottom:13px;}
@@ -122,16 +115,6 @@ font-size:41px;
 margin:18px 0 26px;
 color:#7c3aed;
 font-weight:900;
-animation:heartbeat 1s infinite;
-}
-
-@keyframes heartbeat{
-0%{transform:scale(1);}
-20%{transform:scale(1.12);}
-40%{transform:scale(1);}
-60%{transform:scale(1.14);}
-80%{transform:scale(1);}
-100%{transform:scale(1);}
 }
 
 .gold{color:#f59e0b;font-weight:900;}
@@ -168,39 +151,26 @@ transition:width 1.2s ease;
 .draw{background:#f59e0b;}
 .away{background:#ef4444;}
 
-/* FOOTER - FINAL */
 .footer{
 margin-top:46px;
 padding:26px;
 border-top:1px solid #e5e7eb;
 display:flex;
 justify-content:center;
-flex-wrap:nowrap;
 gap:12px;
 }
 
 .footer a{
-display:inline-block;
 padding:16px 34px;
-min-width:200px;
-font-size:24px;   /* +2px */
+font-size:24px;
 font-weight:900;
 color:#7c3aed;
 text-decoration:none;
 border-radius:14px;
-background:#ffffff;
-border:2px solid #000000;
-box-shadow:0 8px 18px rgba(0,0,0,.12);
-transition:.25s;
-white-space:nowrap;
+background:#fff;
+border:2px solid #000;
 }
 
-.footer a:hover{
-transform:translateY(-3px) scale(1.05);
-background:#f5f3ff;
-}
-
-/* COPYRIGHT */
 .copy{
 margin-top:20px;
 padding-bottom:30px;
@@ -208,7 +178,6 @@ font-size:22px;
 font-weight:900;
 color:black;
 }
-
 </style>
 </head>
 
@@ -243,30 +212,32 @@ color:black;
 </div>
 
 <script>
+
 let data=[];
 
 fetch("https://raw.githubusercontent.com/MatchAIPro/matchai/main/predictions.csv")
 .then(r=>r.text())
 .then(t=>{
 const rows=t.split("\n").slice(1);
+
 data=rows.map(r=>{
 const c=r.split(",");
-return {t1:c[0],t2:c[1],h:+c[4],d:+c[5],a:+c[6]};
-});
-status.innerHTML="✅ Ready";
+return {
+t1:c[0],
+t2:c[1],
+code1:c[2],
+code2:c[3],
+h:+c[4],
+d:+c[5],
+a:+c[6]
+};
 });
 
-function getCode(team){
-const map={
-"germany":"de","turkey":"tr","usa":"us","brazil":"br",
-"france":"fr","spain":"es","england":"gb","italy":"it",
-"argentina":"ar","portugal":"pt","netherlands":"nl"
-};
-return map[team.toLowerCase()] || team.slice(0,2).toLowerCase();
-}
+document.getElementById("status").innerHTML="✅ Ready";
+});
 
 function flag(code){
-return `<img class="flag" src="https://flagcdn.com/w40/${code}.png">`;
+return `<img class="flag" src="https://flagcdn.com/w40/${code.toLowerCase()}.png">`;
 }
 
 function predict(){
@@ -274,7 +245,10 @@ function predict(){
 const t1=team1.value.toLowerCase();
 const t2=team2.value.toLowerCase();
 
-const m=data.find(x=>x.t1.toLowerCase()==t1 && x.t2.toLowerCase()==t2);
+const m=data.find(x=>
+x.t1.toLowerCase()==t1 &&
+x.t2.toLowerCase()==t2
+);
 
 if(!m){
 result.innerHTML="<h2>Match Not Found</h2>";
@@ -299,9 +273,13 @@ result.innerHTML=`
 <div class="card">
 
 <h2>
-<span class="${w1}">${flag(getCode(m.t1))} ${m.t1}</span>
+<span class="${w1}">
+${flag(m.code1)} ${m.t1}
+</span>
 vs
-<span class="${w2}">${m.t2} ${flag(getCode(m.t2))}</span>
+<span class="${w2}">
+${m.t2} ${flag(m.code2)}
+</span>
 </h2>
 
 <h3>${pred}</h3>
@@ -325,6 +303,7 @@ b3.style.width=m.a+"%";
 },120);
 
 }
+
 </script>
 
 </body>
