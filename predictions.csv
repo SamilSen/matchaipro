@@ -7,9 +7,7 @@ Qatar,Switzerland,QA,SW,28,35,37
 Brazil,Morocco,BR,MO,38,41,21
 Haiti,Scotland,HA,SC,12,47,40
 Australia,Turkey,AU,TR,54,23,23
-Germany,Curacao,GE,CW,66,28,6
 Netherlands,Japan,NE,JA,32,35,32
-Cote d'Ivoire,Ecuador,CI,EC,23,31,46
 Sweden,Tunisia,SW,TU,30,39,31
 Spain,Cabo Verde,SP,CA,61,21,18
 Belgium,Egypt,BE,EG,50,32,18
@@ -32,8 +30,6 @@ Scotland,Morocco,SC,MO,29,32,39
 Brazil,Haiti,BR,HA,53,37,10
 Turkey,Paraguay,TR,PA,33,39,27
 Netherlands,Sweden,NE,TU,64,25,11
-Germany,Cote d'Ivoire,GE,CI,66,28,6
-Ecuador,Curacao,EC,CW,56,32,12
 Tunisia,Japan,TU,JA,32,37,31
 Spain,Saudi Arabia,SP,SA,53,37,10
 Belgium,Iran,BE,IR,37,41,22
@@ -53,7 +49,6 @@ Scotland,Brazil,SC,BR,41,25,34
 Morocco,Haiti,MO,HA,53,37,10
 Czechia,Mexico,CZ,ME,45,26,29
 South Africa,Korea Republic,SO,KO,29,32,39
-Curacao,Cote d'Ivoire,CW,CI,45,26,29
 Ecuador,Germany,EC,GE,46,28,26
 Japan,Sweden,JA,SW,39,44,17
 Tunisia,Netherlands,TU,NE,34,38,28
