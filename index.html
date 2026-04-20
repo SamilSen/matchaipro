@@ -27,6 +27,7 @@ margin-bottom:36px;
 .title{
 font-size:64px;
 font-weight:900;
+line-height:1.1;
 background:linear-gradient(90deg,#6d28d9,#a855f7,#ec4899,#6d28d9);
 background-size:300% 300%;
 -webkit-background-clip:text;
@@ -212,20 +213,15 @@ color:black;
 
 <script>
 
-let data = [];
-
-function clean(x){
-return x.trim().toLowerCase();
-}
+let data=[];
 
 fetch("https://raw.githubusercontent.com/MatchAIPro/matchai/main/predictions.csv")
 .then(r=>r.text())
 .then(t=>{
-const rows = t.split("\n").slice(1);
+const rows=t.split("\n").slice(1);
 
-data = rows.map(r=>{
-const c = r.split(/\s*,\s*/);
-
+data=rows.map(r=>{
+const c=r.split(",");
 return {
 t1:c[0],
 t2:c[1],
@@ -246,36 +242,34 @@ return `<img class="flag" src="https://flagcdn.com/w40/${code.toLowerCase()}.png
 
 function predict(){
 
-const t1 = document.getElementById("team1").value;
-const t2 = document.getElementById("team2").value;
+const t1=team1.value.toLowerCase();
+const t2=team2.value.toLowerCase();
 
-const m = data.find(x =>
-clean(x.t1) === clean(t1) &&
-clean(x.t2) === clean(t2)
+const m=data.find(x=>
+x.t1.toLowerCase()==t1 &&
+x.t2.toLowerCase()==t2
 );
 
 if(!m){
-document.getElementById("result").innerHTML = "<h2>Match Not Found</h2>";
+result.innerHTML="<h2>Match Not Found</h2>";
 return;
 }
 
-let pred = "";
-let w1 = "";
-let w2 = "";
+let pred,w1="",w2="";
 
-if(m.h > m.d && m.h > m.a){
-pred = m.t1 + " Win";
-w1 = "gold";
+if(m.h>m.d && m.h>m.a){
+pred=m.t1+" Win";
+w1="gold";
 }
-else if(m.a > m.h && m.a > m.d){
-pred = m.t2 + " Win";
-w2 = "gold";
+else if(m.a>m.h && m.a>m.d){
+pred=m.t2+" Win";
+w2="gold";
 }
 else{
-pred = "Draw";
+pred="Draw";
 }
 
-document.getElementById("result").innerHTML = `
+result.innerHTML=`
 <div class="card">
 
 <h2>
@@ -303,9 +297,9 @@ ${m.t2} ${flag(m.code2)}
 `;
 
 setTimeout(()=>{
-document.getElementById("b1").style.width = m.h + "%";
-document.getElementById("b2").style.width = m.d + "%";
-document.getElementById("b3").style.width = m.a + "%";
+b1.style.width=m.h+"%";
+b2.style.width=m.d+"%";
+b3.style.width=m.a+"%";
 },120);
 
 }
