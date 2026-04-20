@@ -1,83 +1,306 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<title>Legal Disclaimer | MatchAI Pro</title>
+<title>MatchAI Pro</title>
 
 <style>
 body{
 margin:0;
-padding:40px;
+padding:0;
 font-family:Arial, sans-serif;
+text-align:center;
 background:linear-gradient(135deg,#eef2ff,#f8fafc,#ede9fe);
 color:#111827;
 }
 
-.container{
-max-width:900px;
-margin:auto;
-background:white;
-padding:45px;
-border-radius:20px;
-box-shadow:0 18px 45px rgba(0,0,0,.15);
-text-align:left;
-line-height:1.7;
-font-size:20px;
+.hero{padding:39px 26px 13px;}
+
+.logo{
+width:92.4%;
+max-width:990px;
+border-radius:18px;
+box-shadow:0 18px 40px rgba(0,0,0,.18);
+margin-bottom:36px;
 }
 
-h1{
-text-align:center;
-font-size:40px;
+.title{
+font-size:64px;
 font-weight:900;
-color:#7c3aed;
-margin-bottom:30px;
+background:linear-gradient(90deg,#6d28d9,#a855f7,#ec4899,#6d28d9);
+background-size:300% 300%;
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+animation:move 5s ease infinite;
 }
 
-p{
+.subtitle{
+font-size:49px;
+font-weight:800;
+margin-top:10px;
+background:linear-gradient(90deg,#2563eb,#7c3aed,#ec4899,#2563eb);
+background-size:300% 300%;
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+animation:move 5s ease infinite;
+}
+
+@keyframes move{
+0%{background-position:0% 50%}
+50%{background-position:100% 50%}
+100%{background-position:0% 50%}
+}
+
+.form-box{margin-top:36px}
+
+.input-box{
+width:340px;
+padding:28px;
+margin:13px;
+font-size:32px;
+border-radius:14px;
+border:2px solid #d1d5db;
+outline:none;
+}
+
+#team1{background:#ecfdf5;border-color:#22c55e}
+#team2{background:#eff6ff;border-color:#3b82f6}
+
+.predict-btn{
+margin-top:29px;
+padding:31px 70px;
+font-size:39px;
+font-weight:900;
+border:none;
+border-radius:16px;
+cursor:pointer;
+color:white;
+background:linear-gradient(90deg,#e11d48,#f43f5e,#e11d48);
+background-size:200% 200%;
+}
+
+#status{
+margin-top:23px;
+font-size:25px;
+font-weight:800;
+}
+
+.card{
+margin-top:36px;
+display:inline-block;
+width:616px;
+padding:44px;
+border-radius:24px;
+background:rgba(255,255,255,.62);
+backdrop-filter:blur(12px);
+box-shadow:0 18px 40px rgba(0,0,0,.16);
+}
+
+.card h2{font-size:45px;margin-bottom:13px;}
+
+.card h3{
+font-size:41px;
+margin:18px 0 26px;
+color:#7c3aed;
+font-weight:900;
+}
+
+.flag{
+width:52px;
+height:36px;
+margin:0 10px;
+border-radius:5px;
+vertical-align:middle;
+}
+
+.bar-bg{
+height:24px;
+background:#e5e7eb;
+border-radius:14px;
+overflow:hidden;
 margin-bottom:18px;
 }
 
+.bar{
+height:24px;
+width:0;
+border-radius:14px;
+transition:width 1.2s ease;
+}
+
+.home{background:#22c55e;}
+.draw{background:#f59e0b;}
+.away{background:#ef4444;}
+
 .footer{
-text-align:center;
-margin-top:30px;
-font-weight:800;
-color:#111;
+margin-top:46px;
+padding:26px;
+border-top:1px solid #e5e7eb;
+display:flex;
+justify-content:center;
+gap:12px;
+}
+
+.footer a{
+padding:16px 34px;
+font-size:24px;
+font-weight:900;
+color:#7c3aed;
+text-decoration:none;
+border-radius:14px;
+background:#fff;
+border:2px solid #000;
 }
 </style>
-
 </head>
 
 <body>
 
-<div class="container">
+<div class="hero">
+<img src="https://raw.githubusercontent.com/MatchAIPro/matchai/main/image.png" class="logo">
 
-<h1>⚠️ Legal Disclaimer</h1>
+<div class="title">World Cup 2026</div>
+<div class="subtitle">AI Prediction Engine</div>
+</div>
 
-<p>
-This application is intended for AI-driven sports analytics and predictive modeling purposes only.
-</p>
+<div class="form-box">
+<input id="team1" class="input-box" placeholder="🏠 Home Team">
+<input id="team2" class="input-box" placeholder="✈️ Away Team">
+<br>
+<button class="predict-btn" onclick="predict()">PREDICT</button>
+</div>
 
-<p>
-All predictions are generated using machine learning algorithms trained on historical match data, statistical modeling, and feature engineering techniques.
-</p>
-
-<p>
-MatchAI Pro does not guarantee match outcomes. Football results are inherently uncertain and influenced by many unpredictable factors.
-</p>
-
-<p>
-This tool is not intended for gambling, betting, or financial decision-making purposes. Users are solely responsible for how they use the information provided.
-</p>
-
-<p>
-By using this application, you acknowledge that predictions are probabilistic and may be incorrect. The developers assume no responsibility for any losses or consequences resulting from its use.
-</p>
+<div id="status">Loading...</div>
+<div id="result"></div>
 
 <div class="footer">
-© 2026 MatchAI Pro — All Rights Reserved
+<a href="legal.html">Legal</a>
+<a href="price.html">Price</a>
+<a href="about.html">About</a>
 </div>
 
+<script>
+
+let data=[];
+
+/* =========================
+   CLEAN TEXT (FIX ALL LANG ISSUES)
+========================= */
+function clean(t){
+return (t||"")
+.normalize("NFD")
+.replace(/[\u0300-\u036f]/g,"")
+.replace(/Ã¼/g,"u")
+.replace(/Ã§/g,"c")
+.replace(/Ã´/g,"o")
+.replace(/Ã©/g,"e")
+.replace(/Ã±/g,"n")
+.replace(/TÃ¼rkiye/g,"turkey")
+.replace(/CuraÃ§ao/g,"curacao")
+.replace(/CÃ´te d'Ivoire/g,"cote divoire")
+.trim()
+.toLowerCase();
+}
+
+/* =========================
+   LOAD CSV
+========================= */
+fetch("https://raw.githubusercontent.com/MatchAIPro/matchai/main/predictions.csv")
+.then(r=>r.text())
+.then(t=>{
+
+const rows=t.split("\n").filter(r=>r.trim());
+
+data=rows.slice(1).map(r=>{
+const c=r.split(",");
+
+return {
+t1:c[0]?.trim(),
+t2:c[1]?.trim(),
+code1:c[2]?.trim(),
+code2:c[3]?.trim(),
+h:+c[4],
+d:+c[5],
+a:+c[6]
+};
+});
+
+document.getElementById("status").innerHTML="✅ Ready";
+});
+
+/* =========================
+   FLAG
+========================= */
+function flag(code){
+if(!code) return "";
+return `<img class="flag" src="https://flagcdn.com/w40/${code.toLowerCase()}.png">`;
+}
+
+/* =========================
+   PREDICT
+========================= */
+function predict(){
+
+const t1=clean(team1.value);
+const t2=clean(team2.value);
+
+const m=data.find(x=>
+clean(x.t1)===t1 &&
+clean(x.t2)===t2
+);
+
+if(!m){
+result.innerHTML="<h2>Match Not Found</h2>";
+return;
+}
+
+let pred="",w1="",w2="";
+
+if(m.h>m.d && m.h>m.a){
+pred=m.t1+" Win";
+w1="gold";
+}
+else if(m.a>m.h && m.a>m.d){
+pred=m.t2+" Win";
+w2="gold";
+}
+else pred="Draw";
+
+result.innerHTML=`
+<div class="card">
+
+<h2>
+<span class="${w1}">
+${flag(m.code1)} ${m.t1}
+</span>
+vs
+<span class="${w2}">
+${m.t2} ${flag(m.code2)}
+</span>
+</h2>
+
+<h3>${pred}</h3>
+
+<p>Home (${m.h}%)</p>
+<div class="bar-bg"><div id="b1" class="bar home"></div></div>
+
+<p>Draw (${m.d}%)</p>
+<div class="bar-bg"><div id="b2" class="bar draw"></div></div>
+
+<p>Away (${m.a}%)</p>
+<div class="bar-bg"><div id="b3" class="bar away"></div></div>
+
 </div>
+`;
+
+setTimeout(()=>{
+b1.style.width=m.h+"%";
+b2.style.width=m.d+"%";
+b3.style.width=m.a+"%";
+},120);
+
+}
+
+</script>
 
 </body>
 </html>
