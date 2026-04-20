@@ -13,7 +13,6 @@ background:linear-gradient(135deg,#eef2ff,#f8fafc,#ede9fe);
 color:#111827;
 }
 
-/* HERO */
 .hero{padding:39px 26px 13px;}
 
 .logo{
@@ -27,7 +26,6 @@ margin-bottom:36px;
 .title{
 font-size:64px;
 font-weight:900;
-line-height:1.1;
 background:linear-gradient(90deg,#6d28d9,#a855f7,#ec4899,#6d28d9);
 background-size:300% 300%;
 -webkit-background-clip:text;
@@ -59,7 +57,6 @@ color:#374151;
 100%{background-position:0% 50%}
 }
 
-/* INPUTS */
 .form-box{margin-top:36px}
 
 .input-box{
@@ -75,7 +72,6 @@ outline:none;
 #team1{background:#ecfdf5;border-color:#22c55e}
 #team2{background:#eff6ff;border-color:#3b82f6}
 
-/* BUTTON */
 .predict-btn{
 margin-top:29px;
 padding:31px 70px;
@@ -96,7 +92,6 @@ font-size:25px;
 font-weight:800;
 }
 
-/* CARD */
 .card{
 margin-top:36px;
 display:inline-block;
@@ -120,16 +115,11 @@ font-weight:900;
 .gold{color:#f59e0b;font-weight:900;}
 
 .flag{
-width:52px;height:36px;
+width:52px;
+height:36px;
 margin:0 10px;
 border-radius:5px;
 vertical-align:middle;
-}
-
-.card p{
-font-size:29px;
-font-weight:700;
-margin:13px 0 10px;
 }
 
 .bar-bg{
@@ -202,7 +192,7 @@ color:black;
 <div id="result"></div>
 
 <div class="footer">
-<a href="legal.html">Legal Disclaimer</a>
+<a href="legal.html">Legal</a>
 <a href="price.html">Price Policy</a>
 <a href="about.html">About</a>
 </div>
@@ -215,39 +205,70 @@ color:black;
 
 let data=[];
 
+/* =========================
+   🔧 TEXT FIX (IMPORTANT)
+========================= */
+function fixText(t){
+return (t||"")
+.normalize("NFD")
+.replace(/[\u0300-\u036f]/g,"")
+.replace(/Ã¼/g,"u")
+.replace(/Ã§/g,"c")
+.replace(/Ã´/g,"o")
+.replace(/Ã©/g,"e")
+.replace(/Ã±/g,"n")
+.replace(/TÃ¼rkiye/g,"Turkey")
+.replace(/CuraÃ§ao/g,"Curacao")
+.replace(/CÃ´te d'Ivoire/g,"Cote d'Ivoire")
+.trim()
+.toLowerCase();
+}
+
+/* =========================
+   📥 LOAD CSV
+========================= */
 fetch("https://raw.githubusercontent.com/MatchAIPro/matchai/main/predictions.csv")
 .then(r=>r.text())
 .then(t=>{
+
 const rows=t.split("\n").slice(1);
 
 data=rows.map(r=>{
 const c=r.split(",");
+
 return {
-t1:c[0],
-t2:c[1],
-code1:c[2],
-code2:c[3],
-h:+c[4],
-d:+c[5],
-a:+c[6]
+t1:c[0]?.trim(),
+t2:c[1]?.trim(),
+code1:c[2]?.trim(),
+code2:c[3]?.trim(),
+h:parseFloat(c[4]),
+d:parseFloat(c[5]),
+a:parseFloat(c[6])
 };
 });
 
 document.getElementById("status").innerHTML="✅ Ready";
 });
 
+/* =========================
+   🏳️ FLAG SAFE
+========================= */
 function flag(code){
+if(!code || code.length<2) return "";
 return `<img class="flag" src="https://flagcdn.com/w40/${code.toLowerCase()}.png">`;
 }
 
+/* =========================
+   🔮 PREDICT
+========================= */
 function predict(){
 
-const t1=team1.value.toLowerCase();
-const t2=team2.value.toLowerCase();
+const t1=team1.value;
+const t2=team2.value;
 
 const m=data.find(x=>
-x.t1.toLowerCase()==t1 &&
-x.t2.toLowerCase()==t2
+fixText(x.t1)===fixText(t1) &&
+fixText(x.t2)===fixText(t2)
 );
 
 if(!m){
@@ -265,9 +286,7 @@ else if(m.a>m.h && m.a>m.d){
 pred=m.t2+" Win";
 w2="gold";
 }
-else{
-pred="Draw";
-}
+else pred="Draw";
 
 result.innerHTML=`
 <div class="card">
@@ -307,4 +326,4 @@ b3.style.width=m.a+"%";
 </script>
 
 </body>
-</html> 
+</html>
