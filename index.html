@@ -104,13 +104,20 @@ backdrop-filter:blur(12px);
 box-shadow:0 18px 40px rgba(0,0,0,.16);
 }
 
-/* BOŞ DURUM */
-.empty{
-font-size:26px;
-font-weight:800;
-color:#9ca3af;
-padding:50px;
-text-align:center;
+/* HEARTBEAT TEXT */
+@keyframes heartbeatText {
+0% { transform: scale(1); }
+25% { transform: scale(1.08); }
+50% { transform: scale(1); }
+75% { transform: scale(1.12); }
+100% { transform: scale(1); }
+}
+
+.heartbeat-text{
+display:inline-block;
+font-weight:900;
+color:#7c3aed;
+animation:heartbeatText 1.2s infinite;
 }
 
 /* TEK SATIR */
@@ -214,10 +221,25 @@ color:black;
 
 <div id="status">Loading...</div>
 
-<!-- ✅ BAŞLANGIÇTA BOŞ KART (MOBİL GÜVENLİ) -->
+<!-- ✅ READY SCREEN (bozulmaz, mobil safe) -->
 <div id="result">
-  <div class="card empty">
-    Enter teams and click PREDICT
+  <div class="card">
+
+    <h2>⚽ Ready For Prediction</h2>
+
+    <p style="font-size:22px;font-weight:800;color:#6b7280;">
+      <span class="heartbeat-text">Enter Teams Above</span>
+    </p>
+
+    <p>Home (0%)</p>
+    <div class="bar-bg"><div class="bar home" style="width:0%"></div></div>
+
+    <p>Draw (0%)</p>
+    <div class="bar-bg"><div class="bar draw" style="width:0%"></div></div>
+
+    <p>Away (0%)</p>
+    <div class="bar-bg"><div class="bar away" style="width:0%"></div></div>
+
   </div>
 </div>
 
@@ -301,7 +323,7 @@ normalizeText(x.t2) === normalizeText(t2)
 
 if(!m){
 document.getElementById("result").innerHTML=
-"<div class='card empty'>❌ Match Not Found</div>";
+"<div class='card'>❌ Match Not Found</div>";
 return;
 }
 
