@@ -44,61 +44,123 @@ background-size:300% 300%;
 animation:move 5s ease infinite;
 }
 
+.trust{
+margin-top:16px;
+font-size:26px;
+font-weight:700;
+color:#374151;
+}
+
 @keyframes move{
 0%{background-position:0% 50%}
 50%{background-position:100% 50%}
 100%{background-position:0% 50%}
 }
 
+.form-box{margin-top:36px}
+
 .input-box{
 width:340px;
-padding:22px;
+padding:28px;
 margin:13px;
-font-size:28px;
+font-size:32px;
 border-radius:14px;
 border:2px solid #d1d5db;
+outline:none;
 }
 
+#team1{background:#ecfdf5;border-color:#22c55e}
+#team2{background:#eff6ff;border-color:#3b82f6}
+
 .predict-btn{
-padding:24px 60px;
-font-size:32px;
+margin-top:29px;
+padding:31px 70px;
+font-size:39px;
 font-weight:900;
 border:none;
-border-radius:14px;
+border-radius:16px;
 cursor:pointer;
 color:white;
 background:linear-gradient(90deg,#e11d48,#f43f5e,#e11d48);
+background-size:200% 200%;
+box-shadow:0 0 18px rgba(225,29,72,.45);
+}
+
+#status{
+margin-top:23px;
+font-size:25px;
+font-weight:800;
 }
 
 .card{
 margin-top:36px;
 display:inline-block;
-width:600px;
-padding:40px;
+width:616px;
+padding:44px;
 border-radius:24px;
-background:rgba(255,255,255,.7);
+background:rgba(255,255,255,.62);
 backdrop-filter:blur(12px);
+box-shadow:0 18px 40px rgba(0,0,0,.16);
 }
 
+.card h2{font-size:45px;margin-bottom:13px;}
+
+.card h3{
+font-size:41px;
+margin:18px 0 26px;
+color:#7c3aed;
+font-weight:900;
+}
+
+.gold{color:#f59e0b;font-weight:900;}
+
 .flag{
-width:48px;height:32px;
-margin:0 8px;
-border-radius:4px;
+width:52px;height:36px;
+margin:0 10px;
+border-radius:5px;
+vertical-align:middle;
 }
 
 .bar-bg{
-height:22px;
+height:24px;
 background:#e5e7eb;
-border-radius:12px;
+border-radius:14px;
 overflow:hidden;
-margin-bottom:16px;
+margin-bottom:18px;
 }
 
-.bar{height:22px;width:0;transition:width 1s ease;}
+.bar{height:24px;width:0;border-radius:14px;transition:width 1.2s ease;}
 .home{background:#22c55e;}
 .draw{background:#f59e0b;}
 .away{background:#ef4444;}
 
+.footer{
+margin-top:46px;
+padding:26px;
+border-top:1px solid #e5e7eb;
+display:flex;
+justify-content:center;
+gap:12px;
+}
+
+.footer a{
+padding:16px 34px;
+font-size:24px;
+font-weight:900;
+color:#7c3aed;
+text-decoration:none;
+border-radius:14px;
+background:#fff;
+border:2px solid #000;
+}
+
+.copy{
+margin-top:20px;
+padding-bottom:30px;
+font-size:22px;
+font-weight:900;
+color:black;
+}
 </style>
 </head>
 
@@ -106,31 +168,47 @@ margin-bottom:16px;
 
 <div class="hero">
 <img src="https://raw.githubusercontent.com/MatchAIPro/matchai/main/image.png" class="logo">
+
 <div class="title">World Cup 2026</div>
 <div class="subtitle">AI Prediction Engine</div>
+<div class="trust">📈 Trusted by 10,000+ users worldwide</div>
 </div>
 
-<input id="team1" class="input-box" placeholder="Home Team">
-<input id="team2" class="input-box" placeholder="Away Team">
+<div class="form-box">
+<input id="team1" class="input-box" placeholder="🏠 Home Team">
+<input id="team2" class="input-box" placeholder="✈️ Away Team">
 <br>
 <button class="predict-btn" onclick="predict()">PREDICT</button>
+</div>
 
 <div id="status">Loading...</div>
 <div id="result"></div>
+
+<div class="footer">
+<a href="legal.html">Legal Disclaimer</a>
+<a href="price.html">Price Policy</a>
+<a href="about.html">About</a>
+</div>
+
+<div class="copy">
+© 2026 ⚖️ MatchAI Pro. All Rights Reserved.
+</div>
 
 <script>
 
 let data = [];
 
-// normalize (accent fix)
-function normalize(t){
-return t.normalize("NFD")
-.replace(/[\u0300-\u036f]/g,"")
+// normalize (BOZULMADI)
+function normalizeText(str){
+return str
+.normalize("NFD")
+.replace(/[\u0300-\u036f]/g, "")
 .replace(/’/g,"'")
-.toLowerCase().trim();
+.toLowerCase()
+.trim();
 }
 
-// 🔥 FIXED ISO COUNTRY CODES (FLAG CDN COMPATIBLE)
+// ✅ ONLY FIX: FLAG CODES (ISO 3166-1 alpha-2)
 function fixCode(team){
 const map = {
 "Mexico":"mx",
@@ -196,8 +274,8 @@ const c = r.split(",");
 return {
 t1:c[0].trim(),
 t2:c[1].trim(),
-c1:fixCode(c[0].trim()),
-c2:fixCode(c[1].trim()),
+code1:fixCode(c[0].trim()),
+code2:fixCode(c[1].trim()),
 h:parseFloat(c[4]),
 d:parseFloat(c[5]),
 a:parseFloat(c[6])
@@ -213,51 +291,69 @@ return `<img class="flag" src="https://flagcdn.com/w40/${code}.png">`;
 
 function predict(){
 
-const t1 = document.getElementById("team1").value;
-const t2 = document.getElementById("team2").value;
+const t1 = document.getElementById("team1").value.trim();
+const t2 = document.getElementById("team2").value.trim();
 
 const m = data.find(x =>
-normalize(x.t1) === normalize(t1) &&
-normalize(x.t2) === normalize(t2)
+normalizeText(x.t1) === normalizeText(t1) &&
+normalizeText(x.t2) === normalizeText(t2)
 );
 
 if(!m){
-document.getElementById("result").innerHTML="❌ Match Not Found";
+document.getElementById("result").innerHTML=
+"<h2>❌ Match Not Found (Check spelling & order)</h2>";
 return;
 }
 
-let pred = "Draw";
-if(m.h>m.d && m.h>m.a) pred = m.t1+" Win";
-if(m.a>m.h && m.a>m.d) pred = m.t2+" Win";
+let pred = "";
+let w1 = "";
+let w2 = "";
 
-document.getElementById("result").innerHTML=`
+if(m.h > m.d && m.h > m.a){
+pred = m.t1 + " Win";
+w1 = "gold";
+}
+else if(m.a > m.h && m.a > m.d){
+pred = m.t2 + " Win";
+w2 = "gold";
+}
+else{
+pred = "Draw";
+}
+
+document.getElementById("result").innerHTML = `
 <div class="card">
 
 <h2>
-${flag(m.c1)} ${m.t1}
+<span class="${w1}">
+${flag(m.code1)} ${m.t1}
+</span>
 vs
-${m.t2} ${flag(m.c2)}
+<span class="${w2}">
+${m.t2} ${flag(m.code2)}
+</span>
 </h2>
 
 <h3>${pred}</h3>
 
-<p>Home ${m.h}%</p>
+<p>Home (${m.h}%)</p>
 <div class="bar-bg"><div id="b1" class="bar home"></div></div>
 
-<p>Draw ${m.d}%</p>
+<p>Draw (${m.d}%)</p>
 <div class="bar-bg"><div id="b2" class="bar draw"></div></div>
 
-<p>Away ${m.a}%</p>
+<p>Away (${m.a}%)</p>
 <div class="bar-bg"><div id="b3" class="bar away"></div></div>
 
 </div>
 `;
 
 setTimeout(()=>{
-document.getElementById("b1").style.width=m.h+"%";
-document.getElementById("b2").style.width=m.d+"%";
-document.getElementById("b3").style.width=m.a+"%";
-},100);
+document.getElementById("b1").style.width = m.h + "%";
+document.getElementById("b2").style.width = m.d + "%";
+document.getElementById("b3").style.width = m.a + "%";
+},120);
+
 }
 
 </script>
