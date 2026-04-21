@@ -1,7 +1,74 @@
 team1,team2,code1,code2,home_win,draw,away_win
 Brazil,Germany,BR,DE,50,10,40
-France,Argentina,FR,AR,45,30,25
-England,Spain,GB,ES,30,15,55
-Portugal,Netherlands,PT,NL,50,25,25
-Italy,Croatia,IT,HR,55,20,25
-Australia,Turkey,AU,TR,42,37,20
+Mexico,South Africa,ME,SO,40,39,21
+Korea Republic,Czechia,KO,CZ,43,31,25
+Canada,Bosnia-Herzegovina,CA,BO,50,34,16
+USA,Paraguay,US,PA,40,37,24
+Qatar,Switzerland,QA,SW,25,45,30
+Brazil,Morocco,BR,MO,38,23,40
+Haiti,Scotland,HA,SC,15,71,15
+Australia,Turkey,AU,TU,42,37,20
+Germany,Curaçao,GE,CU,43,31,26
+Netherlands,Japan,NE,JA,47,38,15
+Côte d'Ivoire,Ecuador,CI,EC,46,41,13
+Sweden,Tunisia,SW,TU,45,43,11
+Spain,Cabo Verde,SP,CA,38,30,32
+Belgium,Egypt,BE,EG,26,27,47
+Saudi Arabia,Uruguay,SA,UR,25,53,21
+Iran,New Zealand,IR,NE,69,27,4
+France,Senegal,FR,SE,39,57,5
+Iraq,Norway,IR,NO,27,32,41
+Argentina,Algeria,AR,AL,37,49,15
+Austria,Jordan,AU,JO,62,26,12
+Portugal,Congo DR,PO,CO,72,20,8
+England,Croatia,EN,CR,37,38,24
+Ghana,Panama,GH,PA,37,40,23
+Uzbekistan,Colombia,UZ,CO,15,51,34
+Czechia,South Africa,CZ,SO,31,41,29
+Switzerland,Bosnia-Herzegovina,SW,BO,71,22,7
+Canada,Qatar,CA,QA,41,39,19
+Mexico,Korea Republic,ME,KO,52,35,13
+USA,Australia,US,AU,31,34,35
+Scotland,Morocco,SC,MO,29,39,32
+Brazil,Haiti,BR,HA,72,20,8
+Turkey,Paraguay,TU,PA,29,47,24
+Netherlands,Sweden,NE,SW,50,42,9
+Germany,Côte d'Ivoire,GE,CI,43,31,26
+Ecuador,Curaçao,EC,CU,44,37,20
+Tunisia,Japan,TU,JA,51,27,23
+Spain,Saudi Arabia,SP,SA,72,20,8
+Belgium,Iran,BE,IR,50,42,9
+Uruguay,Cabo Verde,UR,CA,29,44,26
+New Zealand,Egypt,NE,EG,25,45,30
+Argentina,Austria,AR,AU,33,40,27
+France,Iraq,FR,IR,72,20,8
+Norway,Senegal,NO,SE,29,53,18
+Jordan,Algeria,JO,AL,22,37,41
+Portugal,Uzbekistan,PO,UZ,72,20,8
+England,Ghana,EN,GH,44,50,5
+Panama,Croatia,PA,CR,15,51,34
+Colombia,Congo DR,CO,CO,74,22,4
+Switzerland,Canada,SW,CA,47,31,22
+Bosnia-Herzegovina,Qatar,BO,QA,32,47,21
+Scotland,Brazil,SC,BR,25,53,21
+Morocco,Haiti,MO,HA,63,32,5
+Czechia,Mexico,CZ,ME,50,35,15
+South Africa,Korea Republic,SO,KO,38,48,14
+Curaçao,Côte d'Ivoire,CU,CI,42,27,31
+Ecuador,Germany,EC,GE,45,36,19
+Japan,Sweden,JA,SW,39,41,20
+Tunisia,Netherlands,TU,NE,36,49,15
+Turkey,USA,TU,US,42,22,36
+Paraguay,Australia,PA,AU,33,38,30
+Norway,France,NO,FR,23,23,54
+Senegal,Iraq,SE,IR,71,22,7
+Cabo Verde,Saudi Arabia,CA,SA,72,17,11
+Uruguay,Spain,UR,SP,16,63,21
+Egypt,Iran,EG,IR,37,45,18
+New Zealand,Belgium,NE,BE,9,12,79
+Panama,England,PA,EN,9,12,79
+Croatia,Ghana,CR,GH,40,28,32
+Colombia,Portugal,CO,PO,42,38,20
+Congo DR,Uzbekistan,CO,UZ,33,55,12
+Algeria,Austria,AL,AU,39,45,16
+Jordan,Argentina,JO,AR,9,12,79
