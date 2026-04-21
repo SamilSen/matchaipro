@@ -211,8 +211,20 @@ color:black;
 
 let data = [];
 
-function clean(x){
-return x.trim().toLowerCase();
+// 🔥 text normalize (encoding fix)
+function normalizeText(str){
+return str
+.normalize("NFD")
+.replace(/[\u0300-\u036f]/g, "")
+.replace(/Ã´/g,"o")
+.replace(/Ã”/g,"o")
+.replace(/Ã§/g,"c")
+.replace(/Ã©/g,"e")
+.replace(/Ã¨/g,"e")
+.replace(/Ã¼/g,"u")
+.replace(/Ã±/g,"n")
+.toLowerCase()
+.trim();
 }
 
 fetch("https://raw.githubusercontent.com/MatchAIPro/matchai/main/predictions.csv")
@@ -223,16 +235,16 @@ const rows = t.split(/\r?\n/).slice(1).filter(r => r.trim() !== "");
 
 data = rows.map(r => {
 
-const c = r.split(/[\t,]+/);   // 🔥 FIX (CSV + TSV uyumlu)
+const c = r.split(",");
 
 return {
 t1: c[0],
 t2: c[1],
 code1: c[2].toLowerCase(),
 code2: c[3].toLowerCase(),
-h: +c[4],
-d: +c[5],
-a: +c[6]
+h: parseFloat(c[4]),
+d: parseFloat(c[5]),
+a: parseFloat(c[6])
 };
 
 });
@@ -244,18 +256,20 @@ function flag(code){
 return `<img class="flag" src="https://flagcdn.com/w40/${code}.png">`;
 }
 
+// 🔥 SINGLE DIRECTION MATCH ONLY
 function predict(){
 
 const t1 = document.getElementById("team1").value;
 const t2 = document.getElementById("team2").value;
 
 const m = data.find(x =>
-clean(x.t1) === clean(t1) &&
-clean(x.t2) === clean(t2)
+normalizeText(x.t1) === normalizeText(t1) &&
+normalizeText(x.t2) === normalizeText(t2)
 );
 
 if(!m){
-document.getElementById("result").innerHTML = "<h2>Match Not Found</h2>";
+document.getElementById("result").innerHTML =
+"<h2>❌ Match Not Found (Check Home → Away order)</h2>";
 return;
 }
 
