@@ -122,12 +122,6 @@ border-radius:5px;
 vertical-align:middle;
 }
 
-.card p{
-font-size:29px;
-font-weight:700;
-margin:13px 0 10px;
-}
-
 .bar-bg{
 height:24px;
 background:#e5e7eb;
@@ -136,13 +130,7 @@ overflow:hidden;
 margin-bottom:18px;
 }
 
-.bar{
-height:24px;
-width:0;
-border-radius:14px;
-transition:width 1.2s ease;
-}
-
+.bar{height:24px;width:0;border-radius:14px;transition:width 1.2s ease;}
 .home{background:#22c55e;}
 .draw{background:#f59e0b;}
 .away{background:#ef4444;}
@@ -211,20 +199,32 @@ color:black;
 
 let data = [];
 
-// 🔥 text normalize (encoding fix)
+// ✅ FIXED NORMALIZER (Côte d'Ivoire, Curaçao, etc.)
 function normalizeText(str){
 return str
 .normalize("NFD")
 .replace(/[\u0300-\u036f]/g, "")
-.replace(/Ã´/g,"o")
-.replace(/Ã”/g,"o")
-.replace(/Ã§/g,"c")
-.replace(/Ã©/g,"e")
-.replace(/Ã¨/g,"e")
+.replace(/’/g,"'")
+.replace(/Ã´|ô|Ô/g,"o")
+.replace(/Ã§|ç|Ç/g,"c")
+.replace(/Ã©|é|É/g,"e")
+.replace(/Ã¨|è|È/g,"e")
 .replace(/Ã¼/g,"u")
 .replace(/Ã±/g,"n")
 .toLowerCase()
 .trim();
+}
+
+// ✅ FIX COUNTRY CODE FIX MAP
+function fixCode(team){
+const map = {
+"Côte d'Ivoire":"ci",
+"Cote d'Ivoire":"ci",
+"Curaçao":"cw",
+"Curacao":"cw",
+"Cabo Verde":"cv"
+};
+return map[team] ? map[team] : "";
 }
 
 fetch("https://raw.githubusercontent.com/MatchAIPro/matchai/main/predictions.csv")
@@ -238,10 +238,10 @@ data = rows.map(r => {
 const c = r.split(",");
 
 return {
-t1: c[0],
-t2: c[1],
-code1: c[2].toLowerCase(),
-code2: c[3].toLowerCase(),
+t1: c[0].trim(),
+t2: c[1].trim(),
+code1: (c[2] || "").toLowerCase(),
+code2: (c[3] || "").toLowerCase(),
 h: parseFloat(c[4]),
 d: parseFloat(c[5]),
 a: parseFloat(c[6])
@@ -256,11 +256,10 @@ function flag(code){
 return `<img class="flag" src="https://flagcdn.com/w40/${code}.png">`;
 }
 
-// 🔥 SINGLE DIRECTION MATCH ONLY
 function predict(){
 
-const t1 = document.getElementById("team1").value;
-const t2 = document.getElementById("team2").value;
+const t1 = document.getElementById("team1").value.trim();
+const t2 = document.getElementById("team2").value.trim();
 
 const m = data.find(x =>
 normalizeText(x.t1) === normalizeText(t1) &&
@@ -269,7 +268,7 @@ normalizeText(x.t2) === normalizeText(t2)
 
 if(!m){
 document.getElementById("result").innerHTML =
-"<h2>❌ Match Not Found (Check Home → Away order)</h2>";
+"<h2>❌ Match Not Found (Check spelling & order)</h2>";
 return;
 }
 
