@@ -103,7 +103,14 @@ backdrop-filter:blur(12px);
 box-shadow:0 18px 40px rgba(0,0,0,.16);
 }
 
-.card h2{font-size:45px;margin-bottom:13px;}
+.card h2{
+font-size:32px;
+display:flex;
+justify-content:center;
+align-items:center;
+gap:12px;
+white-space:nowrap;
+}
 
 .card h3{
 font-size:41px;
@@ -112,13 +119,37 @@ color:#7c3aed;
 font-weight:900;
 }
 
-.gold{color:#f59e0b;font-weight:900;}
+/* 🔥 TEK SATIR FIX */
+.team{
+display:flex;
+align-items:center;
+gap:8px;
+white-space:nowrap;
+}
 
+/* BAYRAK */
 .flag{
-width:52px;height:36px;
-margin:0 10px;
-border-radius:5px;
-vertical-align:middle;
+width:40px;
+height:28px;
+border-radius:4px;
+}
+
+/* KAZANAN ANİMASYON */
+@keyframes heartbeat {
+0% { transform: scale(1); }
+25% { transform: scale(1.08); }
+50% { transform: scale(1); }
+75% { transform: scale(1.12); }
+100% { transform: scale(1); }
+}
+
+.gold{
+color:#f59e0b;
+font-weight:900;
+animation:heartbeat 1s infinite;
+display:flex;
+align-items:center;
+gap:8px;
 }
 
 .bar-bg{
@@ -198,7 +229,6 @@ color:black;
 
 let data = [];
 
-// normalize (BOZULMADI)
 function normalizeText(str){
 return str
 .normalize("NFD")
@@ -208,56 +238,20 @@ return str
 .trim();
 }
 
-// ✅ ONLY FIX: FLAG CODES (ISO 3166-1 alpha-2)
 function fixCode(team){
 const map = {
-"Mexico":"mx",
-"South Africa":"za",
-"Korea Republic":"kr",
-"Czechia":"cz",
-"Canada":"ca",
-"Bosnia-Herzegovina":"ba",
-"USA":"us",
-"Paraguay":"py",
-"Qatar":"qa",
-"Switzerland":"ch",
-"Brazil":"br",
-"Morocco":"ma",
-"Haiti":"ht",
-"Scotland":"gb",
-"Australia":"au",
-"Turkey":"tr",
-"Germany":"de",
-"Curaçao":"cw",
-"Netherlands":"nl",
-"Japan":"jp",
-"Côte d'Ivoire":"ci",
-"Ecuador":"ec",
-"Sweden":"se",
-"Tunisia":"tn",
-"Spain":"es",
-"Belgium":"be",
-"Egypt":"eg",
-"Saudi Arabia":"sa",
-"Uruguay":"uy",
-"Iran":"ir",
-"New Zealand":"nz",
-"France":"fr",
-"Senegal":"sn",
-"Iraq":"iq",
-"Norway":"no",
-"Argentina":"ar",
-"Algeria":"dz",
-"Austria":"at",
-"Jordan":"jo",
-"Portugal":"pt",
-"Congo DR":"cd",
-"England":"gb",
-"Croatia":"hr",
-"Ghana":"gh",
-"Panama":"pa",
-"Uzbekistan":"uz",
-"Colombia":"co"
+"Mexico":"mx","South Africa":"za","Korea Republic":"kr","Czechia":"cz",
+"Canada":"ca","Bosnia-Herzegovina":"ba","USA":"us","Paraguay":"py",
+"Qatar":"qa","Switzerland":"ch","Brazil":"br","Morocco":"ma",
+"Haiti":"ht","Scotland":"gb","Australia":"au","Turkey":"tr",
+"Germany":"de","Curaçao":"cw","Netherlands":"nl","Japan":"jp",
+"Côte d'Ivoire":"ci","Ecuador":"ec","Sweden":"se","Tunisia":"tn",
+"Spain":"es","Belgium":"be","Egypt":"eg","Saudi Arabia":"sa",
+"Uruguay":"uy","Iran":"ir","New Zealand":"nz","France":"fr",
+"Senegal":"sn","Iraq":"iq","Norway":"no","Argentina":"ar",
+"Algeria":"dz","Austria":"at","Jordan":"jo","Portugal":"pt",
+"Congo DR":"cd","England":"gb","Croatia":"hr","Ghana":"gh",
+"Panama":"pa","Uzbekistan":"uz","Colombia":"co"
 };
 return map[team] || "";
 }
@@ -301,7 +295,7 @@ normalizeText(x.t2) === normalizeText(t2)
 
 if(!m){
 document.getElementById("result").innerHTML=
-"<h2>❌ Match Not Found (Check spelling & order)</h2>";
+"<h2>❌ Match Not Found</h2>";
 return;
 }
 
@@ -325,11 +319,13 @@ document.getElementById("result").innerHTML = `
 <div class="card">
 
 <h2>
-<span class="${w1}">
+<span class="team ${w1}">
 ${flag(m.code1)} ${m.t1}
 </span>
-vs
-<span class="${w2}">
+
+<span style="font-size:26px;">VS</span>
+
+<span class="team ${w2}">
 ${m.t2} ${flag(m.code2)}
 </span>
 </h2>
