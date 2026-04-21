@@ -1,68 +1,73 @@
-"team1,team2,code1,code2,home_win,draw,away_win"
-"Mexico,South Africa,ME,SO,64,25,11"
-"Korea Republic,Czechia,KO,CZ,35,48,18"
-"Canada,Bosnia-Herzegovina,CA,BO,54,32,15"
-"USA,Paraguay,US,PA,43,33,24"
-"Qatar,Switzerland,QA,SW,28,35,37"
-"Brazil,Morocco,BR,MO,38,41,21"
-"Haiti,Scotland,HA,SC,12,47,40"
-"Australia,Turkey,AU,TR,54,23,23"
-"Netherlands,Japan,NE,JA,32,35,32"
-"Sweden,Tunisia,SW,TU,30,39,31"
-"Spain,Cabo Verde,SP,CA,61,21,18"
-"Belgium,Egypt,BE,EG,50,32,18"
-"Saudi Arabia,Uruguay,SA,UR,43,31,26"
-"Iran,New Zealand,IR,NE,33,51,16"
-"France,Senegal,FR,SE,56,34,10"
-"Iraq,Norway,IR,NO,30,36,34"
-"Argentina,Algeria,AR,AL,48,45,7"
-"Austria,Jordan,AU,JO,53,33,14"
-"Portugal,Congo DR,PO,CD,37,47,16"
-"England,Croatia,EN,CR,34,43,23"
-"Ghana,Panama,GH,PA,54,23,23"
-"Uzbekistan,Colombia,UZ,CO,24,44,32"
-"Czechia,South Africa,CZ,SO,38,36,26"
-"Switzerland,Bosnia-Herzegovina,SW,BO,51,27,22"
-"Canada,Qatar,CA,QA,39,44,17"
-"Mexico,Korea Republic,ME,KO,50,26,24"
-"USA,Australia,US,AU,43,33,24"
-"Scotland,Morocco,SC,MO,29,32,39"
-"Brazil,Haiti,BR,HA,53,37,10"
-"Turkey,Paraguay,TR,PA,33,39,27"
-"Netherlands,Sweden,NE,TU,64,25,11"
-"Tunisia,Japan,TU,JA,32,37,31"
-"Spain,Saudi Arabia,SP,SA,53,37,10"
-"Belgium,Iran,BE,IR,37,41,22"
-"Uruguay,Cabo Verde,UR,CA,50,38,12"
-"New Zealand,Egypt,NE,EG,34,32,33"
-"Argentina,Austria,AR,AU,48,35,17"
-"France,Iraq,FR,IR,61,21,18"
-"Norway,Senegal,NO,SE,54,23,23"
-"Jordan,Algeria,JO,AL,35,35,29"
-"Portugal,Uzbekistan,PO,UZ,66,28,6"
-"England,Ghana,EN,GH,37,47,16"
-"Panama,Croatia,PA,CR,26,41,33"
-"Colombia,Congo DR,CO,CD,48,45,7"
-"Switzerland,Canada,SW,CA,41,45,14"
-"Bosnia-Herzegovina,Qatar,BO,QA,49,24,27"
-"Scotland,Brazil,SC,BR,41,25,34"
-"Morocco,Haiti,MO,HA,53,37,10"
-"Czechia,Mexico,CZ,ME,45,26,29"
-"South Africa,Korea Republic,SO,KO,29,32,39"
-"Ecuador,Germany,EC,GE,46,28,26"
-"Japan,Sweden,JA,SW,39,44,17"
-"Tunisia,Netherlands,TU,NE,34,38,28"
-"Turkey,USA,TR,US,24,42,34"
-"Paraguay,Australia,PA,AU,42,28,30"
-"Norway,France,NO,FR,32,42,27"
-"Senegal,Iraq,SE,IR,48,30,22"
-"Cabo Verde,Saudi Arabia,CA,SA,34,43,23"
-"Uruguay,Spain,UR,SP,29,28,43"
-"Egypt,Iran,EG,IR,53,30,18"
-"New Zealand,Belgium,NE,BE,13,10,77"
-"Panama,England,PA,EN,12,47,40"
-"Croatia,Ghana,CR,GH,51,27,22"
-"Colombia,Portugal,CO,PO,54,27,19"
-"Congo DR,Uzbekistan,CD,UZ,46,28,26"
-"Algeria,Austria,AL,AU,50,25,25"
-"Jordan,Argentina,JO,AR,13,10,77"
+team1,team2,code1,code2,home_win,draw,away_win
+Mexico,South Africa,ME,SO,40.43,38.56,21.02
+Korea Republic,Czechia,KO,CZ,43.34,31.3,25.36
+Canada,Bosnia-Herzegovina,CA,BO,49.7,34.4,15.9
+USA,Paraguay,US,PA,39.65,36.79,23.56
+Qatar,Switzerland,QA,SW,25.37,44.93,29.7
+Brazil,Morocco,BR,MO,37.86,22.59,39.56
+Haiti,Scotland,HA,SC,14.64,70.76,14.6
+Australia,Turkey,AU,TU,42.42,37.12,20.45
+Germany,Curaçao,GE,CU,42.99,30.97,26.04
+Netherlands,Japan,NE,JA,46.87,38.1,15.03
+Côte d'Ivoire,Ecuador,CÔ,EC,45.76,40.85,13.38
+Sweden,Tunisia,SW,TU,45.46,43.42,11.12
+Spain,Cabo Verde,SP,CA,37.84,29.86,32.3
+Belgium,Egypt,BE,EG,25.98,26.92,47.1
+Saudi Arabia,Uruguay,SA,UR,25.35,53.22,21.43
+Iran,New Zealand,IR,NE,69.08,26.67,4.25
+France,Senegal,FR,SE,38.62,56.57,4.81
+Iraq,Norway,IR,NO,27.19,31.91,40.9
+Argentina,Algeria,AR,AL,36.83,48.65,14.52
+Austria,Jordan,AU,JO,62.34,25.97,11.69
+Portugal,Congo DR,PO,CO,71.88,20.42,7.7
+England,Croatia,EN,CR,37.39,38.18,24.43
+Ghana,Panama,GH,PA,36.75,40.39,22.86
+Uzbekistan,Colombia,UZ,CO,14.59,51.44,33.97
+Czechia,South Africa,CZ,SO,30.91,40.55,28.55
+Switzerland,Bosnia-Herzegovina,SW,BO,70.62,22.26,7.12
+Canada,Qatar,CA,QA,41.3,39.36,19.33
+Mexico,Korea Republic,ME,KO,52.07,34.71,13.22
+USA,Australia,US,AU,30.61,33.96,35.43
+Scotland,Morocco,SC,MO,28.7,39.48,31.82
+Brazil,Haiti,BR,HA,71.88,20.42,7.7
+Turkey,Paraguay,TU,PA,28.7,47.44,23.86
+Netherlands,Sweden,NE,SW,49.8,41.52,8.68
+Germany,Côte d'Ivoire,GE,CÔ,42.99,30.97,26.04
+Ecuador,Curaçao,EC,CU,43.59,36.69,19.72
+Tunisia,Japan,TU,JA,50.81,26.68,22.51
+Spain,Saudi Arabia,SP,SA,71.88,20.42,7.7
+Belgium,Iran,BE,IR,49.8,41.52,8.68
+Uruguay,Cabo Verde,UR,CA,29.42,44.45,26.13
+New Zealand,Egypt,NE,EG,25.37,44.93,29.7
+Argentina,Austria,AR,AU,32.86,40.46,26.68
+France,Iraq,FR,IR,71.88,20.42,7.7
+Norway,Senegal,NO,SE,29.42,52.53,18.05
+Jordan,Algeria,JO,AL,21.86,37.46,40.68
+Portugal,Uzbekistan,PO,UZ,71.88,20.42,7.7
+England,Ghana,EN,GH,44.26,50.47,5.28
+Panama,Croatia,PA,CR,14.59,51.44,33.97
+Colombia,Congo DR,CO,CO,74.06,22.35,3.59
+Switzerland,Canada,SW,CA,46.66,31.27,22.07
+Bosnia-Herzegovina,Qatar,BO,QA,31.99,47.48,20.53
+Scotland,Brazil,SC,BR,25.35,53.22,21.43
+Morocco,Haiti,MO,HA,63.4,31.66,4.94
+Czechia,Mexico,CZ,ME,49.86,34.79,15.35
+South Africa,Korea Republic,SO,KO,37.56,48.49,13.96
+Curaçao,Côte d'Ivoire,CU,CÔ,42.31,26.62,31.07
+Ecuador,Germany,EC,GE,45.05,35.67,19.28
+Japan,Sweden,JA,SW,38.71,41.33,19.96
+Tunisia,Netherlands,TU,NE,36.1,49.04,14.86
+Turkey,USA,TU,US,42.04,21.52,36.44
+Paraguay,Australia,PA,AU,32.9,37.59,29.51
+Norway,France,NO,FR,22.66,23.37,53.97
+Senegal,Iraq,SE,IR,70.62,22.26,7.12
+Cabo Verde,Saudi Arabia,CA,SA,72.23,16.95,10.83
+Uruguay,Spain,UR,SP,15.76,63.43,20.81
+Egypt,Iran,EG,IR,37.35,44.67,17.98
+New Zealand,Belgium,NE,BE,9.33,11.71,78.96
+Panama,England,PA,EN,9.33,11.71,78.96
+Croatia,Ghana,CR,GH,40.01,28.14,31.86
+Colombia,Portugal,CO,PO,41.72,38.17,20.1
+Congo DR,Uzbekistan,CO,UZ,33.3,55.07,11.63
+Algeria,Austria,AL,AU,38.86,45.19,15.95
+Jordan,Argentina,JO,AR,9.33,11.71,78.96
