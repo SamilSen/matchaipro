@@ -1,310 +1,111 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>MatchAI Pro</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Legal Notice</title>
 
 <style>
 body{
-margin:0;
-padding:0;
-font-family:Arial, sans-serif;
-text-align:center;
-background:linear-gradient(135deg,#eef2ff,#f8fafc,#ede9fe);
-color:#111827;
+    margin:0;
+    padding:0;
+    font-family:Arial, sans-serif;
+    background:#f5f7fb;
+    color:#111827;
 }
 
-.hero{padding:39px 26px 13px;}
-
-.logo{
-width:92.4%;
-max-width:990px;
-border-radius:18px;
-box-shadow:0 18px 40px rgba(0,0,0,.18);
-margin-bottom:36px;
+.container{
+    max-width:760px;
+    margin:60px auto;
+    background:#ffffff;
+    padding:40px;
+    border-radius:14px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.08);
 }
 
-.title{
-font-size:64px;
-font-weight:900;
-background:linear-gradient(90deg,#6d28d9,#a855f7,#ec4899,#6d28d9);
-background-size:300% 300%;
--webkit-background-clip:text;
--webkit-text-fill-color:transparent;
-animation:move 5s ease infinite;
+h1{
+    text-align:center;
+    font-size:28px;
+    margin-bottom:25px;
 }
 
-.subtitle{
-font-size:49px;
-font-weight:800;
-margin-top:10px;
-background:linear-gradient(90deg,#2563eb,#7c3aed,#ec4899,#2563eb);
-background-size:300% 300%;
--webkit-background-clip:text;
--webkit-text-fill-color:transparent;
-animation:move 5s ease infinite;
+h2{
+    font-size:18px;
+    margin-top:22px;
+    color:#0f172a;
 }
 
-@keyframes move{
-0%{background-position:0% 50%}
-50%{background-position:100% 50%}
-100%{background-position:0% 50%}
+p{
+    font-size:15px;
+    line-height:1.8;
+    color:#374151;
 }
-
-.form-box{margin-top:36px}
-
-.input-box{
-width:340px;
-padding:28px;
-margin:13px;
-font-size:32px;
-border-radius:14px;
-border:2px solid #d1d5db;
-outline:none;
-}
-
-#team1{background:#ecfdf5;border-color:#22c55e}
-#team2{background:#eff6ff;border-color:#3b82f6}
-
-.predict-btn{
-margin-top:29px;
-padding:31px 70px;
-font-size:39px;
-font-weight:900;
-border:none;
-border-radius:16px;
-cursor:pointer;
-color:white;
-background:linear-gradient(90deg,#e11d48,#f43f5e,#e11d48);
-background-size:200% 200%;
-}
-
-#status{
-margin-top:23px;
-font-size:25px;
-font-weight:800;
-}
-
-.card{
-margin-top:36px;
-display:inline-block;
-width:616px;
-padding:44px;
-border-radius:24px;
-background:rgba(255,255,255,.62);
-backdrop-filter:blur(12px);
-box-shadow:0 18px 40px rgba(0,0,0,.16);
-}
-
-.card h2{font-size:45px;margin-bottom:13px;}
-
-.card h3{
-font-size:41px;
-margin:18px 0 26px;
-color:#7c3aed;
-font-weight:900;
-}
-
-.flag{
-width:52px;
-height:36px;
-margin:0 10px;
-border-radius:5px;
-vertical-align:middle;
-}
-
-.bar-bg{
-height:24px;
-background:#e5e7eb;
-border-radius:14px;
-overflow:hidden;
-margin-bottom:18px;
-}
-
-.bar{
-height:24px;
-width:0;
-border-radius:14px;
-transition:width 1.2s ease;
-}
-
-.home{background:#22c55e;}
-.draw{background:#f59e0b;}
-.away{background:#ef4444;}
 
 .footer{
-margin-top:46px;
-padding:26px;
-border-top:1px solid #e5e7eb;
-display:flex;
-justify-content:center;
-gap:12px;
-}
-
-.footer a{
-padding:16px 34px;
-font-size:24px;
-font-weight:900;
-color:#7c3aed;
-text-decoration:none;
-border-radius:14px;
-background:#fff;
-border:2px solid #000;
+    margin-top:30px;
+    padding-top:15px;
+    border-top:1px solid #e5e7eb;
+    text-align:center;
+    font-size:13px;
+    color:#6b7280;
 }
 </style>
 </head>
 
 <body>
 
-<div class="hero">
-<img src="https://raw.githubusercontent.com/MatchAIPro/matchai/main/image.png" class="logo">
+<div class="container">
 
-<div class="title">World Cup 2026</div>
-<div class="subtitle">AI Prediction Engine</div>
-</div>
+<h1>Legal Notice & Disclaimer</h1>
 
-<div class="form-box">
-<input id="team1" class="input-box" placeholder="🏠 Home Team">
-<input id="team2" class="input-box" placeholder="✈️ Away Team">
-<br>
-<button class="predict-btn" onclick="predict()">PREDICT</button>
-</div>
+<h2>1. Informational Purpose Only</h2>
+<p>
+This website (“MatchAI Pro”) provides artificial intelligence-based statistical
+analysis and football match predictions strictly for informational and entertainment purposes.
+Nothing contained herein shall be interpreted as professional financial, investment,
+or betting advice.
+</p>
 
-<div id="status">Loading...</div>
-<div id="result"></div>
+<h2>2. No Guarantee of Accuracy</h2>
+<p>
+While reasonable efforts are made to ensure data accuracy and model performance,
+no representation or warranty, express or implied, is given regarding the accuracy,
+reliability, or completeness of any predictions or information provided.
+Match outcomes are inherently uncertain and subject to numerous external factors.
+</p>
+
+<h2>3. Limitation of Liability</h2>
+<p>
+To the maximum extent permitted by applicable law, MatchAI Pro and its owners,
+developers, or affiliates shall not be held liable for any direct, indirect,
+incidental, consequential, or special damages arising out of or in connection
+with the use of this website or reliance on its content.
+</p>
+
+<h2>4. No Betting or Gambling Services</h2>
+<p>
+This platform does not operate as a gambling service, bookmaker, or betting advisor.
+Users are solely responsible for any decisions involving third-party betting platforms.
+</p>
+
+<h2>5. Intellectual Property</h2>
+<p>
+All content, including but not limited to text, algorithms, design elements, and
+branding materials, are protected under applicable intellectual property laws and
+may not be copied, reproduced, or redistributed without prior written consent.
+</p>
+
+<h2>6. Acceptance of Terms</h2>
+<p>
+By accessing or using this website, you acknowledge that you have read,
+understood, and agreed to this Legal Notice and Disclaimer.
+</p>
 
 <div class="footer">
-<a href="legal.html">Legal</a>
-<a href="price.html">Price</a>
-<a href="about.html">About</a>
+© 2026 MatchAI Pro — All Rights Reserved
 </div>
 
-<script>
-
-let data=[];
-
-/* =========================
-   CLEAN (simple & safe)
-========================= */
-function clean(t){
-return (t||"").trim().toLowerCase();
-}
-
-/* =========================
-   LOAD DATASET
-========================= */
-fetch("https://raw.githubusercontent.com/MatchAIPro/matchai/main/predictions.csv")
-.then(r=>r.text())
-.then(t=>{
-
-const rows=t.split("\n").filter(r=>r.trim());
-
-data=rows.slice(1).map(r=>{
-const c=r.split(",");
-
-return {
-t1:c[0].trim(),
-t2:c[1].trim(),
-code1:c[2].trim(),
-code2:c[3].trim(),
-h:+c[4],
-d:+c[5],
-a:+c[6]
-};
-});
-
-document.getElementById("status").innerHTML="✅ Ready";
-});
-
-/* =========================
-   FLAG
-========================= */
-function flag(code){
-if(!code) return "";
-return `<img class="flag" src="https://flagcdn.com/w40/${code.toLowerCase()}.png">`;
-}
-
-/* =========================
-   PREDICT (FINAL STABLE)
-========================= */
-function predict(){
-
-const t1=clean(team1.value);
-const t2=clean(team2.value);
-
-/* 🔥 ORDER-INDEPENDENT MATCH */
-const m=data.find(x=>{
-
-const a=clean(x.t1);
-const b=clean(x.t2);
-
-return (a===t1 && b===t2) || (a===t2 && b===t1);
-
-});
-
-if(!m){
-result.innerHTML="<h2>Match Not Found</h2>";
-return;
-}
-
-/* orientation fix */
-let h=m.h,d=m.d,a=m.a;
-let teamA=m.t1,teamB=m.t2;
-let codeA=m.code1,codeB=m.code2;
-
-if(clean(m.t2)===t1){
-h=m.a; a=m.h;
-teamA=m.t2; teamB=m.t1;
-codeA=m.code2; codeB=m.code1;
-}
-
-let pred="",w1="",w2="";
-
-if(h>d && h>a){
-pred=teamA+" Win";
-w1="gold";
-}
-else if(a>h && a>d){
-pred=teamB+" Win";
-w2="gold";
-}
-else pred="Draw";
-
-result.innerHTML=`
-<div class="card">
-
-<h2>
-<span class="${w1}">
-${flag(codeA)} ${teamA}
-</span>
-vs
-<span class="${w2}">
-${teamB} ${flag(codeB)}
-</span>
-</h2>
-
-<h3>${pred}</h3>
-
-<p>Home (${h}%)</p>
-<div class="bar-bg"><div id="b1" class="bar home"></div></div>
-
-<p>Draw (${d}%)</p>
-<div class="bar-bg"><div id="b2" class="bar draw"></div></div>
-
-<p>Away (${a}%)</p>
-<div class="bar-bg"><div id="b3" class="bar away"></div></div>
-
 </div>
-`;
-
-setTimeout(()=>{
-b1.style.width=h+"%";
-b2.style.width=d+"%";
-b3.style.width=a+"%";
-},120);
-
-}
-
-</script>
 
 </body>
 </html>
