@@ -374,7 +374,6 @@ document.getElementById("b3").style.width = m.a + "%";
 <script>
 
 <script>
-
 <script>
 
 /* =========================
@@ -383,28 +382,31 @@ document.getElementById("b3").style.width = m.a + "%";
 const STRIPE_499 = "https://buy.stripe.com/6oU4gAfzd5ps2KjdbA6Zy01";
 
 /* =========================
-   FREE LIMIT
+   FREE LIMIT STATE
 ========================= */
 let freeCount = parseInt(localStorage.getItem("freeCount")) || 0;
 
 /* =========================
-   MAIN CONTROL
+   MAIN PREDICT FUNCTION
+   (Bunu senin run() ile bağlıyoruz)
 ========================= */
 function predict(){
 
+// 3 free sonrası kilit
 if(freeCount >= 3){
 showPaywall();
 return;
 }
 
+// free kullanım
 freeCount++;
 localStorage.setItem("freeCount", freeCount);
 
-run(); // senin prediction fonksiyonun
+run(); // SENİN ORİJİNAL PREDICTION FONKSİYONUN
 }
 
 /* =========================
-   PAYWALL (SINGLE PLAN)
+   PAYWALL UI
 ========================= */
 function showPaywall(){
 
@@ -417,8 +419,9 @@ document.getElementById("result").innerHTML = `
 
 <hr>
 
-<h3>🔥 Pro Plan</h3>
-<p>10 Predictions</p>
+<h3>🏆 Pro Plan for All Cup Predictions</h3>
+
+<p>Unlock 10 Predictions instantly</p>
 
 <button onclick="buyPro()" style="
 padding:20px 40px;
@@ -427,7 +430,9 @@ background:#3b82f6;
 color:white;
 border:none;
 border-radius:12px;
-cursor:pointer;">
+cursor:pointer;
+box-shadow:0 8px 20px rgba(59,130,246,.4);
+">
 $4.99 Unlock Pro
 </button>
 
@@ -443,7 +448,7 @@ window.location.href = STRIPE_499;
 }
 
 /* =========================
-   RESET (TEST)
+   RESET (TEST PURPOSE)
 ========================= */
 function resetUsage(){
 localStorage.removeItem("freeCount");
