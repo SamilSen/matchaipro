@@ -375,19 +375,20 @@ document.getElementById("b3").style.width = m.a + "%";
 
 <script>
 
-/* =========================
-   STRIPE LINKS
-========================= */
-const STRIPE_PRO = "https://buy.stripe.com/6oU4gAfzd5ps2KjdbA6Zy01";
-const STRIPE_WORLD = "https://buy.stripe.com/eVqcN60Ej19c2Kj8Vk6Zy00";
+<script>
 
 /* =========================
-   USER STATE
+   STRIPE LINK
+========================= */
+const STRIPE_499 = "https://buy.stripe.com/6oU4gAfzd5ps2KjdbA6Zy01";
+
+/* =========================
+   FREE LIMIT
 ========================= */
 let freeCount = parseInt(localStorage.getItem("freeCount")) || 0;
 
 /* =========================
-   MAIN PREDICT CONTROL
+   MAIN CONTROL
 ========================= */
 function predict(){
 
@@ -399,11 +400,11 @@ return;
 freeCount++;
 localStorage.setItem("freeCount", freeCount);
 
-run(); // SENİN ORİJİNAL PREDICTION FONKSİYONUN
+run(); // senin prediction fonksiyonun
 }
 
 /* =========================
-   PAYWALL (2 SEÇENEK)
+   PAYWALL (SINGLE PLAN)
 ========================= */
 function showPaywall(){
 
@@ -418,9 +419,10 @@ document.getElementById("result").innerHTML = `
 
 <h3>🔥 Pro Plan</h3>
 <p>10 Predictions</p>
+
 <button onclick="buyPro()" style="
-padding:18px 35px;
-font-size:20px;
+padding:20px 40px;
+font-size:22px;
 background:#3b82f6;
 color:white;
 border:none;
@@ -429,43 +431,25 @@ cursor:pointer;">
 $4.99 Unlock Pro
 </button>
 
-<br><br>
-
-<h3>🏆 World Cup Plan</h3>
-<p>Unlimited Access</p>
-<button onclick="buyWorld()" style="
-padding:18px 35px;
-font-size:20px;
-background:#f59e0b;
-color:white;
-border:none;
-border-radius:12px;
-cursor:pointer;">
-$9.99 Full Access
-</button>
-
 </div>
 `;
 }
 
 /* =========================
-   STRIPE REDIRECTS
+   STRIPE REDIRECT
 ========================= */
 function buyPro(){
-window.location.href = STRIPE_PRO;
-}
-
-function buyWorld(){
-window.location.href = STRIPE_WORLD;
+window.location.href = STRIPE_499;
 }
 
 /* =========================
-   RESET (TEST MODE)
+   RESET (TEST)
 ========================= */
 function resetUsage(){
 localStorage.removeItem("freeCount");
 }
 
 </script>
+
 </body>
 </html>
