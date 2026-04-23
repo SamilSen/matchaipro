@@ -104,13 +104,7 @@ backdrop-filter:blur(12px);
 box-shadow:0 18px 40px rgba(0,0,0,.16);
 }
 
-.heartbeat-text{
-display:inline-block;
-font-weight:900;
-color:#7c3aed;
-animation:heartbeatText 1.2s infinite;
-}
-
+/* HEARTBEAT TEXT */
 @keyframes heartbeatText {
 0% { transform: scale(1); }
 25% { transform: scale(1.08); }
@@ -119,6 +113,14 @@ animation:heartbeatText 1.2s infinite;
 100% { transform: scale(1); }
 }
 
+.heartbeat-text{
+display:inline-block;
+font-weight:900;
+color:#7c3aed;
+animation:heartbeatText 1.2s infinite;
+}
+
+/* TEK SATIR */
 .card h2{
 font-size:32px;
 display:flex;
@@ -141,20 +143,20 @@ height:28px;
 border-radius:4px;
 }
 
-.card h3{
-font-size:41px;
-margin:18px 0 26px;
-color:#7c3aed;
-font-weight:900;
-animation:heartbeat 1s infinite;
-}
-
 @keyframes heartbeat {
 0% { transform: scale(1); }
 25% { transform: scale(1.08); }
 50% { transform: scale(1); }
 75% { transform: scale(1.12); }
 100% { transform: scale(1); }
+}
+
+.card h3{
+font-size:41px;
+margin:18px 0 26px;
+color:#7c3aed;
+font-weight:900;
+animation:heartbeat 1s infinite;
 }
 
 .bar-bg{
@@ -197,54 +199,10 @@ font-size:22px;
 font-weight:900;
 color:black;
 }
-
-/* PAYWALL */
-#paywall{
-display:none;
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:rgba(0,0,0,.75);
-z-index:9999;
-justify-content:center;
-align-items:center;
-}
-
-.paybox{
-background:white;
-padding:30px;
-border-radius:18px;
-width:320px;
-text-align:center;
-}
 </style>
 </head>
 
 <body>
-
-<!-- PAYWALL -->
-<div id="paywall">
-  <div class="paybox">
-    <h2>🔒 Free Limit Reached</h2>
-    <p>You used your 3 free predictions</p>
-
-    <h3>🏆 Pro Plan</h3>
-    <p>Unlimited Predictions</p>
-
-    <button onclick="buyPro()" style="
-      padding:15px 25px;
-      font-size:18px;
-      background:#22c55e;
-      color:white;
-      border:none;
-      border-radius:10px;
-      cursor:pointer;">
-      Unlock $4.99
-    </button>
-  </div>
-</div>
 
 <div class="hero">
 <img src="https://raw.githubusercontent.com/MatchAIPro/matchai/main/image.png" class="logo">
@@ -263,27 +221,49 @@ text-align:center;
 
 <div id="status">Loading...</div>
 
+<!-- ✅ READY SCREEN (bozulmaz, mobil safe) -->
 <div id="result">
   <div class="card">
+
     <h2>⚽ Ready For Prediction</h2>
-    <p class="heartbeat-text">Enter Teams Above</p>
+
+    <p style="font-size:34px;font-weight:800;color:#6b7280;">
+      <span class="heartbeat-text">Enter Teams Above</span>
+    </p>
+
+    <p>Home (0%)</p>
+    <div class="bar-bg"><div class="bar home" style="width:0%"></div></div>
+
+    <p>Draw (0%)</p>
+    <div class="bar-bg"><div class="bar draw" style="width:0%"></div></div>
+
+    <p>Away (0%)</p>
+    <div class="bar-bg"><div class="bar away" style="width:0%"></div></div>
+
   </div>
 </div>
 
 <div class="footer">
-<a href="#">Legal</a>
-<a href="#">Price</a>
-<a href="#">About</a>
+<a href="legal.html">Legal Disclaimer</a>
+<a href="price.html">Price Policy</a>
+<a href="about.html">About & Contact</a>
 </div>
 
-<div class="copy">© 2026 MatchAI Pro</div>
+<div class="copy">
+© 2026  MatchAI Pro. All Rights Reserved.
+</div>
 
 <script>
 
 let data = [];
 
 function normalizeText(str){
-return str.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().trim();
+return str
+.normalize("NFD")
+.replace(/[\u0300-\u036f]/g, "")
+.replace(/’/g,"'")
+.toLowerCase()
+.trim();
 }
 
 function fixCode(team){
@@ -304,112 +284,93 @@ const map = {
 return map[team] || "";
 }
 
-
 fetch("https://raw.githubusercontent.com/SamilSen/matchaipro/main/predictions.csv")
 .then(r=>r.text())
 .then(t=>{
-const rows = t.split(/\r?\n/).slice(1).filter(r=>r);
+
+const rows = t.split(/\r?\n/).slice(1).filter(r=>r.trim());
+
 data = rows.map(r=>{
 const c = r.split(",");
+
 return {
-t1:c[0], t2:c[1],
-code1:fixCode(c[0]), code2:fixCode(c[1]),
-h:+c[4], d:+c[5], a:+c[6]
+t1:c[0].trim(),
+t2:c[1].trim(),
+code1:fixCode(c[0].trim()),
+code2:fixCode(c[1].trim()),
+h:parseFloat(c[4]),
+d:parseFloat(c[5]),
+a:parseFloat(c[6])
 };
 });
+
 document.getElementById("status").innerHTML="✅ Ready";
 });
 
-function flag(c){
-return `<img class="flag" src="https://flagcdn.com/w40/${c}.png">`;
+function flag(code){
+return `<img class="flag" src="https://flagcdn.com/w40/${code}.png">`;
 }
 
-/* =========================
-   PAYMENT SYSTEM
-========================= */
-const STRIPE = "https://buy.stripe.com/6oU4gAfzd5ps2KjdbA6Zy01";
+function predict(){
 
-let freeCount = +localStorage.getItem("freeCount") || 0;
-let isPro = localStorage.getItem("isPro")==="true";
-
-const oldPredict = window.predict;
-
-/* =========================
-   OVERRIDE
-========================= */
-window.predict = function(){
-
-if(isPro){
-return run();
-}
-
-if(freeCount>=3){
-document.getElementById("paywall").style.display="flex";
-return;
-}
-
-freeCount++;
-localStorage.setItem("freeCount",freeCount);
-
-return run();
-}
-
-/* =========================
-   ORIGINAL LOGIC (UNCHANGED)
-========================= */
-function run(){
-
-const t1 = team1.value.trim();
-const t2 = team2.value.trim();
+const t1 = document.getElementById("team1").value.trim();
+const t2 = document.getElementById("team2").value.trim();
 
 const m = data.find(x =>
-normalizeText(x.t1)==normalizeText(t1) &&
-normalizeText(x.t2)==normalizeText(t2)
+normalizeText(x.t1) === normalizeText(t1) &&
+normalizeText(x.t2) === normalizeText(t2)
 );
 
 if(!m){
-result.innerHTML="<div class='card'>❌ Match Not Found</div>";
+document.getElementById("result").innerHTML=
+"<div class='card'>❌ Match Not Found</div>";
 return;
 }
 
-let pred =
-m.h>m.d && m.h>m.a ? m.t1+" Win" :
-m.a>m.h && m.a>m.d ? m.t2+" Win" : "Draw";
+let pred = "";
 
-result.innerHTML=`
+if(m.h > m.d && m.h > m.a){
+pred = m.t1 + " Win";
+}
+else if(m.a > m.h && m.a > m.d){
+pred = m.t2 + " Win";
+}
+else{
+pred = "Draw";
+}
+
+document.getElementById("result").innerHTML = `
 <div class="card">
 
 <h2>
 <span class="team">${flag(m.code1)} ${m.t1}</span>
-VS
+<span>VS</span>
 <span class="team">${m.t2} ${flag(m.code2)}</span>
 </h2>
 
 <h3>${pred}</h3>
 
 <p>Home (${m.h}%)</p>
-<div class="bar-bg"><div class="bar home" style="width:${m.h}%"></div></div>
+<div class="bar-bg"><div id="b1" class="bar home"></div></div>
 
 <p>Draw (${m.d}%)</p>
-<div class="bar-bg"><div class="bar draw" style="width:${m.d}%"></div></div>
+<div class="bar-bg"><div id="b2" class="bar draw"></div></div>
 
 <p>Away (${m.a}%)</p>
-<div class="bar-bg"><div class="bar away" style="width:${m.a}%"></div></div>
+<div class="bar-bg"><div id="b3" class="bar away"></div></div>
 
 </div>
 `;
-}
 
-/* =========================
-   BUY PRO
-========================= */
-function buyPro(){
-window.open(STRIPE,"_blank");
-localStorage.setItem("isPro","true");
-isPro=true;
-document.getElementById("paywall").style.display="none";
+setTimeout(()=>{
+document.getElementById("b1").style.width = m.h + "%";
+document.getElementById("b2").style.width = m.d + "%";
+document.getElementById("b3").style.width = m.a + "%";
+},120);
+
 }
 
 </script>
+
 </body>
 </html>
