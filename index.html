@@ -86,7 +86,6 @@ background-size:200% 200%;
 box-shadow:0 0 18px rgba(37,99,235,.45);
 display:inline-block;
 text-decoration:none;
-margin-bottom:16px;
 }
 
 .predict-btn{
@@ -218,12 +217,12 @@ color:black;
 
 <div class="form-box">
 
+<a href="fixture.html" class="fixture-btn">🏆 FIXTURE</a>
+
+<br><br>
+
 <input id="team1" class="input-box" placeholder="🏠 Home Team">
 <input id="team2" class="input-box" placeholder="✈️ Away Team">
-
-<br>
-
-<a href="fixture.html" class="fixture-btn">🏆 FIXTURE</a>
 
 <br>
 
@@ -266,7 +265,6 @@ let data = [];
 const STRIPE_URL = "https://buy.stripe.com/6oU4gAfzd5ps2KjdbA6Zy01";
 const MAX_FREE_USES = 3;
 
-// ================== PAYMENT ==================
 function isPaid(){
 return localStorage.getItem("paid") === "true";
 }
@@ -276,14 +274,12 @@ localStorage.setItem("paid","true");
 localStorage.setItem("uses","0");
 }
 
-// Stripe return
 const urlParams = new URLSearchParams(window.location.search);
 if(urlParams.get("success") === "true"){
 setPaid();
 window.history.replaceState({}, document.title, window.location.pathname);
 }
 
-// ================== USAGE ==================
 function getUses(){
 return parseInt(localStorage.getItem("uses") || "0");
 }
@@ -297,7 +293,6 @@ if(isPaid()) return false;
 return getUses() >= MAX_FREE_USES;
 }
 
-// ==================
 function normalizeText(str){
 return str.normalize("NFD")
 .replace(/[\u0300-\u036f]/g, "")
@@ -323,7 +318,6 @@ const map = {
 return map[team] || "";
 }
 
-// ==================
 fetch("https://raw.githubusercontent.com/SamilSen/matchaipro/main/predictions.csv")
 .then(r=>r.text())
 .then(t=>{
@@ -345,7 +339,6 @@ a:parseFloat(c[6])
 document.getElementById("status").innerHTML="✅ Ready";
 });
 
-// ==================
 function predict(){
 
 if(checkLimit()){
