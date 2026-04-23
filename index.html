@@ -373,22 +373,23 @@ document.getElementById("b3").style.width = m.a + "%";
 </script>
 <script>
 
+<script>
+
 /* =========================
-   PAYMENT SYSTEM
+   STRIPE LINKS
 ========================= */
-
-let freeCount = localStorage.getItem("freeCount") || 0;
-let paid = localStorage.getItem("paid") || "false";
+const STRIPE_PRO = "https://buy.stripe.com/6oU4gAfzd5ps2KjdbA6Zy01";
+const STRIPE_WORLD = "https://buy.stripe.com/eVqcN60Ej19c2Kj8Vk6Zy00";
 
 /* =========================
-   MAIN CONTROL
+   USER STATE
+========================= */
+let freeCount = parseInt(localStorage.getItem("freeCount")) || 0;
+
+/* =========================
+   MAIN PREDICT CONTROL
 ========================= */
 function predict(){
-
-if(paid === "true"){
-run(); // senin prediction fonksiyonun
-return;
-}
 
 if(freeCount >= 3){
 showPaywall();
@@ -398,11 +399,11 @@ return;
 freeCount++;
 localStorage.setItem("freeCount", freeCount);
 
-run();
+run(); // SENİN ORİJİNAL PREDICTION FONKSİYONUN
 }
 
 /* =========================
-   PAYWALL UI
+   PAYWALL (2 SEÇENEK)
 ========================= */
 function showPaywall(){
 
@@ -432,7 +433,7 @@ $4.99 Unlock Pro
 
 <h3>🏆 World Cup Plan</h3>
 <p>Unlimited Access</p>
-<button onclick="buyVIP()" style="
+<button onclick="buyWorld()" style="
 padding:18px 35px;
 font-size:20px;
 background:#f59e0b;
@@ -448,22 +449,21 @@ $9.99 Full Access
 }
 
 /* =========================
-   STRIPE LINKS
+   STRIPE REDIRECTS
 ========================= */
 function buyPro(){
-window.location.href = "https://buy.stripe.com/6oU4gAfzd5ps2KjdbA6Zy01";
+window.location.href = STRIPE_PRO;
 }
 
-function buyVIP(){
-window.location.href = "https://buy.stripe.com/eVqcN60Ej19c2Kj8Vk6Zy00";
+function buyWorld(){
+window.location.href = STRIPE_WORLD;
 }
 
 /* =========================
-   RESET (TEST)
+   RESET (TEST MODE)
 ========================= */
-function resetAccess(){
+function resetUsage(){
 localStorage.removeItem("freeCount");
-localStorage.removeItem("paid");
 }
 
 </script>
