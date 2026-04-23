@@ -374,13 +374,15 @@ document.getElementById("b3").style.width = m.a + "%";
 <script>
 
 /* =========================
-   PAYMENT SYSTEM (FULL)
+   PAYMENT SYSTEM
 ========================= */
 
 let freeCount = localStorage.getItem("freeCount") || 0;
 let paid = localStorage.getItem("paid") || "false";
 
-/* MAIN CONTROL */
+/* =========================
+   MAIN CONTROL
+========================= */
 function predict(){
 
 if(paid === "true"){
@@ -399,7 +401,9 @@ localStorage.setItem("freeCount", freeCount);
 run();
 }
 
-/* PAYWALL UI */
+/* =========================
+   PAYWALL UI
+========================= */
 function showPaywall(){
 
 document.getElementById("result").innerHTML = `
@@ -409,32 +413,54 @@ document.getElementById("result").innerHTML = `
 
 <p>You used your 3 free predictions</p>
 
+<hr>
+
+<h3>🔥 Pro Plan</h3>
+<p>10 Predictions</p>
 <button onclick="buyPro()" style="
-padding:20px 40px;
-font-size:24px;
+padding:18px 35px;
+font-size:20px;
 background:#3b82f6;
 color:white;
 border:none;
 border-radius:12px;
 cursor:pointer;">
-🔥 Unlock Pro - $4.99
+$4.99 Unlock Pro
+</button>
+
+<br><br>
+
+<h3>🏆 World Cup Plan</h3>
+<p>Unlimited Access</p>
+<button onclick="buyVIP()" style="
+padding:18px 35px;
+font-size:20px;
+background:#f59e0b;
+color:white;
+border:none;
+border-radius:12px;
+cursor:pointer;">
+$9.99 Full Access
 </button>
 
 </div>
 `;
 }
 
-/* STRIPE REDIRECT */
+/* =========================
+   STRIPE LINKS
+========================= */
 function buyPro(){
-
-// Stripe payment link
 window.location.href = "https://buy.stripe.com/6oU4gAfzd5ps2KjdbA6Zy01";
-
-// ödeme sonrası manuel flag (backend yoksa bu frontend çözüm)
-localStorage.setItem("paid","true");
 }
 
-/* RESET (test için istersen) */
+function buyVIP(){
+window.location.href = "https://buy.stripe.com/eVqcN60Ej19c2Kj8Vk6Zy00";
+}
+
+/* =========================
+   RESET (TEST)
+========================= */
 function resetAccess(){
 localStorage.removeItem("freeCount");
 localStorage.removeItem("paid");
