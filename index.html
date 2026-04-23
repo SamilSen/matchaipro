@@ -373,25 +373,34 @@ document.getElementById("b3").style.width = m.a + "%";
 <script>
 
 /* =========================
-   STRIPE
+   STRIPE LINK
 ========================= */
 const STRIPE_499 = "https://buy.stripe.com/6oU4gAfzd5ps2KjdbA6Zy01";
 
 /* =========================
-   FREE LIMIT
+   STATE
 ========================= */
 let freeCount = parseInt(localStorage.getItem("freeCount")) || 0;
+let isPro = localStorage.getItem("isPro") === "true";
 
 /* =========================
-   OVERRIDE YOUR EXISTING PREDICT
+   SAVE ORIGINAL FUNCTION
+   (senin mevcut predict korunur)
 ========================= */
-const originalPredict = predict;
+const oldPredict = predict;
 
 /* =========================
    NEW CONTROLLED PREDICT
 ========================= */
 predict = function(){
 
+// PRO kullanıcı sınırsız
+if(isPro){
+oldPredict();
+return;
+}
+
+// free limit
 if(freeCount >= 3){
 showPaywall();
 return;
@@ -400,8 +409,7 @@ return;
 freeCount++;
 localStorage.setItem("freeCount", freeCount);
 
-// eski sistem çalışsın
-originalPredict();
+oldPredict();
 }
 
 /* =========================
@@ -420,7 +428,7 @@ document.getElementById("result").innerHTML = `
 
 <h3>🏆 Pro Plan for All Cup Predictions</h3>
 
-<p>Unlock 10 Predictions instantly</p>
+<p>Unlimited access to AI predictions</p>
 
 <button onclick="buyPro()" style="
 padding:20px 40px;
@@ -429,7 +437,9 @@ background:#3b82f6;
 color:white;
 border:none;
 border-radius:12px;
-cursor:pointer;">
+cursor:pointer;
+box-shadow:0 8px 20px rgba(59,130,246,.4);
+">
 $4.99 Unlock Pro
 </button>
 
@@ -439,9 +449,32 @@ $4.99 Unlock Pro
 
 /* =========================
    STRIPE REDIRECT
+   + AUTO UNLOCK (LOGIN YOK HACK FIX)
 ========================= */
 function buyPro(){
+
 window.location.href = STRIPE_499;
+
+// kullanıcı geri gelince PRO açılır
+setTimeout(()=>{
+localStorage.setItem("isPro","true");
+},1500);
+
+}
+
+/* =========================
+   RESET (TEST MODE)
+========================= */
+function resetAll(){
+localStorage.removeItem("freeCount");
+localStorage.removeItem("isPro");
+}
+
+/* =========================
+   OPTIONAL: AUTO CHECK ON LOAD
+========================= */
+if(isPro){
+console.log("PRO USER ACTIVE");
 }
 
 </script>
