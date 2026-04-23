@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>World Cup Fixtures</title>
+
+<style>
+body{
+    margin:0;
+    padding:0;
+    font-family:Arial, sans-serif;
+    background:linear-gradient(135deg,#0f172a,#1e293b,#334155);
+    color:white;
+}
+
+header{
+    text-align:center;
+    padding:30px 15px;
+    font-size:34px;
+    font-weight:bold;
+    letter-spacing:1px;
+}
+
+.container{
+    max-width:1100px;
+    margin:auto;
+    padding:20px;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+    gap:18px;
+}
+
+.match{
+    background:rgba(255,255,255,0.08);
+    border:1px solid rgba(255,255,255,0.15);
+    border-radius:18px;
+    padding:18px;
+    box-shadow:0 8px 20px rgba(0,0,0,0.25);
+    transition:0.25s;
+}
+
+.match:hover{
+    transform:translateY(-4px);
+    background:rgba(255,255,255,0.13);
+}
+
+.team-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+}
+
+.team{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    width:42%;
+    font-size:18px;
+    font-weight:bold;
+}
+
+.flag{
+    font-size:28px;
+}
+
+.vs{
+    width:16%;
+    text-align:center;
+    font-size:16px;
+    font-weight:bold;
+    color:#facc15;
+}
+
+footer{
+    text-align:center;
+    padding:30px;
+    color:#cbd5e1;
+    font-size:14px;
+}
+</style>
+</head>
+<body>
+
+<header>🏆 World Cup Fixtures</header>
+
+<div class="container">
+<div class="grid" id="fixturesGrid"></div>
+</div>
+
+<footer>MatchAI Pro Fixture Page</footer>
+
+<script>
+const fixtures = [
+["Mexico","South Africa"],
+["Korea Republic","Czechia"],
+["Canada","Bosnia-Herzegovina"],
+["USA","Paraguay"],
+["Qatar","Switzerland"],
+["Brazil","Morocco"],
+["Haiti","Scotland"],
+["Australia","Turkey"],
+["Germany","Curaçao"],
+["Netherlands","Japan"],
+["Côte d'Ivoire","Ecuador"],
+["Sweden","Tunisia"],
+["Spain","Cabo Verde"],
+["Belgium","Egypt"],
+["Saudi Arabia","Uruguay"],
+["Iran","New Zealand"],
+["France","Senegal"],
+["Iraq","Norway"],
+["Argentina","Algeria"],
+["Austria","Jordan"],
+["Portugal","Congo DR"],
+["England","Croatia"],
+["Ghana","Panama"],
+["Uzbekistan","Colombia"],
+["Czechia","South Africa"],
+["Switzerland","Bosnia-Herzegovina"],
+["Canada","Qatar"],
+["Mexico","Korea Republic"],
+["USA","Australia"],
+["Scotland","Morocco"],
+["Brazil","Haiti"],
+["Turkey","Paraguay"],
+["Netherlands","Sweden"],
+["Germany","Côte d'Ivoire"],
+["Ecuador","Curaçao"],
+["Tunisia","Japan"],
+["Spain","Saudi Arabia"],
+["Belgium","Iran"],
+["Uruguay","Cabo Verde"],
+["New Zealand","Egypt"],
+["Argentina","Austria"],
+["France","Iraq"],
+["Norway","Senegal"],
+["Jordan","Algeria"],
+["Portugal","Uzbekistan"],
+["England","Ghana"],
+["Panama","Croatia"],
+["Colombia","Congo DR"],
+["Switzerland","Canada"],
+["Bosnia-Herzegovina","Qatar"],
+["Scotland","Brazil"],
+["Morocco","Haiti"],
+["Czechia","Mexico"],
+["South Africa","Korea Republic"],
+["Curaçao","Côte d'Ivoire"],
+["Ecuador","Germany"],
+["Japan","Sweden"],
+["Tunisia","Netherlands"],
+["Turkey","USA"],
+["Paraguay","Australia"],
+["Norway","France"],
+["Senegal","Iraq"],
+["Cabo Verde","Saudi Arabia"],
+["Uruguay","Spain"],
+["Egypt","Iran"],
+["New Zealand","Belgium"],
+["Panama","England"],
+["Croatia","Ghana"],
+["Colombia","Portugal"],
+["Congo DR","Uzbekistan"],
+["Algeria","Austria"],
+["Jordan","Argentina"]
+];
+
+const flags = {
+"Mexico":"🇲🇽",
+"South Africa":"🇿🇦",
+"Korea Republic":"🇰🇷",
+"Czechia":"🇨🇿",
+"Canada":"🇨🇦",
+"Bosnia-Herzegovina":"🇧🇦",
+"USA":"🇺🇸",
+"Paraguay":"🇵🇾",
+"Qatar":"🇶🇦",
+"Switzerland":"🇨🇭",
+"Brazil":"🇧🇷",
+"Morocco":"🇲🇦",
+"Haiti":"🇭🇹",
+"Scotland":"🏴",
+"Australia":"🇦🇺",
+"Turkey":"🇹🇷",
+"Germany":"🇩🇪",
+"Curaçao":"🇨🇼",
+"Netherlands":"🇳🇱",
+"Japan":"🇯🇵",
+"Côte d'Ivoire":"🇨🇮",
+"Ecuador":"🇪🇨",
+"Sweden":"🇸🇪",
+"Tunisia":"🇹🇳",
+"Spain":"🇪🇸",
+"Cabo Verde":"🇨🇻",
+"Belgium":"🇧🇪",
+"Egypt":"🇪🇬",
+"Saudi Arabia":"🇸🇦",
+"Uruguay":"🇺🇾",
+"Iran":"🇮🇷",
+"New Zealand":"🇳🇿",
+"France":"🇫🇷",
+"Senegal":"🇸🇳",
+"Iraq":"🇮🇶",
+"Norway":"🇳🇴",
+"Argentina":"🇦🇷",
+"Algeria":"🇩🇿",
+"Austria":"🇦🇹",
+"Jordan":"🇯🇴",
+"Portugal":"🇵🇹",
+"Congo DR":"🇨🇩",
+"England":"🏴",
+"Croatia":"🇭🇷",
+"Ghana":"🇬🇭",
+"Panama":"🇵🇦",
+"Uzbekistan":"🇺🇿",
+"Colombia":"🇨🇴"
+};
+
+const grid = document.getElementById("fixturesGrid");
+
+fixtures.forEach(match=>{
+    const home = match[0];
+    const away = match[1];
+
+    grid.innerHTML += `
+    <div class="match">
+        <div class="team-row">
+            <div class="team">
+                <span class="flag">${flags[home] || "🏳️"}</span>
+                <span>${home}</span>
+            </div>
+
+            <div class="vs">VS</div>
+
+            <div class="team" style="justify-content:flex-end;text-align:right;">
+                <span>${away}</span>
+                <span class="flag">${flags[away] || "🏳️"}</span>
+            </div>
+        </div>
+    </div>
+    `;
+});
+</script>
+
+</body>
+</html>
