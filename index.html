@@ -127,7 +127,7 @@ font-weight:900;
 cursor:pointer;
 }
 
-/* FLAGS */
+/* TEAM + FLAG */
 .team{
 display:flex;
 align-items:center;
@@ -141,7 +141,7 @@ height:28px;
 border-radius:4px;
 }
 
-/* RESULT */
+/* TITLE */
 .card h2{
 font-size:32px;
 display:flex;
@@ -172,28 +172,6 @@ margin-bottom:18px;
 .draw{background:#f59e0b;}
 .away{background:#ef4444;}
 
-/* OVERLAY */
-#payBox{
-position:fixed;
-inset:0;
-background:rgba(0,0,0,.55);
-display:none;
-z-index:9999;
-}
-
-.pay-inner{
-position:absolute;
-top:50%;
-left:50%;
-transform:translate(-50%,-50%);
-background:white;
-padding:30px 25px;
-border-radius:18px;
-text-align:center;
-box-shadow:0 20px 50px rgba(0,0,0,.3);
-}
-
-/* FOOTER */
 .footer{
 margin-top:46px;
 padding:26px;
@@ -243,14 +221,10 @@ color:black;
 
 <div id="status">Loading...</div>
 
-<div id="result"></div>
-
-<!-- OVERLAY -->
-<div id="payBox">
-  <div class="pay-inner">
-    <h2>🔒 Limit Reached</h2>
-    <p>Free limit used (3/3)</p>
-    <button class="predict-btn" onclick="buyNow()">Unlock - $4.99</button>
+<div id="result">
+  <div class="card">
+    <h2>⚽ Ready For Prediction</h2>
+    <p>Enter Teams Above</p>
   </div>
 </div>
 
@@ -273,11 +247,6 @@ if(!localStorage.getItem("freeCount")){
 localStorage.setItem("freeCount","0");
 }
 
-function updateUI(){
-let el = document.getElementById("freeText");
-if(el) el.innerText = localStorage.getItem("freeCount") + "/3";
-}
-
 function isPaid(){
 return localStorage.getItem("paid") === "true";
 }
@@ -286,7 +255,6 @@ function increment(){
 let c = parseInt(localStorage.getItem("freeCount") || "0");
 c++;
 localStorage.setItem("freeCount", c);
-updateUI();
 return c;
 }
 
@@ -296,9 +264,10 @@ if(isPaid()) return true;
 let used = parseInt(localStorage.getItem("freeCount") || "0");
 
 if(used >= freeLimit){
-document.getElementById("payBox").style.display="block";
+alert("Free limit reached (3/3)");
 return false;
 }
+
 return true;
 }
 
@@ -342,6 +311,10 @@ if(!code) return "";
 return `<img class="flag" src="https://flagcdn.com/w40/${code}.png">`;
 }
 
+function render(html){
+document.getElementById("result").innerHTML = html;
+}
+
 fetch("https://raw.githubusercontent.com/SamilSen/matchaipro/main/predictions.csv")
 .then(r=>r.text())
 .then(t=>{
@@ -362,6 +335,7 @@ a:parseFloat(c[6])
 });
 
 document.getElementById("status").innerHTML="✅ Ready";
+
 });
 
 function predict(){
@@ -377,8 +351,7 @@ normalizeText(x.t2) === normalizeText(t2)
 );
 
 if(!m){
-document.getElementById("result").innerHTML=
-"<div class='card'>❌ Match Not Found</div>";
+render("<div class='card'>❌ Match Not Found</div>");
 return;
 }
 
@@ -398,7 +371,7 @@ else{
 pred = "Draw";
 }
 
-document.getElementById("result").innerHTML = `
+render(`
 <div class="card">
 
 <div class="pay-bar">
@@ -424,7 +397,7 @@ document.getElementById("result").innerHTML = `
 <div class="bar-bg"><div class="bar away" style="width:${m.a}%"></div></div>
 
 </div>
-`;
+`);
 
 }
 
