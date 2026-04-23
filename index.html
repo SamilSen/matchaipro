@@ -92,7 +92,6 @@ font-size:25px;
 font-weight:800;
 }
 
-/* CARD */
 .card{
 margin-top:36px;
 display:inline-block;
@@ -102,61 +101,6 @@ border-radius:24px;
 background:rgba(255,255,255,.62);
 backdrop-filter:blur(12px);
 box-shadow:0 18px 40px rgba(0,0,0,.16);
-}
-
-/* HEARTBEAT TEXT */
-@keyframes heartbeatText {
-0% { transform: scale(1); }
-25% { transform: scale(1.08); }
-50% { transform: scale(1); }
-75% { transform: scale(1.12); }
-100% { transform: scale(1); }
-}
-
-.heartbeat-text{
-display:inline-block;
-font-weight:900;
-color:#7c3aed;
-animation:heartbeatText 1.2s infinite;
-}
-
-/* TEK SATIR */
-.card h2{
-font-size:32px;
-display:flex;
-justify-content:center;
-align-items:center;
-gap:12px;
-white-space:nowrap;
-}
-
-.team{
-display:flex;
-align-items:center;
-gap:8px;
-white-space:nowrap;
-}
-
-.flag{
-width:40px;
-height:28px;
-border-radius:4px;
-}
-
-@keyframes heartbeat {
-0% { transform: scale(1); }
-25% { transform: scale(1.08); }
-50% { transform: scale(1); }
-75% { transform: scale(1.12); }
-100% { transform: scale(1); }
-}
-
-.card h3{
-font-size:41px;
-margin:18px 0 26px;
-color:#7c3aed;
-font-weight:900;
-animation:heartbeat 1s infinite;
 }
 
 .bar-bg{
@@ -199,6 +143,19 @@ font-size:22px;
 font-weight:900;
 color:black;
 }
+
+.heartbeat-text{
+animation:heartbeat 1.2s infinite;
+display:inline-block;
+}
+
+@keyframes heartbeat{
+0%{transform:scale(1)}
+25%{transform:scale(1.1)}
+50%{transform:scale(1)}
+75%{transform:scale(1.15)}
+100%{transform:scale(1)}
+}
 </style>
 </head>
 
@@ -221,25 +178,13 @@ color:black;
 
 <div id="status">Loading...</div>
 
-<!-- ✅ READY SCREEN (bozulmaz, mobil safe) -->
 <div id="result">
   <div class="card">
-
-    <h2>⚽ Ready For Prediction</h2>
-
-    <p style="font-size:34px;font-weight:800;color:#6b7280;">
-      <span class="heartbeat-text">Enter Teams Above</span>
-    </p>
-
+    ⚽ Ready For Prediction<br>
+    <span class="heartbeat-text">Enter Teams Above</span>
     <p>Home (0%)</p>
-    <div class="bar-bg"><div class="bar home" style="width:0%"></div></div>
-
     <p>Draw (0%)</p>
-    <div class="bar-bg"><div class="bar draw" style="width:0%"></div></div>
-
     <p>Away (0%)</p>
-    <div class="bar-bg"><div class="bar away" style="width:0%"></div></div>
-
   </div>
 </div>
 
@@ -250,12 +195,14 @@ color:black;
 </div>
 
 <div class="copy">
-© 2026  MatchAI Pro. All Rights Reserved.
+© 2026 MatchAI Pro. All Rights Reserved.
 </div>
 
 <script>
 
 let data = [];
+let freeCount = localStorage.getItem("freeCount") || 0;
+let paid = localStorage.getItem("paid") || "false";
 
 function normalizeText(str){
 return str
@@ -284,6 +231,7 @@ const map = {
 return map[team] || "";
 }
 
+
 fetch("https://raw.githubusercontent.com/SamilSen/matchaipro/main/predictions.csv")
 .then(r=>r.text())
 .then(t=>{
@@ -292,7 +240,6 @@ const rows = t.split(/\r?\n/).slice(1).filter(r=>r.trim());
 
 data = rows.map(r=>{
 const c = r.split(",");
-
 return {
 t1:c[0].trim(),
 t2:c[1].trim(),
@@ -311,7 +258,58 @@ function flag(code){
 return `<img class="flag" src="https://flagcdn.com/w40/${code}.png">`;
 }
 
+/* ================= PAYWALL ================= */
+
 function predict(){
+
+if(paid === "true"){
+runPrediction();
+return;
+}
+
+if(freeCount >= 3){
+showPaywall();
+return;
+}
+
+freeCount++;
+localStorage.setItem("freeCount", freeCount);
+
+runPrediction();
+}
+
+function showPaywall(){
+
+document.getElementById("result").innerHTML = `
+<div class="card">
+
+<h2>🔒 Limit Reached</h2>
+
+<p>You used your 3 free predictions</p>
+
+<button onclick="buyPro()" style="
+padding:20px 40px;
+font-size:24px;
+background:#3b82f6;
+color:white;
+border:none;
+border-radius:12px;
+margin:10px;
+cursor:pointer;">
+🔥 Unlock Pro - $4.99
+</button>
+
+</div>
+`;
+}
+
+function buyPro(){
+window.location.href = "https://buy.stripe.com/6oU4gAfzd5ps2KjdbA6Zy01";
+}
+
+/* ================= ORIGINAL ================= */
+
+function runPrediction(){
 
 const t1 = document.getElementById("team1").value.trim();
 const t2 = document.getElementById("team2").value.trim();
@@ -327,47 +325,25 @@ document.getElementById("result").innerHTML=
 return;
 }
 
-let pred = "";
+let pred="";
 
-if(m.h > m.d && m.h > m.a){
-pred = m.t1 + " Win";
-}
-else if(m.a > m.h && m.a > m.d){
-pred = m.t2 + " Win";
-}
-else{
-pred = "Draw";
-}
+if(m.h>m.d && m.h>m.a) pred=m.t1+" Win";
+else if(m.a>m.h && m.a>m.d) pred=m.t2+" Win";
+else pred="Draw";
 
-document.getElementById("result").innerHTML = `
+document.getElementById("result").innerHTML=`
 <div class="card">
 
-<h2>
-<span class="team">${flag(m.code1)} ${m.t1}</span>
-<span>VS</span>
-<span class="team">${m.t2} ${flag(m.code2)}</span>
-</h2>
+<h2>${m.t1} VS ${m.t2}</h2>
 
 <h3>${pred}</h3>
 
-<p>Home (${m.h}%)</p>
-<div class="bar-bg"><div id="b1" class="bar home"></div></div>
-
-<p>Draw (${m.d}%)</p>
-<div class="bar-bg"><div id="b2" class="bar draw"></div></div>
-
-<p>Away (${m.a}%)</p>
-<div class="bar-bg"><div id="b3" class="bar away"></div></div>
+<p>Home ${m.h}%</p>
+<p>Draw ${m.d}%</p>
+<p>Away ${m.a}%</p>
 
 </div>
 `;
-
-setTimeout(()=>{
-document.getElementById("b1").style.width = m.h + "%";
-document.getElementById("b2").style.width = m.d + "%";
-document.getElementById("b3").style.width = m.a + "%";
-},120);
-
 }
 
 </script>
