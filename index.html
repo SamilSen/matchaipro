@@ -371,6 +371,75 @@ document.getElementById("b3").style.width = m.a + "%";
 }
 
 </script>
+<script>
 
+/* =========================
+   PAYMENT SYSTEM (FULL)
+========================= */
+
+let freeCount = localStorage.getItem("freeCount") || 0;
+let paid = localStorage.getItem("paid") || "false";
+
+/* MAIN CONTROL */
+function predict(){
+
+if(paid === "true"){
+run(); // senin prediction fonksiyonun
+return;
+}
+
+if(freeCount >= 3){
+showPaywall();
+return;
+}
+
+freeCount++;
+localStorage.setItem("freeCount", freeCount);
+
+run();
+}
+
+/* PAYWALL UI */
+function showPaywall(){
+
+document.getElementById("result").innerHTML = `
+<div class="card">
+
+<h2>🔒 Free Limit Reached</h2>
+
+<p>You used your 3 free predictions</p>
+
+<button onclick="buyPro()" style="
+padding:20px 40px;
+font-size:24px;
+background:#3b82f6;
+color:white;
+border:none;
+border-radius:12px;
+cursor:pointer;">
+🔥 Unlock Pro - $4.99
+</button>
+
+</div>
+`;
+}
+
+/* STRIPE REDIRECT */
+function buyPro(){
+
+// Stripe payment link
+window.location.href = "https://buy.stripe.com/6oU4gAfzd5ps2KjdbA6Zy01";
+
+// ödeme sonrası manuel flag (backend yoksa bu frontend çözüm)
+localStorage.setItem("paid","true");
+}
+
+/* RESET (test için istersen) */
+function resetAccess(){
+localStorage.removeItem("freeCount");
+localStorage.removeItem("paid");
+}
+
+</script>
 </body>
 </html>
