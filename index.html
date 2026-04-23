@@ -156,6 +156,12 @@ display:inline-block;
 75%{transform:scale(1.15)}
 100%{transform:scale(1)}
 }
+
+.flag{
+width:40px;
+height:28px;
+border-radius:4px;
+}
 </style>
 </head>
 
@@ -204,34 +210,68 @@ let data = [];
 let freeCount = localStorage.getItem("freeCount") || 0;
 let paid = localStorage.getItem("paid") || "false";
 
-function normalizeText(str){
-return str
-.normalize("NFD")
-.replace(/[\u0300-\u036f]/g, "")
-.replace(/’/g,"'")
+/* =========================
+   🔥 FIX: NORMALIZATION
+========================= */
+function normalizeTeam(t){
+return t
 .toLowerCase()
+.replace(/\./g,"")
+.replace(/’/g,"'")
+.replace(/\s+/g," ")
 .trim();
 }
 
+/* =========================
+   🔥 FIX: COUNTRY CODES
+========================= */
 function fixCode(team){
+
+const t = normalizeTeam(team);
+
 const map = {
-"Mexico":"mx","South Africa":"za","Korea Republic":"kr","Czechia":"cz",
-"Canada":"ca","Bosnia-Herzegovina":"ba","USA":"us","Paraguay":"py",
-"Qatar":"qa","Switzerland":"ch","Brazil":"br","Morocco":"ma",
-"Haiti":"ht","Scotland":"gb","Australia":"au","Turkey":"tr",
-"Germany":"de","Curaçao":"cw","Netherlands":"nl","Japan":"jp",
-"Côte d'Ivoire":"ci","Ecuador":"ec","Sweden":"se","Tunisia":"tn",
-"Spain":"es","Belgium":"be","Egypt":"eg","Saudi Arabia":"sa",
-"Uruguay":"uy","Iran":"ir","New Zealand":"nz","France":"fr",
-"Senegal":"sn","Iraq":"iq","Norway":"no","Argentina":"ar",
-"Algeria":"dz","Austria":"at","Jordan":"jo","Portugal":"pt",
-"Congo DR":"cd","England":"gb","Croatia":"hr","Ghana":"gh",
-"Panama":"pa","Uzbekistan":"uz","Colombia":"co"
+"mexico":"mx",
+"south africa":"za",
+"korea republic":"kr",
+"south korea":"kr",
+"czechia":"cz",
+"usa":"us",
+"united states":"us",
+"brazil":"br",
+"france":"fr",
+"argentina":"ar",
+"germany":"de",
+"spain":"es",
+"italy":"it",
+"england":"gb",
+"scotland":"gb",
+"turkey":"tr",
+"netherlands":"nl",
+"portugal":"pt",
+"japan":"jp",
+"cote d'ivoire":"ci",
+"côte d'ivoire":"ci",
+"bosnia-herzegovina":"ba",
+"bosnia herzegovina":"ba",
+"czech republic":"cz"
 };
-return map[team] || "";
+
+return map[t] || "un";
 }
 
+/* =========================
+   FLAG SAFE
+========================= */
+function flag(code){
+if(!code || code === "un"){
+return "🏳️";
+}
+return `<img class="flag" src="https://flagcdn.com/w40/${code}.png">`;
+}
 
+/* =========================
+   DATA LOAD
+========================= */
 fetch("https://raw.githubusercontent.com/SamilSen/matchaipro/main/predictions.csv")
 .then(r=>r.text())
 .then(t=>{
@@ -240,6 +280,7 @@ const rows = t.split(/\r?\n/).slice(1).filter(r=>r.trim());
 
 data = rows.map(r=>{
 const c = r.split(",");
+
 return {
 t1:c[0].trim(),
 t2:c[1].trim(),
@@ -254,12 +295,9 @@ a:parseFloat(c[6])
 document.getElementById("status").innerHTML="✅ Ready";
 });
 
-function flag(code){
-return `<img class="flag" src="https://flagcdn.com/w40/${code}.png">`;
-}
-
-/* ================= PAYWALL ================= */
-
+/* =========================
+   PAYWALL SYSTEM
+========================= */
 function predict(){
 
 if(paid === "true"){
@@ -307,16 +345,17 @@ function buyPro(){
 window.location.href = "https://buy.stripe.com/6oU4gAfzd5ps2KjdbA6Zy01";
 }
 
-/* ================= ORIGINAL ================= */
-
+/* =========================
+   PREDICTION
+========================= */
 function runPrediction(){
 
 const t1 = document.getElementById("team1").value.trim();
 const t2 = document.getElementById("team2").value.trim();
 
 const m = data.find(x =>
-normalizeText(x.t1) === normalizeText(t1) &&
-normalizeText(x.t2) === normalizeText(t2)
+normalizeTeam(x.t1) === normalizeTeam(t1) &&
+normalizeTeam(x.t2) === normalizeTeam(t2)
 );
 
 if(!m){
@@ -334,7 +373,9 @@ else pred="Draw";
 document.getElementById("result").innerHTML=`
 <div class="card">
 
-<h2>${m.t1} VS ${m.t2}</h2>
+<h2>
+${flag(m.code1)} ${m.t1} VS ${flag(m.code2)} ${m.t2}
+</h2>
 
 <h3>${pred}</h3>
 
