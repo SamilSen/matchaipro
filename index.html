@@ -127,7 +127,7 @@ font-weight:900;
 cursor:pointer;
 }
 
-/* TEAM + FLAG */
+/* TEAM */
 .team{
 display:flex;
 align-items:center;
@@ -221,10 +221,25 @@ color:black;
 
 <div id="status">Loading...</div>
 
+<!-- 🔥 CLEAN START SCREEN (ESKİ STİL) -->
 <div id="result">
   <div class="card">
+
     <h2>⚽ Ready For Prediction</h2>
-    <p>Enter Teams Above</p>
+
+    <p style="font-size:30px;font-weight:700;color:#6b7280;">
+      Enter Teams Above
+    </p>
+
+    <p>Home (0%)</p>
+    <div class="bar-bg"><div class="bar home" style="width:0%"></div></div>
+
+    <p>Draw (0%)</p>
+    <div class="bar-bg"><div class="bar draw" style="width:0%"></div></div>
+
+    <p>Away (0%)</p>
+    <div class="bar-bg"><div class="bar away" style="width:0%"></div></div>
+
   </div>
 </div>
 
@@ -267,7 +282,6 @@ if(used >= freeLimit){
 alert("Free limit reached (3/3)");
 return false;
 }
-
 return true;
 }
 
@@ -335,7 +349,6 @@ a:parseFloat(c[6])
 });
 
 document.getElementById("status").innerHTML="✅ Ready";
-
 });
 
 function predict(){
