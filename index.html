@@ -370,43 +370,42 @@ document.getElementById("b3").style.width = m.a + "%";
 
 }
 
-</script>
-<script>
-
-<script>
 <script>
 
 /* =========================
-   STRIPE LINK
+   STRIPE
 ========================= */
 const STRIPE_499 = "https://buy.stripe.com/6oU4gAfzd5ps2KjdbA6Zy01";
 
 /* =========================
-   FREE LIMIT STATE
+   FREE LIMIT
 ========================= */
 let freeCount = parseInt(localStorage.getItem("freeCount")) || 0;
 
 /* =========================
-   MAIN PREDICT FUNCTION
-   (Bunu senin run() ile bağlıyoruz)
+   OVERRIDE YOUR EXISTING PREDICT
 ========================= */
-function predict(){
+const originalPredict = predict;
 
-// 3 free sonrası kilit
+/* =========================
+   NEW CONTROLLED PREDICT
+========================= */
+predict = function(){
+
 if(freeCount >= 3){
 showPaywall();
 return;
 }
 
-// free kullanım
 freeCount++;
 localStorage.setItem("freeCount", freeCount);
 
-run(); // SENİN ORİJİNAL PREDICTION FONKSİYONUN
+// eski sistem çalışsın
+originalPredict();
 }
 
 /* =========================
-   PAYWALL UI
+   PAYWALL
 ========================= */
 function showPaywall(){
 
@@ -430,9 +429,7 @@ background:#3b82f6;
 color:white;
 border:none;
 border-radius:12px;
-cursor:pointer;
-box-shadow:0 8px 20px rgba(59,130,246,.4);
-">
+cursor:pointer;">
 $4.99 Unlock Pro
 </button>
 
@@ -447,14 +444,6 @@ function buyPro(){
 window.location.href = STRIPE_499;
 }
 
-/* =========================
-   RESET (TEST PURPOSE)
-========================= */
-function resetUsage(){
-localStorage.removeItem("freeCount");
-}
-
 </script>
-
 </body>
 </html>
