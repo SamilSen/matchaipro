@@ -160,14 +160,80 @@ font-weight:900;
 color:black;
 }
 
-/* 🔥 PAYWALL */
+/* 🔥 PAYWALL (MODERN UI) */
 #paywall{
 display:none;
 position:fixed;
 inset:0;
-background:rgba(255,255,255,0.96);
+background:rgba(15,23,42,0.75);
+backdrop-filter:blur(8px);
 z-index:9999;
-padding:40px;
+}
+
+.paycard{
+max-width:420px;
+margin:80px auto;
+background:white;
+border-radius:20px;
+padding:30px;
+box-shadow:0 25px 70px rgba(0,0,0,0.3);
+text-align:center;
+}
+
+.paytitle{
+font-size:26px;
+font-weight:900;
+margin-bottom:8px;
+}
+
+.paydesc{
+color:#6b7280;
+font-size:14px;
+margin-bottom:20px;
+}
+
+.input{
+width:100%;
+padding:12px;
+margin:6px 0 12px;
+border-radius:10px;
+border:1px solid #ddd;
+}
+
+.btn-dark{
+width:100%;
+padding:12px;
+background:#111827;
+color:white;
+border:none;
+border-radius:10px;
+font-weight:700;
+cursor:pointer;
+}
+
+.btn-purple{
+width:100%;
+padding:12px;
+margin-top:10px;
+background:#6366f1;
+color:white;
+border:none;
+border-radius:10px;
+font-weight:700;
+cursor:pointer;
+}
+
+.btn-stripe{
+width:100%;
+padding:14px;
+margin-top:15px;
+background:linear-gradient(90deg,#6366f1,#a855f7);
+color:white;
+border:none;
+border-radius:12px;
+font-weight:900;
+cursor:pointer;
+box-shadow:0 10px 25px rgba(99,102,241,0.4);
 }
 </style>
 </head>
@@ -209,25 +275,30 @@ padding:40px;
 
 <div class="copy">© 2026 MatchAI Pro. All Rights Reserved.</div>
 
-<!-- 🔐 PAYWALL (LOGIN + STRIPE) -->
+<!-- 🔐 PAYWALL -->
 <div id="paywall">
 
-<h2>Premium Required</h2>
-<p>3 free usage completed</p>
+<div class="paycard">
 
-<br>
+<div class="paytitle">🔒 Premium Required</div>
+<div class="paydesc">3 free predictions completed</div>
 
-<input id="email" placeholder="Email"><br><br>
-<input id="password" type="password" placeholder="Password"><br><br>
+<input id="email" class="input" placeholder="Email">
+<input id="password" class="input" type="password" placeholder="Password">
 
-<button onclick="login()">Login</button>
-<button onclick="signup()">Sign Up</button>
+<button class="btn-dark" onclick="login()">Login</button>
+<button class="btn-purple" onclick="signup()">Create Account</button>
 
-<hr>
+<hr style="margin:20px 0;border:none;border-top:1px solid #eee;">
 
-<button onclick="window.location.href='https://buy.stripe.com/6oU4gAfzd5ps2KjdbA6Zy01'">
-💳 Pay Premium
+<div class="paydesc">Unlock unlimited predictions</div>
+
+<button class="btn-stripe"
+onclick="window.location.href='https://buy.stripe.com/6oU4gAfzd5ps2KjdbA6Zy01'">
+💳 Upgrade to Premium
 </button>
+
+</div>
 
 </div>
 
@@ -237,7 +308,6 @@ let data = [];
 
 const MAX_FREE_USES = 3;
 
-/* 🔥 FREE SYSTEM */
 function getUses(){
 return parseInt(localStorage.getItem("uses") || "0");
 }
@@ -250,12 +320,10 @@ function checkLimit(){
 return getUses() >= MAX_FREE_USES;
 }
 
-/* PAYWALL */
 function showPaywall(){
 document.getElementById("paywall").style.display = "block";
 }
 
-/* PREDICT */
 function predict(){
 
 if(checkLimit()){
@@ -272,13 +340,13 @@ document.getElementById("result").innerHTML =
 "<div class='card'><h2>" + t1 + " vs " + t2 + "</h2></div>";
 }
 
-/* (basit login dummy - Firebase eklenebilir sonra) */
+/* dummy auth (sonra Firebase bağlanır) */
 function login(){
-alert("Login clicked (Firebase bağlanacak)");
+alert("Login ready for Firebase integration");
 }
 
 function signup(){
-alert("Signup clicked (Firebase bağlanacak)");
+alert("Signup ready for Firebase integration");
 }
 
 </script>
