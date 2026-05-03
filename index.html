@@ -102,6 +102,18 @@ background-size:200% 200%;
 box-shadow:0 0 18px rgba(225,29,72,.45);
 }
 
+.login-btn{
+margin-top:20px;
+padding:18px 40px;
+font-size:24px;
+font-weight:900;
+border:none;
+border-radius:12px;
+cursor:pointer;
+background:#111827;
+color:white;
+}
+
 #status,#result{
 margin-top:20px;
 font-size:24px;
@@ -127,19 +139,8 @@ font-weight:800;
 
 <br><br>
 
-<button onclick="login()" style="
-margin-top:20px;
-padding:18px 40px;
-font-size:24px;
-font-weight:900;
-border:none;
-border-radius:12px;
-cursor:pointer;
-background:#111827;
-color:white;
-">
-🔐 Login with Google
-</button>
+<!-- 🔐 LOGIN -->
+<button class="login-btn" onclick="login()">🔐 Login with Google</button>
 
 <br><br>
 
@@ -184,10 +185,6 @@ document.getElementById("result").innerHTML =
 }, 1500);
 }
 
-function normalizeText(str){
-return str.normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/’/g,"'").toLowerCase().trim();
-}
-
 function fixCode(team){
 const map = {
 "Mexico":"mx","South Africa":"za","Korea Republic":"kr","Czechia":"cz",
@@ -205,9 +202,9 @@ const map = {
 };
 return map[team] || "";
 }
-
 </script>
 
+<!-- 🔥 FIREBASE + LOGIN FIX -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
@@ -218,20 +215,14 @@ authDomain: "matchaipro-accc8.firebaseapp.com",
 projectId: "matchaipro-accc8",
 storageBucket: "matchaipro-accc8.firebasestorage.app",
 messagingSenderId: "811643864855",
-appId: "1:811643864855:web:397384d327bef1ef9f9952",
-measurementId: "G-993F3FTEKS"
+appId: "1:811643864855:web:397384d327bef1ef9f9952"
 };
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-window.auth = auth;
-window.GoogleAuthProvider = GoogleAuthProvider;
-window.signInWithPopup = signInWithPopup;
-</script>
-
-<script>
-async function login(){
+/* 🔥 KRİTİK FIX: GLOBAL LOGIN */
+window.login = async function(){
 try{
 const provider = new GoogleAuthProvider();
 const result = await signInWithPopup(auth, provider);
@@ -239,7 +230,7 @@ alert("Logged in: " + result.user.email);
 }catch(e){
 alert(e.message);
 }
-}
+};
 </script>
 
 </body>
