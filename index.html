@@ -402,36 +402,6 @@ document.getElementById("b3").style.width = m.a + "%";
 }
 
 </script>
-<script type="module">
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getAuth, signInWithPopup, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-
-// 🔥 SENİN CONFIG (hazır koydum)
-const firebaseConfig = {
-  apiKey: "AIzaSyDm-tChOkLa0T26khkWVX_yWCa6cKaML7Q",
-  authDomain: "matchaipro-accc8.firebaseapp.com",
-  projectId: "matchaipro-accc8",
-  storageBucket: "matchaipro-accc8.firebasestorage.app",
-  messagingSenderId: "811643864855",
-  appId: "1:811643864855:web:397384d327bef1ef9f9952",
-  measurementId: "G-993F3FTEKS"
-};
-
-const app = initializeApp(firebaseConfig);
-
-const auth = getAuth(app);
-const db = getFirestore(app);
-
-// 🔓 global erişim
-window.auth = auth;
-window.db = db;
-window.GoogleAuthProvider = GoogleAuthProvider;
-window.signInWithPopup = signInWithPopup;
-window.doc = doc;
-window.getDoc = getDoc;
-
-</script>
 </body>
-</html> 
+</html>
