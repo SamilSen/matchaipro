@@ -84,8 +84,8 @@ color:white;
 background:linear-gradient(90deg,#2563eb,#3b82f6,#2563eb);
 background-size:200% 200%;
 box-shadow:0 0 18px rgba(37,99,235,.45);
-display:inline-block;
 text-decoration:none;
+display:inline-block;
 }
 
 .predict-btn{
@@ -102,9 +102,10 @@ background-size:200% 200%;
 box-shadow:0 0 18px rgba(225,29,72,.45);
 }
 
-/* 🔥 SADECE BUNU EKLEDİM (problem çözümü) */
-#status, #result{
-display:none;
+#status,#result{
+margin-top:20px;
+font-size:24px;
+font-weight:800;
 }
 
 </style>
@@ -151,29 +152,37 @@ color:white;
 
 </div>
 
-<!-- ❗ AYNI KALDI AMA GİZLİ -->
-<div id="status">Loading...</div>
+<div id="status"></div>
 <div id="result"></div>
 
 <script>
-
 let data = [];
 
-const STRIPE_URL = "https://buy.stripe.com/6oU4gAfzd5ps2KjdbA6Zy01";
-const MAX_FREE_USES = 3;
+function predict(){
 
-function isPaid(){ return localStorage.getItem("paid") === "true"; }
-function setPaid(){ localStorage.setItem("paid","true"); localStorage.setItem("uses","0"); }
+let t1 = document.getElementById("team1").value;
+let t2 = document.getElementById("team2").value;
 
-const urlParams = new URLSearchParams(window.location.search);
-if(urlParams.get("success") === "true"){
-setPaid();
-window.history.replaceState({}, document.title, window.location.pathname);
+if(!t1 || !t2){
+document.getElementById("status").innerHTML = "❌ Enter teams first";
+return;
 }
 
-function getUses(){ return parseInt(localStorage.getItem("uses") || "0"); }
-function addUse(){ localStorage.setItem("uses", getUses() + 1); }
-function checkLimit(){ if(isPaid()) return false; return getUses() >= MAX_FREE_USES; }
+document.getElementById("status").innerHTML = "⏳ Loading...";
+document.getElementById("result").innerHTML = "";
+
+setTimeout(() => {
+
+let score1 = Math.floor(Math.random()*4);
+let score2 = Math.floor(Math.random()*4);
+
+document.getElementById("status").innerHTML = "✅ Prediction Ready";
+
+document.getElementById("result").innerHTML =
+"🏆 " + t1 + " " + score1 + " - " + score2 + " " + t2;
+
+}, 1500);
+}
 
 function normalizeText(str){
 return str.normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/’/g,"'").toLowerCase().trim();
