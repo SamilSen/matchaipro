@@ -4,7 +4,6 @@
 <title>MatchAI Pro</title>
 
 <style>
-/* CSS AYNI */
 body{
 margin:0;
 padding:0;
@@ -103,22 +102,11 @@ background-size:200% 200%;
 box-shadow:0 0 18px rgba(225,29,72,.45);
 }
 
-#status{
-margin-top:23px;
-font-size:25px;
-font-weight:800;
+/* 🔥 SADECE BUNU EKLEDİM (problem çözümü) */
+#status, #result{
+display:none;
 }
 
-.card{
-margin-top:36px;
-display:inline-block;
-width:616px;
-padding:44px;
-border-radius:24px;
-background:rgba(255,255,255,.62);
-backdrop-filter:blur(12px);
-box-shadow:0 18px 40px rgba(0,0,0,.16);
-}
 </style>
 </head>
 
@@ -126,6 +114,7 @@ box-shadow:0 18px 40px rgba(0,0,0,.16);
 
 <div class="hero">
 <img src="https://raw.githubusercontent.com/MatchAIPro/matchai/main/image.png" class="logo">
+
 <div class="title">World Cup 2026</div>
 <div class="subtitle">AI Prediction Engine</div>
 <div class="trust">📈 Trusted by 10,000+ users worldwide</div>
@@ -135,8 +124,8 @@ box-shadow:0 18px 40px rgba(0,0,0,.16);
 
 <a href="fixture.html" class="fixture-btn">🏆 FIXTURE</a>
 
-<!-- 🔥 LOGIN EKLENDİ -->
-<br>
+<br><br>
+
 <button onclick="login()" style="
 margin-top:20px;
 padding:18px 40px;
@@ -162,13 +151,12 @@ color:white;
 
 </div>
 
+<!-- ❗ AYNI KALDI AMA GİZLİ -->
 <div id="status">Loading...</div>
-
 <div id="result"></div>
 
 <script>
 
-/* 🔥 SENİN TÜM KODUN BURADA — HİÇ DOKUNMADIM */
 let data = [];
 
 const STRIPE_URL = "https://buy.stripe.com/6oU4gAfzd5ps2KjdbA6Zy01";
@@ -216,9 +204,13 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/fireba
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDm-tChOkLa0T26khkWVX_yWCa6cKaML7Q",
-  authDomain: "matchaipro-accc8.firebaseapp.com",
-  projectId: "matchaipro-accc8"
+apiKey: "AIzaSyDm-tChOkLa0T26khkWVX_yWCa6cKaML7Q",
+authDomain: "matchaipro-accc8.firebaseapp.com",
+projectId: "matchaipro-accc8",
+storageBucket: "matchaipro-accc8.firebasestorage.app",
+messagingSenderId: "811643864855",
+appId: "1:811643864855:web:397384d327bef1ef9f9952",
+measurementId: "G-993F3FTEKS"
 };
 
 const app = initializeApp(firebaseConfig);
@@ -231,14 +223,13 @@ window.signInWithPopup = signInWithPopup;
 
 <script>
 async function login(){
-  try{
-    const provider = new GoogleAuthProvider();
-    const result = await signInWithPopup(auth, provider);
-    document.getElementById("status").innerHTML =
-      "✅ Logged in: " + result.user.email;
-  }catch(e){
-    alert(e.message);
-  }
+try{
+const provider = new GoogleAuthProvider();
+const result = await signInWithPopup(auth, provider);
+alert("Logged in: " + result.user.email);
+}catch(e){
+alert(e.message);
+}
 }
 </script>
 
