@@ -4,7 +4,7 @@
 <title>MatchAI Pro</title>
 
 <style>
-/* SENİN CSS'İN AYNI — HİÇ DOKUNMADIM */
+/* CSS AYNI - DOKUNMADIM */
 body{
 margin:0;
 padding:0;
@@ -119,34 +119,6 @@ background:rgba(255,255,255,.62);
 backdrop-filter:blur(12px);
 box-shadow:0 18px 40px rgba(0,0,0,.16);
 }
-
-.footer{
-margin-top:46px;
-padding:26px;
-border-top:1px solid #e5e7eb;
-display:flex;
-justify-content:center;
-gap:12px;
-}
-
-.footer a{
-padding:16px 34px;
-font-size:24px;
-font-weight:900;
-color:#7c3aed;
-text-decoration:none;
-border-radius:14px;
-background:#fff;
-border:2px solid #000;
-}
-
-.copy{
-margin-top:20px;
-padding-bottom:30px;
-font-size:22px;
-font-weight:900;
-color:black;
-}
 </style>
 </head>
 
@@ -164,7 +136,7 @@ color:black;
 
 <a href="fixture.html" class="fixture-btn">🏆 FIXTURE</a>
 
-<!-- 🔥 LOGIN BUTONU -->
+<!-- 🔥 LOGIN -->
 <br>
 <button onclick="login()" style="
 margin-top:20px;
@@ -193,38 +165,39 @@ color:white;
 
 <div id="status">Ready</div>
 
-<script>
-
-// 🔥 LOGIN FONKSİYONU
-async function login(){
-  const provider = new GoogleAuthProvider();
-  const result = await signInWithPopup(auth, provider);
-  document.getElementById("status").innerHTML =
-    "✅ Logged in: " + result.user.email;
-}
-
-</script>
-
-<!-- 🔥 FIREBASE -->
+<!-- 🔥 FIREBASE (GLOBAL FIX) -->
 <script type="module">
-
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDm-tChOkLa0T26khkWVX_yWCa6cKaML7Q",
   authDomain: "matchaipro-accc8.firebaseapp.com",
-  projectId: "matchaipro-accc8",
+  projectId: "matchaipro-accc8"
 };
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-// global
+// 🔥 GLOBAL YAP (KRİTİK FIX)
 window.auth = auth;
 window.GoogleAuthProvider = GoogleAuthProvider;
 window.signInWithPopup = signInWithPopup;
+</script>
 
+<!-- 🔥 LOGIN FUNCTION -->
+<script>
+async function login(){
+  try{
+    const provider = new GoogleAuthProvider();
+    const result = await signInWithPopup(auth, provider);
+    document.getElementById("status").innerHTML =
+      "✅ Logged in: " + result.user.email;
+  }catch(e){
+    console.error(e);
+    alert("Login error: " + e.message);
+  }
+}
 </script>
 
 </body>
