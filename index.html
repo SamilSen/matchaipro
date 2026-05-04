@@ -238,7 +238,7 @@ color:black;
 
   <div class="user-bar" id="userBar">
     <span id="userEmail"></span>
-    <button id="logoutBtn">Çıkış Yap</button>
+    <button id="logoutBtn">Logout</button>
   </div>
 
   <img src="https://raw.githubusercontent.com/MatchAIPro/matchai/main/image.png" class="logo">
@@ -283,13 +283,11 @@ color:black;
 
 <div class="copy">© 2026 MatchAI Pro. All Rights Reserved.</div>
 
-<!-- Firebase CDN (module değil normal script) -->
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 
 <script>
-// Firebase başlat
 const firebaseConfig = {
   apiKey: "AIzaSyDm-tChOkLa0T26khkWVX_yWCa6cKaML7Q",
   authDomain: "matchaipro-accc8.firebaseapp.com",
@@ -300,6 +298,7 @@ const firebaseConfig = {
 };
 
 firebase.initializeApp(firebaseConfig);
+
 const auth = firebase.auth();
 const db = firebase.firestore();
 
@@ -310,97 +309,210 @@ let currentUser = null;
 let userData = null;
 let matchData = [];
 
-// Stripe başarılı dönüş
 const urlParams = new URLSearchParams(window.location.search);
+
 if(urlParams.get("success") === "true"){
   auth.onAuthStateChanged(async user => {
     if(user){
-      await db.collection("users").doc(user.uid).set({ paid: true }, { merge: true });
+      await db.collection("users").doc(user.uid).set({
+        paid: true
+      }, { merge: true });
+
       window.history.replaceState({}, document.title, window.location.pathname);
     }
   });
 }
 
-// Kullanıcı oturum takibi
 auth.onAuthStateChanged(async user => {
   currentUser = user;
+
   if(user){
     const ref = db.collection("users").doc(user.uid);
     const snap = await ref.get();
+
     if(!snap.exists){
-      await ref.set({ email: user.email, uses: 0, paid: false });
-      userData = { email: user.email, uses: 0, paid: false };
+      await ref.set({
+        email: user.email,
+        uses: 0,
+        paid: false
+      });
+
+      userData = {
+        email: user.email,
+        uses: 0,
+        paid: false
+      };
     } else {
       userData = snap.data();
+
+      if(typeof userData.uses === "undefined"){
+        userData.uses = 0;
+      }
+
+      if(typeof userData.paid === "undefined"){
+        userData.paid = false;
+      }
     }
+
     document.getElementById("userBar").style.display = "flex";
     document.getElementById("userEmail").textContent = user.email;
+
   } else {
     userData = null;
     document.getElementById("userBar").style.display = "none";
   }
 });
 
-// Çıkış butonu
 document.getElementById("logoutBtn").addEventListener("click", async () => {
   await auth.signOut();
   window.location.reload();
 });
 
-// Bayrak kodu
 function fixCode(team){
   const map = {
-    "Mexico":"mx","South Africa":"za","Korea Republic":"kr","Czechia":"cz",
-    "Canada":"ca","Bosnia-Herzegovina":"ba","USA":"us","Paraguay":"py",
-    "Qatar":"qa","Switzerland":"ch","Brazil":"br","Morocco":"ma",
-    "Haiti":"ht","Scotland":"gb","Australia":"au","Turkey":"tr",
-    "Germany":"de","Curaçao":"cw","Netherlands":"nl","Japan":"jp",
-    "Côte d'Ivoire":"ci","Ecuador":"ec","Sweden":"se","Tunisia":"tn",
-    "Spain":"es","Belgium":"be","Egypt":"eg","Saudi Arabia":"sa",
-    "Uruguay":"uy","Iran":"ir","New Zealand":"nz","France":"fr",
-    "Senegal":"sn","Iraq":"iq","Norway":"no","Argentina":"ar",
-    "Algeria":"dz","Austria":"at","Jordan":"jo","Portugal":"pt",
-    "Congo DR":"cd","England":"gb","Croatia":"hr","Ghana":"gh",
-    "Panama":"pa","Uzbekistan":"uz","Colombia":"co"
+    "Mexico":"mx",
+    "South Africa":"za",
+    "Korea Republic":"kr",
+    "Czechia":"cz",
+    "Canada":"ca",
+    "Bosnia-Herzegovina":"ba",
+    "USA":"us",
+    "United States":"us",
+    "Paraguay":"py",
+    "Qatar":"qa",
+    "Switzerland":"ch",
+    "Brazil":"br",
+    "Morocco":"ma",
+    "Haiti":"ht",
+    "Scotland":"gb",
+    "Australia":"au",
+    "Turkey":"tr",
+    "Türkiye":"tr",
+    "Germany":"de",
+    "Curaçao":"cw",
+    "Curacao":"cw",
+    "Netherlands":"nl",
+    "Japan":"jp",
+    "Côte d'Ivoire":"ci",
+    "Cote d'Ivoire":"ci",
+    "Ecuador":"ec",
+    "Sweden":"se",
+    "Tunisia":"tn",
+    "Spain":"es",
+    "Belgium":"be",
+    "Egypt":"eg",
+    "Saudi Arabia":"sa",
+    "Uruguay":"uy",
+    "Iran":"ir",
+    "New Zealand":"nz",
+    "France":"fr",
+    "Senegal":"sn",
+    "Iraq":"iq",
+    "Norway":"no",
+    "Argentina":"ar",
+    "Algeria":"dz",
+    "Austria":"at",
+    "Jordan":"jo",
+    "Portugal":"pt",
+    "Congo DR":"cd",
+    "England":"gb",
+    "Croatia":"hr",
+    "Ghana":"gh",
+    "Panama":"pa",
+    "Uzbekistan":"uz",
+    "Colombia":"co"
   };
+
   return map[team] || "";
 }
 
-// CSV yükle
+function normalizeText(str){
+  return String(str || "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g,"")
+    .replace(/[’‘]/g,"'")
+    .replace(/[^a-zA-Z0-9 ]/g,"")
+    .toLowerCase()
+    .trim();
+}
+
+function parseCSVLine(line){
+  const result = [];
+  let current = "";
+  let insideQuotes = false;
+
+  for(let i = 0; i < line.length; i++){
+    const char = line[i];
+
+    if(char === '"'){
+      insideQuotes = !insideQuotes;
+    } else if(char === "," && !insideQuotes){
+      result.push(current);
+      current = "";
+    } else {
+      current += char;
+    }
+  }
+
+  result.push(current);
+  return result;
+}
+
 fetch("https://raw.githubusercontent.com/SamilSen/matchaipro/main/predictions.csv")
-  .then(r => r.text())
-  .then(t => {
-    const rows = t.split(/\r?\n/).slice(1).filter(r => r.trim());
-    matchData = rows.map(r => {
-      const c = r.split(",");
+  .then(response => {
+    if(!response.ok){
+      throw new Error("CSV not loaded");
+    }
+    return response.text();
+  })
+  .then(text => {
+    const rows = text.split(/\r?\n/).slice(1).filter(row => row.trim());
+
+    matchData = rows.map(row => {
+      const c = parseCSVLine(row);
+
+      if(c.length < 7) return null;
+
+      const home = c[0].trim();
+      const away = c[1].trim();
+
+      const h = parseFloat(c[4]);
+      const d = parseFloat(c[5]);
+      const a = parseFloat(c[6]);
+
+      if(!home || !away || isNaN(h) || isNaN(d) || isNaN(a)){
+        return null;
+      }
+
       return {
-        t1: c[0].trim(),
-        t2: c[1].trim(),
-        code1: fixCode(c[0].trim()),
-        code2: fixCode(c[1].trim()),
-        h: parseFloat(c[4]),
-        d: parseFloat(c[5]),
-        a: parseFloat(c[6])
+        t1: home,
+        t2: away,
+        code1: fixCode(home),
+        code2: fixCode(away),
+        h: h,
+        d: d,
+        a: a
       };
-    });
+    }).filter(item => item !== null);
+
+    console.log("Loaded matches:", matchData.length);
     document.getElementById("status").innerHTML = "✅ Ready";
   })
-  .catch(() => {
+  .catch(error => {
+    console.error(error);
     document.getElementById("status").innerHTML = "❌ Data load failed";
   });
 
-function normalizeText(str){
-  return str.normalize("NFD")
-    .replace(/[\u0300-\u036f]/g,"")
-    .replace(/'/g,"'")
-    .toLowerCase().trim();
-}
-
 function showResult(m){
   let pred = "";
-  if(m.h > m.d && m.h > m.a) pred = m.t1 + " Win";
-  else if(m.a > m.h && m.a > m.d) pred = m.t2 + " Win";
-  else pred = "Draw";
+
+  if(m.h > m.d && m.h > m.a){
+    pred = m.t1 + " Win";
+  } else if(m.a > m.h && m.a > m.d){
+    pred = m.t2 + " Win";
+  } else {
+    pred = "Draw";
+  }
 
   const flag1 = m.code1 ? `<img class="flag" src="https://flagcdn.com/w40/${m.code1}.png">` : "";
   const flag2 = m.code2 ? `<img class="flag" src="https://flagcdn.com/w40/${m.code2}.png">` : "";
@@ -409,10 +521,13 @@ function showResult(m){
     <div class="card">
       <h2>${flag1} ${m.t1} VS ${m.t2} ${flag2}</h2>
       <h3>${pred}</h3>
+
       <p>Home (${m.h}%)</p>
       <div class="bar-bg"><div id="b1" class="bar home"></div></div>
+
       <p>Draw (${m.d}%)</p>
       <div class="bar-bg"><div id="b2" class="bar draw"></div></div>
+
       <p>Away (${m.a}%)</p>
       <div class="bar-bg"><div id="b3" class="bar away"></div></div>
     </div>
@@ -425,7 +540,6 @@ function showResult(m){
   }, 120);
 }
 
-// Predict butonu
 document.getElementById("predictBtn").addEventListener("click", async () => {
   const t1 = document.getElementById("team1").value.trim();
   const t2 = document.getElementById("team2").value.trim();
@@ -440,48 +554,57 @@ document.getElementById("predictBtn").addEventListener("click", async () => {
     return;
   }
 
-  const m = matchData.find(x =>
-    normalizeText(x.t1) === normalizeText(t1) &&
-    normalizeText(x.t2) === normalizeText(t2)
+  const nt1 = normalizeText(t1);
+  const nt2 = normalizeText(t2);
+
+  const match = matchData.find(x =>
+    normalizeText(x.t1) === nt1 &&
+    normalizeText(x.t2) === nt2
+  ) || matchData.find(x =>
+    normalizeText(x.t1).includes(nt1) &&
+    normalizeText(x.t2).includes(nt2)
   );
 
-  if(!m){
-    document.getElementById("result").innerHTML = "<div class='card'>❌ Match Not Found</div>";
+  if(!match){
+    document.getElementById("result").innerHTML =
+      "<div class='card'>❌ Match Not Found<br><br>Please check team names exactly as shown in fixture.</div>";
     return;
   }
 
-  // Giriş yapmamış kullanıcı
   if(!currentUser){
     const uses = parseInt(localStorage.getItem("free_uses") || "0");
+
     if(uses >= MAX_FREE_USES){
       window.location.href = "login.html";
       return;
     }
+
     localStorage.setItem("free_uses", uses + 1);
-    showResult(m);
+    showResult(match);
     return;
   }
 
-  // Giriş yapmış + ödeme yapmış
   if(userData && userData.paid){
-    showResult(m);
+    showResult(match);
     return;
   }
 
-  // Giriş yapmış + ödeme yapmamış
-  if(userData && userData.uses >= MAX_FREE_USES){
+  if(userData && Number(userData.uses || 0) >= MAX_FREE_USES){
     window.location.href = STRIPE_URL;
     return;
   }
 
-  // Kullanım sayısını artır
-  await db.collection("users").doc(currentUser.uid).update({
-    uses: firebase.firestore.FieldValue.increment(1)
-  });
-  userData.uses += 1;
-  showResult(m);
-});
+  await db.collection("users").doc(currentUser.uid).set({
+    uses: firebase.firestore.FieldValue.increment(1),
+    email: currentUser.email,
+    paid: false
+  }, { merge: true });
 
+  userData.uses = Number(userData.uses || 0) + 1;
+
+  showResult(match);
+});
 </script>
+
 </body>
 </html>
