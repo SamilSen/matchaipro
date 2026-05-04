@@ -1,302 +1,136 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>MatchAI Pro - Login</title>
+<title>Login - MatchAI Pro</title>
 
 <style>
 body{
 margin:0;
-padding:0;
-font-family:Arial,sans-serif;
-background:linear-gradient(135deg,#eef2ff,#f8fafc,#ede9fe);
-display:flex;
-align-items:center;
-justify-content:center;
-min-height:100vh;
-}
-
-.card{
-background:white;
-border-radius:20px;
-box-shadow:0 18px 40px rgba(0,0,0,.16);
-padding:44px;
-width:360px;
+font-family:Arial;
+background:linear-gradient(135deg,#eef2ff,#ede9fe);
 text-align:center;
 }
 
-.card h2{
-font-size:28px;
-font-weight:900;
-margin:0 0 6px;
-background:linear-gradient(90deg,#6d28d9,#a855f7,#ec4899);
--webkit-background-clip:text;
--webkit-text-fill-color:transparent;
+.box{
+margin-top:120px;
+background:white;
+display:inline-block;
+padding:40px;
+border-radius:20px;
+box-shadow:0 20px 40px rgba(0,0,0,.2);
 }
 
-.card p{
-font-size:16px;
-color:#6b7280;
-margin:0 0 28px;
-}
-
-.field{
-margin-bottom:16px;
-text-align:left;
-}
-
-.field label{
-font-size:14px;
-font-weight:700;
-color:#374151;
+input{
 display:block;
-margin-bottom:6px;
-}
-
-.field input{
-width:100%;
-box-sizing:border-box;
-padding:14px 16px;
-font-size:16px;
-border-radius:12px;
-border:2px solid #d1d5db;
-outline:none;
-}
-
-.field input:focus{
-border-color:#7c3aed;
-}
-
-.btn{
-width:100%;
-padding:16px;
+width:300px;
+padding:15px;
+margin:10px auto;
 font-size:18px;
-font-weight:900;
+border-radius:10px;
+border:2px solid #ddd;
+}
+
+button{
+padding:15px 40px;
+font-size:18px;
+font-weight:800;
 border:none;
-border-radius:14px;
-cursor:pointer;
+border-radius:10px;
+background:#7c3aed;
 color:white;
-margin-top:8px;
-}
-
-.btn-login{
-background:linear-gradient(90deg,#7c3aed,#a855f7);
-}
-
-.btn-register{
-background:linear-gradient(90deg,#2563eb,#3b82f6);
-}
-
-.btn:disabled{
-opacity:0.6;
-cursor:not-allowed;
-}
-
-.err{
-color:#e11d48;
-font-size:14px;
-font-weight:700;
-min-height:20px;
-margin-bottom:8px;
-}
-
-.ok{
-color:#059669;
-font-size:14px;
-font-weight:700;
-min-height:20px;
-margin-bottom:8px;
-}
-
-.toggle{
-margin-top:18px;
-font-size:14px;
-color:#6b7280;
-}
-
-.toggle span{
-color:#7c3aed;
 cursor:pointer;
-font-weight:700;
+margin-top:10px;
 }
 
-.forgot{
-font-size:13px;
-color:#7c3aed;
-cursor:pointer;
-text-align:right;
-margin-top:4px;
-display:block;
+h1{
+margin-bottom:20px;
 }
 </style>
 </head>
 
 <body>
 
-<div class="card">
-  <div style="font-size:42px;margin-bottom:10px;">🔐</div>
+<div class="box">
+<h1>Login</h1>
 
-  <h2>MatchAI Pro</h2>
-  <p id="subtitle">Login to your account</p>
+<input id="email" placeholder="Email">
+<input id="password" type="password" placeholder="Password">
 
-  <div id="msg" class="err"></div>
+<button id="loginBtn">Login</button>
+<button id="signupBtn">Sign Up</button>
 
-  <div class="field">
-    <label>Email</label>
-    <input type="email" id="email" placeholder="example@mail.com">
-  </div>
-
-  <div class="field">
-    <label>Password</label>
-    <input type="password" id="pass" placeholder="Minimum 6 characters">
-    <span class="forgot" id="forgotBtn">Forgot password?</span>
-  </div>
-
-  <div class="field" id="pass2wrap" style="display:none;">
-    <label>Confirm Password</label>
-    <input type="password" id="pass2" placeholder="Confirm your password">
-  </div>
-
-  <button class="btn btn-login" id="mainBtn">Login</button>
-
-  <div class="toggle" id="toggleTxt">
-    Don’t have an account? <span id="switchBtn">Sign Up</span>
-  </div>
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 
 <script>
-firebase.initializeApp({
+const firebaseConfig = {
   apiKey: "AIzaSyDm-tChOkLa0T26khkWVX_yWCa6cKaML7Q",
   authDomain: "matchaipro-accc8.firebaseapp.com",
   projectId: "matchaipro-accc8",
   storageBucket: "matchaipro-accc8.firebasestorage.app",
   messagingSenderId: "811643864855",
   appId: "1:811643864855:web:397384d327bef1ef9f9952"
-});
+};
+
+firebase.initializeApp(firebaseConfig);
 
 const auth = firebase.auth();
-let mode = "login";
+const db = firebase.firestore();
 
-auth.onAuthStateChanged(user => {
-  if(user){
-    window.location.href = "index.html";
-  }
-});
+const STRIPE_URL = "https://buy.stripe.com/6oU4gAfzd5ps2KjdbA6Zy01";
 
-function setMsg(txt, ok = false){
-  const el = document.getElementById("msg");
-  el.textContent = txt;
-  el.className = ok ? "ok" : "err";
-}
+// LOGIN
+document.getElementById("loginBtn").onclick = async () => {
 
-function setLoading(val){
-  const btn = document.getElementById("mainBtn");
-  btn.disabled = val;
-  btn.textContent = val ? "Please wait..." : (mode === "login" ? "Login" : "Sign Up");
-}
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
 
-function switchMode(){
-  mode = mode === "login" ? "register" : "login";
+  try{
+    const res = await auth.signInWithEmailAndPassword(email,password);
+    const user = res.user;
 
-  document.getElementById("pass2wrap").style.display = mode === "register" ? "block" : "none";
-  document.getElementById("forgotBtn").style.display = mode === "register" ? "none" : "block";
+    const snap = await db.collection("users").doc(user.uid).get();
+    const data = snap.data();
 
-  document.getElementById("mainBtn").textContent = mode === "login" ? "Login" : "Sign Up";
-  document.getElementById("mainBtn").className = "btn " + (mode === "login" ? "btn-login" : "btn-register");
-
-  document.getElementById("subtitle").textContent = mode === "login"
-    ? "Login to your account"
-    : "Create a new account";
-
-  document.getElementById("toggleTxt").innerHTML = mode === "login"
-    ? 'Don’t have an account? <span id="switchBtn">Sign Up</span>'
-    : 'Already have an account? <span id="switchBtn">Login</span>';
-
-  document.getElementById("switchBtn").addEventListener("click", switchMode);
-
-  setMsg("");
-}
-
-document.getElementById("switchBtn").addEventListener("click", switchMode);
-
-document.getElementById("mainBtn").addEventListener("click", async () => {
-  const email = document.getElementById("email").value.trim();
-  const pass  = document.getElementById("pass").value;
-
-  if(!email || !pass){
-    setMsg("Please fill in all fields.");
-    return;
-  }
-
-  if(!/\S+@\S+\.\S+/.test(email)){
-    setMsg("Please enter a valid email address.");
-    return;
-  }
-
-  setLoading(true);
-
-  try {
-    if(mode === "login"){
-      await auth.signInWithEmailAndPassword(email, pass);
-      setMsg("Login successful! Redirecting...", true);
-      setTimeout(() => {
-        window.location.href = "index.html";
-      }, 800);
+    if(data && data.paid === true){
+      window.location.href = "index.html";
     } else {
-      const pass2 = document.getElementById("pass2").value;
-
-      if(pass.length < 6){
-        setMsg("Password must be at least 6 characters.");
-        setLoading(false);
-        return;
-      }
-
-      if(pass !== pass2){
-        setMsg("Passwords do not match.");
-        setLoading(false);
-        return;
-      }
-
-      await auth.createUserWithEmailAndPassword(email, pass);
-      setMsg("Account created! Redirecting...", true);
-
-      setTimeout(() => {
-        window.location.href = "index.html";
-      }, 800);
+      window.location.href = STRIPE_URL;
     }
-  } catch(e){
-    const errors = {
-      "auth/user-not-found": "No account found with this email.",
-      "auth/wrong-password": "Incorrect password.",
-      "auth/email-already-in-use": "This email is already registered.",
-      "auth/too-many-requests": "Too many attempts. Please try again later.",
-      "auth/invalid-email": "Invalid email address.",
-      "auth/invalid-credential": "Email or password is incorrect.",
-      "auth/weak-password": "Password is too weak."
-    };
 
-    setMsg(errors[e.code] || "Error: " + e.message);
-    setLoading(false);
+  }catch(e){
+    alert("Login error: " + e.message);
   }
-});
+};
 
-document.getElementById("forgotBtn").addEventListener("click", async () => {
-  const email = document.getElementById("email").value.trim();
 
-  if(!email){
-    setMsg("Please enter your email first.");
-    return;
+// SIGN UP
+document.getElementById("signupBtn").onclick = async () => {
+
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+
+  try{
+    const res = await auth.createUserWithEmailAndPassword(email,password);
+    const user = res.user;
+
+    await db.collection("users").doc(user.uid).set({
+      email: email,
+      uses: 0,
+      paid: false
+    });
+
+    // Yeni kullanıcı direkt ödeme sayfasına
+    window.location.href = STRIPE_URL;
+
+  }catch(e){
+    alert("Signup error: " + e.message);
   }
+};
 
-  try {
-    await auth.sendPasswordResetEmail(email);
-    setMsg("Password reset email sent!", true);
-  } catch(e){
-    setMsg("Could not send reset email: " + e.message);
-  }
-});
 </script>
 
 </body>
