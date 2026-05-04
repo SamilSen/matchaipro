@@ -1,54 +1,165 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>MatchAI Pro - Giriş</title>
+<title>MatchAI Pro - Login</title>
+
 <style>
-body{margin:0;padding:0;font-family:Arial,sans-serif;background:linear-gradient(135deg,#eef2ff,#f8fafc,#ede9fe);display:flex;align-items:center;justify-content:center;min-height:100vh;}
-.card{background:white;border-radius:20px;box-shadow:0 18px 40px rgba(0,0,0,.16);padding:44px;width:360px;text-align:center;}
-.card h2{font-size:28px;font-weight:900;margin:0 0 6px;background:linear-gradient(90deg,#6d28d9,#a855f7,#ec4899);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
-.card p{font-size:16px;color:#6b7280;margin:0 0 28px;}
-.field{margin-bottom:16px;text-align:left;}
-.field label{font-size:14px;font-weight:700;color:#374151;display:block;margin-bottom:6px;}
-.field input{width:100%;box-sizing:border-box;padding:14px 16px;font-size:16px;border-radius:12px;border:2px solid #d1d5db;outline:none;}
-.field input:focus{border-color:#7c3aed;}
-.btn{width:100%;padding:16px;font-size:18px;font-weight:900;border:none;border-radius:14px;cursor:pointer;color:white;margin-top:8px;}
-.btn-login{background:linear-gradient(90deg,#7c3aed,#a855f7);}
-.btn-register{background:linear-gradient(90deg,#2563eb,#3b82f6);margin-top:10px;}
-.btn:disabled{opacity:0.6;cursor:not-allowed;}
-.err{color:#e11d48;font-size:14px;font-weight:700;min-height:20px;margin-bottom:8px;}
-.ok{color:#059669;font-size:14px;font-weight:700;min-height:20px;margin-bottom:8px;}
-.toggle{margin-top:18px;font-size:14px;color:#6b7280;}
-.toggle span{color:#7c3aed;cursor:pointer;font-weight:700;}
-.forgot{font-size:13px;color:#7c3aed;cursor:pointer;text-align:right;margin-top:4px;display:block;}
+body{
+margin:0;
+padding:0;
+font-family:Arial,sans-serif;
+background:linear-gradient(135deg,#eef2ff,#f8fafc,#ede9fe);
+display:flex;
+align-items:center;
+justify-content:center;
+min-height:100vh;
+}
+
+.card{
+background:white;
+border-radius:20px;
+box-shadow:0 18px 40px rgba(0,0,0,.16);
+padding:44px;
+width:360px;
+text-align:center;
+}
+
+.card h2{
+font-size:28px;
+font-weight:900;
+margin:0 0 6px;
+background:linear-gradient(90deg,#6d28d9,#a855f7,#ec4899);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+}
+
+.card p{
+font-size:16px;
+color:#6b7280;
+margin:0 0 28px;
+}
+
+.field{
+margin-bottom:16px;
+text-align:left;
+}
+
+.field label{
+font-size:14px;
+font-weight:700;
+color:#374151;
+display:block;
+margin-bottom:6px;
+}
+
+.field input{
+width:100%;
+box-sizing:border-box;
+padding:14px 16px;
+font-size:16px;
+border-radius:12px;
+border:2px solid #d1d5db;
+outline:none;
+}
+
+.field input:focus{
+border-color:#7c3aed;
+}
+
+.btn{
+width:100%;
+padding:16px;
+font-size:18px;
+font-weight:900;
+border:none;
+border-radius:14px;
+cursor:pointer;
+color:white;
+margin-top:8px;
+}
+
+.btn-login{
+background:linear-gradient(90deg,#7c3aed,#a855f7);
+}
+
+.btn-register{
+background:linear-gradient(90deg,#2563eb,#3b82f6);
+}
+
+.btn:disabled{
+opacity:0.6;
+cursor:not-allowed;
+}
+
+.err{
+color:#e11d48;
+font-size:14px;
+font-weight:700;
+min-height:20px;
+margin-bottom:8px;
+}
+
+.ok{
+color:#059669;
+font-size:14px;
+font-weight:700;
+min-height:20px;
+margin-bottom:8px;
+}
+
+.toggle{
+margin-top:18px;
+font-size:14px;
+color:#6b7280;
+}
+
+.toggle span{
+color:#7c3aed;
+cursor:pointer;
+font-weight:700;
+}
+
+.forgot{
+font-size:13px;
+color:#7c3aed;
+cursor:pointer;
+text-align:right;
+margin-top:4px;
+display:block;
+}
 </style>
 </head>
+
 <body>
 
 <div class="card">
   <div style="font-size:42px;margin-bottom:10px;">🔐</div>
+
   <h2>MatchAI Pro</h2>
-  <p id="subtitle">Hesabınıza giriş yapın</p>
+  <p id="subtitle">Login to your account</p>
 
   <div id="msg" class="err"></div>
 
   <div class="field">
-    <label>E-posta</label>
-    <input type="email" id="email" placeholder="ornek@mail.com">
-  </div>
-  <div class="field">
-    <label>Şifre</label>
-    <input type="password" id="pass" placeholder="En az 6 karakter">
-    <span class="forgot" id="forgotBtn">Şifremi unuttum</span>
-  </div>
-  <div class="field" id="pass2wrap" style="display:none;">
-    <label>Şifre Tekrar</label>
-    <input type="password" id="pass2" placeholder="Şifrenizi tekrar girin">
+    <label>Email</label>
+    <input type="email" id="email" placeholder="example@mail.com">
   </div>
 
-  <button class="btn btn-login" id="mainBtn">Giriş Yap</button>
+  <div class="field">
+    <label>Password</label>
+    <input type="password" id="pass" placeholder="Minimum 6 characters">
+    <span class="forgot" id="forgotBtn">Forgot password?</span>
+  </div>
+
+  <div class="field" id="pass2wrap" style="display:none;">
+    <label>Confirm Password</label>
+    <input type="password" id="pass2" placeholder="Confirm your password">
+  </div>
+
+  <button class="btn btn-login" id="mainBtn">Login</button>
 
   <div class="toggle" id="toggleTxt">
-    Hesabınız yok mu? <span id="switchBtn">Kayıt Ol</span>
+    Don’t have an account? <span id="switchBtn">Sign Up</span>
   </div>
 </div>
 
@@ -69,79 +180,124 @@ const auth = firebase.auth();
 let mode = "login";
 
 auth.onAuthStateChanged(user => {
-  if(user) window.location.href = "index.html";
+  if(user){
+    window.location.href = "index.html";
+  }
 });
 
-function setMsg(txt, ok){
+function setMsg(txt, ok = false){
   const el = document.getElementById("msg");
   el.textContent = txt;
   el.className = ok ? "ok" : "err";
 }
 
 function setLoading(val){
-  document.getElementById("mainBtn").disabled = val;
-  document.getElementById("mainBtn").textContent = val ? "Lütfen bekleyin..." : (mode === "login" ? "Giriş Yap" : "Kayıt Ol");
+  const btn = document.getElementById("mainBtn");
+  btn.disabled = val;
+  btn.textContent = val ? "Please wait..." : (mode === "login" ? "Login" : "Sign Up");
 }
 
-document.getElementById("switchBtn").addEventListener("click", () => {
+function switchMode(){
   mode = mode === "login" ? "register" : "login";
+
   document.getElementById("pass2wrap").style.display = mode === "register" ? "block" : "none";
   document.getElementById("forgotBtn").style.display = mode === "register" ? "none" : "block";
-  document.getElementById("mainBtn").textContent = mode === "login" ? "Giriş Yap" : "Kayıt Ol";
+
+  document.getElementById("mainBtn").textContent = mode === "login" ? "Login" : "Sign Up";
   document.getElementById("mainBtn").className = "btn " + (mode === "login" ? "btn-login" : "btn-register");
-  document.getElementById("subtitle").textContent = mode === "login" ? "Hesabınıza giriş yapın" : "Yeni hesap oluşturun";
+
+  document.getElementById("subtitle").textContent = mode === "login"
+    ? "Login to your account"
+    : "Create a new account";
+
   document.getElementById("toggleTxt").innerHTML = mode === "login"
-    ? 'Hesabınız yok mu? <span id="switchBtn">Kayıt Ol</span>'
-    : 'Zaten hesabınız var mı? <span id="switchBtn">Giriş Yap</span>';
-  document.getElementById("switchBtn").addEventListener("click", arguments.callee);
-  setMsg("", "");
-});
+    ? 'Don’t have an account? <span id="switchBtn">Sign Up</span>'
+    : 'Already have an account? <span id="switchBtn">Login</span>';
+
+  document.getElementById("switchBtn").addEventListener("click", switchMode);
+
+  setMsg("");
+}
+
+document.getElementById("switchBtn").addEventListener("click", switchMode);
 
 document.getElementById("mainBtn").addEventListener("click", async () => {
   const email = document.getElementById("email").value.trim();
   const pass  = document.getElementById("pass").value;
 
-  if(!email || !pass){ setMsg("Lütfen tüm alanları doldurun."); return; }
-  if(!/\S+@\S+\.\S+/.test(email)){ setMsg("Geçerli bir e-posta girin."); return; }
+  if(!email || !pass){
+    setMsg("Please fill in all fields.");
+    return;
+  }
+
+  if(!/\S+@\S+\.\S+/.test(email)){
+    setMsg("Please enter a valid email address.");
+    return;
+  }
 
   setLoading(true);
+
   try {
     if(mode === "login"){
       await auth.signInWithEmailAndPassword(email, pass);
-      setMsg("Giriş başarılı! Yönlendiriliyor...", true);
-      setTimeout(() => window.location.href = "index.html", 800);
+      setMsg("Login successful! Redirecting...", true);
+      setTimeout(() => {
+        window.location.href = "index.html";
+      }, 800);
     } else {
-      if(pass.length < 6){ setMsg("Şifre en az 6 karakter olmalı."); setLoading(false); return; }
       const pass2 = document.getElementById("pass2").value;
-      if(pass !== pass2){ setMsg("Şifreler eşleşmiyor."); setLoading(false); return; }
+
+      if(pass.length < 6){
+        setMsg("Password must be at least 6 characters.");
+        setLoading(false);
+        return;
+      }
+
+      if(pass !== pass2){
+        setMsg("Passwords do not match.");
+        setLoading(false);
+        return;
+      }
+
       await auth.createUserWithEmailAndPassword(email, pass);
-      setMsg("Kayıt başarılı! Yönlendiriliyor...", true);
-      setTimeout(() => window.location.href = "index.html", 800);
+      setMsg("Account created! Redirecting...", true);
+
+      setTimeout(() => {
+        window.location.href = "index.html";
+      }, 800);
     }
   } catch(e){
     const errors = {
-      "auth/user-not-found":       "Bu e-posta ile kayıtlı hesap bulunamadı.",
-      "auth/wrong-password":       "Şifre hatalı.",
-      "auth/email-already-in-use": "Bu e-posta zaten kayıtlı.",
-      "auth/too-many-requests":    "Çok fazla deneme. Lütfen bekleyin.",
-      "auth/invalid-email":        "Geçersiz e-posta adresi.",
-      "auth/invalid-credential":   "E-posta veya şifre hatalı."
+      "auth/user-not-found": "No account found with this email.",
+      "auth/wrong-password": "Incorrect password.",
+      "auth/email-already-in-use": "This email is already registered.",
+      "auth/too-many-requests": "Too many attempts. Please try again later.",
+      "auth/invalid-email": "Invalid email address.",
+      "auth/invalid-credential": "Email or password is incorrect.",
+      "auth/weak-password": "Password is too weak."
     };
-    setMsg(errors[e.code] || "Bir hata oluştu: " + e.message);
+
+    setMsg(errors[e.code] || "Error: " + e.message);
     setLoading(false);
   }
 });
 
 document.getElementById("forgotBtn").addEventListener("click", async () => {
   const email = document.getElementById("email").value.trim();
-  if(!email){ setMsg("Önce e-postanızı girin."); return; }
+
+  if(!email){
+    setMsg("Please enter your email first.");
+    return;
+  }
+
   try {
     await auth.sendPasswordResetEmail(email);
-    setMsg("Şifre sıfırlama e-postası gönderildi!", true);
+    setMsg("Password reset email sent!", true);
   } catch(e){
-    setMsg("Gönderilemedi: " + e.message);
+    setMsg("Could not send reset email: " + e.message);
   }
 });
 </script>
+
 </body>
 </html>
