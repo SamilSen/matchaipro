@@ -126,12 +126,12 @@ color:#7c3aed;
 animation:heartbeatText 1.2s infinite;
 }
 
-@keyframes heartbeatText {
-0% { transform: scale(1); }
-25% { transform: scale(1.08); }
-50% { transform: scale(1); }
-75% { transform: scale(1.12); }
-100% { transform: scale(1); }
+@keyframes heartbeatText{
+0%{transform:scale(1);}
+25%{transform:scale(1.08);}
+50%{transform:scale(1);}
+75%{transform:scale(1.12);}
+100%{transform:scale(1);}
 }
 
 .card h2{
@@ -143,7 +143,6 @@ gap:12px;
 white-space:nowrap;
 }
 
-.team{display:flex;align-items:center;gap:8px;white-space:nowrap;}
 .flag{width:40px;height:28px;border-radius:4px;}
 
 .card h3{
@@ -154,12 +153,12 @@ font-weight:900;
 animation:heartbeat 1s infinite;
 }
 
-@keyframes heartbeat {
-0% { transform: scale(1); }
-25% { transform: scale(1.08); }
-50% { transform: scale(1); }
-75% { transform: scale(1.12); }
-100% { transform: scale(1); }
+@keyframes heartbeat{
+0%{transform:scale(1);}
+25%{transform:scale(1.08);}
+50%{transform:scale(1);}
+75%{transform:scale(1.12);}
+100%{transform:scale(1);}
 }
 
 .bar-bg{
@@ -174,6 +173,34 @@ margin-bottom:18px;
 .home{background:#22c55e;}
 .draw{background:#f59e0b;}
 .away{background:#ef4444;}
+
+.user-bar{
+display:none;
+justify-content:flex-end;
+align-items:center;
+gap:12px;
+padding:10px 20px;
+background:rgba(255,255,255,0.6);
+border-radius:12px;
+margin-bottom:16px;
+}
+
+.user-bar span{
+font-size:14px;
+color:#374151;
+font-weight:700;
+}
+
+.user-bar button{
+padding:8px 18px;
+border-radius:10px;
+border:2px solid #7c3aed;
+color:#7c3aed;
+background:white;
+font-weight:700;
+cursor:pointer;
+font-size:13px;
+}
 
 .footer{
 margin-top:46px;
@@ -208,25 +235,31 @@ color:black;
 <body>
 
 <div class="hero">
-<img src="https://raw.githubusercontent.com/MatchAIPro/matchai/main/image.png" class="logo">
 
-<div class="title">World Cup 2026</div>
-<div class="subtitle">AI Prediction Engine</div>
-<div class="trust">📈 Trusted by 10,000+ users worldwide</div>
+  <div class="user-bar" id="userBar">
+    <span id="userEmail"></span>
+    <button onclick="logout()">Çıkış Yap</button>
+  </div>
+
+  <img src="https://raw.githubusercontent.com/MatchAIPro/matchai/main/image.png" class="logo">
+
+  <div class="title">World Cup 2026</div>
+  <div class="subtitle">AI Prediction Engine</div>
+  <div class="trust">📈 Trusted by 10,000+ users worldwide</div>
 </div>
 
 <div class="form-box">
 
-<a href="fixture.html" class="fixture-btn">🏆 FIXTURE</a>
+  <a href="fixture.html" class="fixture-btn">🏆 FIXTURE</a>
 
-<br><br>
+  <br><br>
 
-<input id="team1" class="input-box" placeholder="🏠 Home Team">
-<input id="team2" class="input-box" placeholder="✈️ Away Team">
+  <input id="team1" class="input-box" placeholder="🏠 Home Team">
+  <input id="team2" class="input-box" placeholder="✈️ Away Team">
 
-<br>
+  <br>
 
-<button class="predict-btn" onclick="predict()">PREDICT</button>
+  <button class="predict-btn" onclick="predict()">PREDICT</button>
 
 </div>
 
@@ -238,170 +271,207 @@ color:black;
     <p style="font-size:34px;font-weight:800;color:#6b7280;">
       <span class="heartbeat-text">Enter Teams Above</span>
     </p>
-
     <p>Home (0%)</p>
     <div class="bar-bg"><div class="bar home" style="width:0%"></div></div>
-
     <p>Draw (0%)</p>
     <div class="bar-bg"><div class="bar draw" style="width:0%"></div></div>
-
     <p>Away (0%)</p>
     <div class="bar-bg"><div class="bar away" style="width:0%"></div></div>
   </div>
 </div>
 
 <div class="footer">
-<a href="legal.html">Legal Disclaimer</a>
-<a href="price.html">Price Policy</a>
-<a href="about.html">About & Contact</a>
+  <a href="fixture.html">🏆 Fixture</a>
+  <a href="legal.html">Legal Disclaimer</a>
+  <a href="price.html">Price Policy</a>
+  <a href="about.html">About & Contact</a>
 </div>
 
 <div class="copy">© 2026 MatchAI Pro. All Rights Reserved.</div>
 
-<script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-auth.js";
+import { getFirestore, doc, getDoc, setDoc, updateDoc, increment } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-firestore.js";
 
-let data = [];
+const firebaseConfig = {
+  apiKey: "AIzaSyDm-tChOkLa0T26khkWVX_yWCa6cKaML7Q",
+  authDomain: "matchaipro-accc8.firebaseapp.com",
+  projectId: "matchaipro-accc8",
+  storageBucket: "matchaipro-accc8.firebasestorage.app",
+  messagingSenderId: "811643864855",
+  appId: "1:811643864855:web:397384d327bef1ef9f9952"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
 
 const STRIPE_URL = "https://buy.stripe.com/6oU4gAfzd5ps2KjdbA6Zy01";
 const MAX_FREE_USES = 3;
 
-function isPaid(){
-return localStorage.getItem("paid") === "true";
-}
+let currentUser = null;
+let userData = null;
+let matchData = [];
 
-function setPaid(){
-localStorage.setItem("paid","true");
-localStorage.setItem("uses","0");
-}
-
+// Stripe'tan başarılı dönüş
 const urlParams = new URLSearchParams(window.location.search);
 if(urlParams.get("success") === "true"){
-setPaid();
-window.history.replaceState({}, document.title, window.location.pathname);
+  onAuthStateChanged(auth, async user => {
+    if(user){
+      await setDoc(doc(db, "users", user.uid), { paid: true }, { merge: true });
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+  });
 }
 
-function getUses(){
-return parseInt(localStorage.getItem("uses") || "0");
-}
+// Kullanıcı oturum takibi
+onAuthStateChanged(auth, async user => {
+  currentUser = user;
+  if(user){
+    const ref = doc(db, "users", user.uid);
+    const snap = await getDoc(ref);
+    if(!snap.exists()){
+      await setDoc(ref, { email: user.email, uses: 0, paid: false });
+      userData = { email: user.email, uses: 0, paid: false };
+    } else {
+      userData = snap.data();
+    }
+    document.getElementById("userBar").style.display = "flex";
+    document.getElementById("userEmail").textContent = user.email;
+  } else {
+    userData = null;
+    document.getElementById("userBar").style.display = "none";
+  }
+});
 
-function addUse(){
-localStorage.setItem("uses", getUses() + 1);
-}
-
-function checkLimit(){
-if(isPaid()) return false;
-return getUses() >= MAX_FREE_USES;
-}
-
-function normalizeText(str){
-return str.normalize("NFD")
-.replace(/[\u0300-\u036f]/g, "")
-.replace(/’/g,"'")
-.toLowerCase().trim();
-}
-
+// CSV yükle
 function fixCode(team){
-const map = {
-"Mexico":"mx","South Africa":"za","Korea Republic":"kr","Czechia":"cz",
-"Canada":"ca","Bosnia-Herzegovina":"ba","USA":"us","Paraguay":"py",
-"Qatar":"qa","Switzerland":"ch","Brazil":"br","Morocco":"ma",
-"Haiti":"ht","Scotland":"gb","Australia":"au","Turkey":"tr",
-"Germany":"de","Curaçao":"cw","Netherlands":"nl","Japan":"jp",
-"Côte d'Ivoire":"ci","Ecuador":"ec","Sweden":"se","Tunisia":"tn",
-"Spain":"es","Belgium":"be","Egypt":"eg","Saudi Arabia":"sa",
-"Uruguay":"uy","Iran":"ir","New Zealand":"nz","France":"fr",
-"Senegal":"sn","Iraq":"iq","Norway":"no","Argentina":"ar",
-"Algeria":"dz","Austria":"at","Jordan":"jo","Portugal":"pt",
-"Congo DR":"cd","England":"gb","Croatia":"hr","Ghana":"gh",
-"Panama":"pa","Uzbekistan":"uz","Colombia":"co"
-};
-return map[team] || "";
+  const map = {
+    "Mexico":"mx","South Africa":"za","Korea Republic":"kr","Czechia":"cz",
+    "Canada":"ca","Bosnia-Herzegovina":"ba","USA":"us","Paraguay":"py",
+    "Qatar":"qa","Switzerland":"ch","Brazil":"br","Morocco":"ma",
+    "Haiti":"ht","Scotland":"gb","Australia":"au","Turkey":"tr",
+    "Germany":"de","Curaçao":"cw","Netherlands":"nl","Japan":"jp",
+    "Côte d'Ivoire":"ci","Ecuador":"ec","Sweden":"se","Tunisia":"tn",
+    "Spain":"es","Belgium":"be","Egypt":"eg","Saudi Arabia":"sa",
+    "Uruguay":"uy","Iran":"ir","New Zealand":"nz","France":"fr",
+    "Senegal":"sn","Iraq":"iq","Norway":"no","Argentina":"ar",
+    "Algeria":"dz","Austria":"at","Jordan":"jo","Portugal":"pt",
+    "Congo DR":"cd","England":"gb","Croatia":"hr","Ghana":"gh",
+    "Panama":"pa","Uzbekistan":"uz","Colombia":"co"
+  };
+  return map[team] || "";
 }
 
 fetch("https://raw.githubusercontent.com/SamilSen/matchaipro/main/predictions.csv")
-.then(r=>r.text())
-.then(t=>{
-const rows = t.split(/\r?\n/).slice(1).filter(r=>r.trim());
+  .then(r => r.text())
+  .then(t => {
+    const rows = t.split(/\r?\n/).slice(1).filter(r => r.trim());
+    matchData = rows.map(r => {
+      const c = r.split(",");
+      return {
+        t1: c[0].trim(),
+        t2: c[1].trim(),
+        code1: fixCode(c[0].trim()),
+        code2: fixCode(c[1].trim()),
+        h: parseFloat(c[4]),
+        d: parseFloat(c[5]),
+        a: parseFloat(c[6])
+      };
+    });
+    document.getElementById("status").innerHTML = "✅ Ready";
+  });
 
-data = rows.map(r=>{
-const c = r.split(",");
-return {
-t1:c[0].trim(),
-t2:c[1].trim(),
-code1:fixCode(c[0].trim()),
-code2:fixCode(c[1].trim()),
-h:parseFloat(c[4]),
-d:parseFloat(c[5]),
-a:parseFloat(c[6])
+function normalizeText(str){
+  return str.normalize("NFD")
+    .replace(/[\u0300-\u036f]/g,"")
+    .replace(/'/g,"'")
+    .toLowerCase().trim();
+}
+
+window.predict = async function(){
+  const t1 = document.getElementById("team1").value.trim();
+  const t2 = document.getElementById("team2").value.trim();
+
+  if(!t1 || !t2){
+    document.getElementById("result").innerHTML = "<div class='card'>⚠️ Please enter both teams</div>";
+    return;
+  }
+
+  const m = matchData.find(x =>
+    normalizeText(x.t1) === normalizeText(t1) &&
+    normalizeText(x.t2) === normalizeText(t2)
+  );
+
+  if(!m){
+    document.getElementById("result").innerHTML = "<div class='card'>❌ Match Not Found</div>";
+    return;
+  }
+
+  // Giriş yapmamış kullanıcı → localStorage ile 3 hak
+  if(!currentUser){
+    const uses = parseInt(localStorage.getItem("free_uses") || "0");
+    if(uses >= MAX_FREE_USES){
+      window.location.href = "login.html";
+      return;
+    }
+    localStorage.setItem("free_uses", uses + 1);
+    showResult(m);
+    return;
+  }
+
+  // Giriş yapmış + ödeme yapmış → sınırsız
+  if(userData.paid){
+    showResult(m);
+    return;
+  }
+
+  // Giriş yapmış + ödeme yapmamış → Firebase'den kontrol
+  if(userData.uses >= MAX_FREE_USES){
+    window.location.href = STRIPE_URL;
+    return;
+  }
+
+  await updateDoc(doc(db, "users", currentUser.uid), { uses: increment(1) });
+  userData.uses += 1;
+  showResult(m);
 };
-});
 
-document.getElementById("status").innerHTML="✅ Ready";
-});
+function showResult(m){
+  let pred = "";
+  if(m.h > m.d && m.h > m.a) pred = m.t1 + " Win";
+  else if(m.a > m.h && m.a > m.d) pred = m.t2 + " Win";
+  else pred = "Draw";
 
-function predict(){
+  const flag1 = m.code1 ? `<img class="flag" src="https://flagcdn.com/w40/${m.code1}.png">` : "";
+  const flag2 = m.code2 ? `<img class="flag" src="https://flagcdn.com/w40/${m.code2}.png">` : "";
 
-if(checkLimit()){
-window.location.href = STRIPE_URL;
-return;
+  document.getElementById("result").innerHTML = `
+    <div class="card">
+      <h2>${flag1} ${m.t1} VS ${m.t2} ${flag2}</h2>
+      <h3>${pred}</h3>
+      <p>Home (${m.h}%)</p>
+      <div class="bar-bg"><div id="b1" class="bar home"></div></div>
+      <p>Draw (${m.d}%)</p>
+      <div class="bar-bg"><div id="b2" class="bar draw"></div></div>
+      <p>Away (${m.a}%)</p>
+      <div class="bar-bg"><div id="b3" class="bar away"></div></div>
+    </div>
+  `;
+
+  setTimeout(() => {
+    document.getElementById("b1").style.width = m.h + "%";
+    document.getElementById("b2").style.width = m.d + "%";
+    document.getElementById("b3").style.width = m.a + "%";
+  }, 120);
 }
 
-const t1 = document.getElementById("team1").value.trim();
-const t2 = document.getElementById("team2").value.trim();
-
-const m = data.find(x =>
-normalizeText(x.t1) === normalizeText(t1) &&
-normalizeText(x.t2) === normalizeText(t2)
-);
-
-if(!m){
-document.getElementById("result").innerHTML =
-"<div class='card'>❌ Match Not Found</div>";
-return;
-}
-
-if(!isPaid()) addUse();
-
-let pred = "";
-
-if(m.h > m.d && m.h > m.a){
-pred = m.t1 + " Win";
-}
-else if(m.a > m.h && m.a > m.d){
-pred = m.t2 + " Win";
-}
-else{
-pred = "Draw";
-}
-
-document.getElementById("result").innerHTML = `
-<div class="card">
-
-<h2>${m.t1} VS ${m.t2}</h2>
-
-<h3>${pred}</h3>
-
-<p>Home (${m.h}%)</p>
-<div class="bar-bg"><div id="b1" class="bar home"></div></div>
-
-<p>Draw (${m.d}%)</p>
-<div class="bar-bg"><div id="b2" class="bar draw"></div></div>
-
-<p>Away (${m.a}%)</p>
-<div class="bar-bg"><div id="b3" class="bar away"></div></div>
-
-</div>
-`;
-
-setTimeout(()=>{
-document.getElementById("b1").style.width = m.h + "%";
-document.getElementById("b2").style.width = m.d + "%";
-document.getElementById("b3").style.width = m.a + "%";
-},120);
-
-}
+window.logout = async function(){
+  await signOut(auth);
+  window.location.reload();
+};
 
 </script>
-
 </body>
 </html>
