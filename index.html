@@ -102,6 +102,11 @@ background-size:200% 200%;
 box-shadow:0 0 18px rgba(225,29,72,.45);
 }
 
+.predict-btn:disabled{
+opacity:.45;
+cursor:not-allowed;
+}
+
 #status{
 margin-top:23px;
 font-size:25px;
@@ -209,6 +214,7 @@ border-top:1px solid #e5e7eb;
 display:flex;
 justify-content:center;
 gap:12px;
+flex-wrap:wrap;
 }
 
 .footer a{
@@ -254,7 +260,7 @@ color:black;
   <input id="team1" class="input-box" placeholder="🏠 Home Team">
   <input id="team2" class="input-box" placeholder="✈️ Away Team">
   <br>
-  <button class="predict-btn" id="predictBtn">PREDICT</button>
+  <button class="predict-btn" id="predictBtn" disabled>PREDICT</button>
 </div>
 
 <div id="status">Loading...</div>
@@ -275,7 +281,6 @@ color:black;
 </div>
 
 <div class="footer">
-  <a href="fixture.html">🏆 Fixture</a>
   <a href="legal.html">Legal Disclaimer</a>
   <a href="price.html">Price Policy</a>
   <a href="about.html">About & Contact</a>
@@ -309,6 +314,7 @@ let currentUser = null;
 let userData = null;
 let matchData = [];
 
+const predictBtn = document.getElementById("predictBtn");
 const urlParams = new URLSearchParams(window.location.search);
 
 if(urlParams.get("success") === "true"){
@@ -433,7 +439,48 @@ function normalizeText(str){
     .replace(/[’‘]/g,"'")
     .replace(/[^a-zA-Z0-9 ]/g,"")
     .toLowerCase()
-    .trim();
+    .trim()
+    .replace(/\s+/g," ");
+}
+
+function fixTeamName(name){
+  const n = normalizeText(name);
+
+  const map = {
+    "usa":"united states",
+    "us":"united states",
+    "united states":"united states",
+    "america":"united states",
+
+    "turkey":"turkiye",
+    "turkiye":"turkiye",
+    "türkiye":"turkiye",
+
+    "south korea":"korea republic",
+    "korea":"korea republic",
+    "korea republic":"korea republic",
+
+    "ivory coast":"cote divoire",
+    "cote divoire":"cote divoire",
+    "cote d ivoire":"cote divoire",
+    "cote d'ivoire":"cote divoire",
+
+    "curacao":"curacao",
+    "curaçao":"curacao",
+
+    "bosnia":"bosnia herzegovina",
+    "bosnia herzegovina":"bosnia herzegovina",
+    "bosnia-herzegovina":"bosnia herzegovina",
+
+    "dr congo":"congo dr",
+    "congo":"congo dr",
+    "congo dr":"congo dr",
+
+    "czech republic":"czechia",
+    "czechia":"czechia"
+  };
+
+  return map[n] || n;
 }
 
 function parseCSVLine(line){
@@ -487,6 +534,8 @@ fetch("https://raw.githubusercontent.com/SamilSen/matchaipro/main/predictions.cs
       return {
         t1: home,
         t2: away,
+        search1: fixTeamName(home),
+        search2: fixTeamName(away),
         code1: fixCode(home),
         code2: fixCode(away),
         h: h,
@@ -496,11 +545,19 @@ fetch("https://raw.githubusercontent.com/SamilSen/matchaipro/main/predictions.cs
     }).filter(item => item !== null);
 
     console.log("Loaded matches:", matchData.length);
-    document.getElementById("status").innerHTML = "✅ Ready";
+
+    if(matchData.length > 0){
+      document.getElementById("status").innerHTML = "✅ Ready";
+      predictBtn.disabled = false;
+    } else {
+      document.getElementById("status").innerHTML = "❌ No prediction data found";
+      predictBtn.disabled = true;
+    }
   })
   .catch(error => {
     console.error(error);
     document.getElementById("status").innerHTML = "❌ Data load failed";
+    predictBtn.disabled = true;
   });
 
 function showResult(m){
@@ -554,16 +611,23 @@ document.getElementById("predictBtn").addEventListener("click", async () => {
     return;
   }
 
-  const nt1 = normalizeText(t1);
-  const nt2 = normalizeText(t2);
+  const nt1 = fixTeamName(t1);
+  const nt2 = fixTeamName(t2);
+
+  console.log("Searching:", nt1, nt2);
 
   const match = matchData.find(x =>
-    normalizeText(x.t1) === nt1 &&
-    normalizeText(x.t2) === nt2
+    x.search1 === nt1 &&
+    x.search2 === nt2
   ) || matchData.find(x =>
-    normalizeText(x.t1).includes(nt1) &&
-    normalizeText(x.t2).includes(nt2)
+    x.search1.includes(nt1) &&
+    x.search2.includes(nt2)
+  ) || matchData.find(x =>
+    nt1.includes(x.search1) &&
+    nt2.includes(x.search2)
   );
+
+  console.log("Match found:", match);
 
   if(!match){
     document.getElementById("result").innerHTML =
