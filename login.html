@@ -23,6 +23,7 @@ body{margin:0;padding:0;font-family:Arial,sans-serif;background:linear-gradient(
 </style>
 </head>
 <body>
+
 <div class="card">
   <div style="font-size:42px;margin-bottom:10px;">🔐</div>
   <h2>MatchAI Pro</h2>
@@ -37,42 +38,39 @@ body{margin:0;padding:0;font-family:Arial,sans-serif;background:linear-gradient(
   <div class="field">
     <label>Şifre</label>
     <input type="password" id="pass" placeholder="En az 6 karakter">
-    <span class="forgot" id="forgotBtn" onclick="forgotPassword()">Şifremi unuttum</span>
+    <span class="forgot" id="forgotBtn">Şifremi unuttum</span>
   </div>
   <div class="field" id="pass2wrap" style="display:none;">
     <label>Şifre Tekrar</label>
     <input type="password" id="pass2" placeholder="Şifrenizi tekrar girin">
   </div>
 
-  <button class="btn btn-login" id="mainBtn" onclick="handleMain()">Giriş Yap</button>
+  <button class="btn btn-login" id="mainBtn">Giriş Yap</button>
 
   <div class="toggle" id="toggleTxt">
-    Hesabınız yok mu? <span onclick="switchMode()">Kayıt Ol</span>
+    Hesabınız yok mu? <span id="switchBtn">Kayıt Ol</span>
   </div>
 </div>
 
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged }
-  from "https://www.gstatic.com/firebasejs/11.0.0/firebase-auth.js";
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
 
-const firebaseConfig = {
+<script>
+firebase.initializeApp({
   apiKey: "AIzaSyDm-tChOkLa0T26khkWVX_yWCa6cKaML7Q",
   authDomain: "matchaipro-accc8.firebaseapp.com",
   projectId: "matchaipro-accc8",
   storageBucket: "matchaipro-accc8.firebasestorage.app",
   messagingSenderId: "811643864855",
   appId: "1:811643864855:web:397384d327bef1ef9f9952"
-};
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-
-onAuthStateChanged(auth, user => {
-  if(user) window.location.href = "index.html";
 });
 
+const auth = firebase.auth();
 let mode = "login";
+
+auth.onAuthStateChanged(user => {
+  if(user) window.location.href = "index.html";
+});
 
 function setMsg(txt, ok){
   const el = document.getElementById("msg");
@@ -85,7 +83,7 @@ function setLoading(val){
   document.getElementById("mainBtn").textContent = val ? "Lütfen bekleyin..." : (mode === "login" ? "Giriş Yap" : "Kayıt Ol");
 }
 
-window.switchMode = function(){
+document.getElementById("switchBtn").addEventListener("click", () => {
   mode = mode === "login" ? "register" : "login";
   document.getElementById("pass2wrap").style.display = mode === "register" ? "block" : "none";
   document.getElementById("forgotBtn").style.display = mode === "register" ? "none" : "block";
@@ -93,12 +91,13 @@ window.switchMode = function(){
   document.getElementById("mainBtn").className = "btn " + (mode === "login" ? "btn-login" : "btn-register");
   document.getElementById("subtitle").textContent = mode === "login" ? "Hesabınıza giriş yapın" : "Yeni hesap oluşturun";
   document.getElementById("toggleTxt").innerHTML = mode === "login"
-    ? 'Hesabınız yok mu? <span onclick="switchMode()">Kayıt Ol</span>'
-    : 'Zaten hesabınız var mı? <span onclick="switchMode()">Giriş Yap</span>';
+    ? 'Hesabınız yok mu? <span id="switchBtn">Kayıt Ol</span>'
+    : 'Zaten hesabınız var mı? <span id="switchBtn">Giriş Yap</span>';
+  document.getElementById("switchBtn").addEventListener("click", arguments.callee);
   setMsg("", "");
-};
+});
 
-window.handleMain = async function(){
+document.getElementById("mainBtn").addEventListener("click", async () => {
   const email = document.getElementById("email").value.trim();
   const pass  = document.getElementById("pass").value;
 
@@ -108,14 +107,14 @@ window.handleMain = async function(){
   setLoading(true);
   try {
     if(mode === "login"){
-      await signInWithEmailAndPassword(auth, email, pass);
+      await auth.signInWithEmailAndPassword(email, pass);
       setMsg("Giriş başarılı! Yönlendiriliyor...", true);
       setTimeout(() => window.location.href = "index.html", 800);
     } else {
       if(pass.length < 6){ setMsg("Şifre en az 6 karakter olmalı."); setLoading(false); return; }
       const pass2 = document.getElementById("pass2").value;
       if(pass !== pass2){ setMsg("Şifreler eşleşmiyor."); setLoading(false); return; }
-      await createUserWithEmailAndPassword(auth, email, pass);
+      await auth.createUserWithEmailAndPassword(email, pass);
       setMsg("Kayıt başarılı! Yönlendiriliyor...", true);
       setTimeout(() => window.location.href = "index.html", 800);
     }
@@ -131,18 +130,18 @@ window.handleMain = async function(){
     setMsg(errors[e.code] || "Bir hata oluştu: " + e.message);
     setLoading(false);
   }
-};
+});
 
-window.forgotPassword = async function(){
+document.getElementById("forgotBtn").addEventListener("click", async () => {
   const email = document.getElementById("email").value.trim();
-  if(!email){ setMsg("Şifre sıfırlama için önce e-postanızı girin."); return; }
+  if(!email){ setMsg("Önce e-postanızı girin."); return; }
   try {
-    await sendPasswordResetEmail(auth, email);
+    await auth.sendPasswordResetEmail(email);
     setMsg("Şifre sıfırlama e-postası gönderildi!", true);
   } catch(e){
-    setMsg("E-posta gönderilemedi: " + e.message);
+    setMsg("Gönderilemedi: " + e.message);
   }
-};
+});
 </script>
 </body>
 </html>
