@@ -34,7 +34,6 @@ body{margin:0;padding:0;font-family:Arial,sans-serif;text-align:center;backgroun
 #logged-user{font-size:22px;font-weight:800;color:#6d28d9;display:none;}
 #paid-badge{display:none;padding:10px 22px;font-size:18px;font-weight:800;color:#fff;background:linear-gradient(90deg,#22c55e,#16a34a);border-radius:10px;}
 #logout-btn{padding:14px 30px;font-size:20px;font-weight:800;border:none;border-radius:12px;cursor:pointer;background:#e5e7eb;color:#374151;display:none;}
-#uses-badge{font-size:20px;font-weight:800;color:#374151;background:#f3f4f6;border-radius:10px;padding:8px 20px;display:none;}
 #auth-overlay{position:fixed;inset:0;background:rgba(10,5,30,0.78);backdrop-filter:blur(10px);display:none;align-items:center;justify-content:center;z-index:9999;}
 #auth-modal{background:#fff;border-radius:28px;padding:48px 44px 40px;width:420px;max-width:94vw;box-shadow:0 32px 80px rgba(109,40,217,0.28);animation:popIn .35s cubic-bezier(.34,1.56,.64,1);position:relative;}
 @keyframes popIn{from{transform:scale(.88);opacity:0}to{transform:scale(1);opacity:1}}
@@ -118,7 +117,6 @@ body{margin:0;padding:0;font-family:Arial,sans-serif;text-align:center;backgroun
     <span id="paid-badge">✅ Unlimited Access</span>
     <button id="logout-btn" onclick="signOutUser()">Sign Out</button>
   </div>
-  <div id="uses-badge"></div>
   <a href="fixture.html" class="fixture-btn">🏆 FIXTURE</a>
   <br><br>
   <input id="team1" class="input-box" placeholder="🏠 Home Team">
@@ -199,7 +197,6 @@ onAuthStateChanged(auth, async (user) => {
     document.getElementById("logout-btn").style.display  = "none";
     document.getElementById("paid-badge").style.display  = "none";
   }
-  updateUsesBadge();
 });
 
 window._auth        = auth;
@@ -228,23 +225,6 @@ if(urlParams.get("success") === "true"){
 function getUses(){ return parseInt(localStorage.getItem("uses") || "0"); }
 function addUse() { localStorage.setItem("uses", getUses() + 1); }
 function isLoggedIn(){ return !!(window._auth && window._auth.currentUser); }
-
-function updateUsesBadge(){
-  const badge = document.getElementById("uses-badge");
-  if(isLoggedIn()){ badge.style.display = "none"; return; }
-  const remaining = Math.max(0, MAX_FREE - getUses());
-  if(remaining > 0){
-    badge.style.display    = "inline-block";
-    badge.style.background = "#f3f4f6";
-    badge.style.color      = "#374151";
-    badge.textContent      = "⚡ " + remaining + " free prediction" + (remaining===1?"":"s") + " remaining";
-  } else {
-    badge.style.display    = "inline-block";
-    badge.style.background = "#fff7ed";
-    badge.style.color      = "#92400e";
-    badge.textContent      = "🔒 Sign in to continue predicting";
-  }
-}
 
 window.openAuth = function(tagline, allowClose){
   document.getElementById("auth-tagline").textContent = tagline || "Sign in to continue";
@@ -293,7 +273,6 @@ window.googleSignIn = async function(){
 };
 window.signOutUser = async function(){
   await window._signOut(window._auth);
-  updateUsesBadge();
 };
 window.openPay = function(){
   document.getElementById("pay-overlay").style.display = "flex";
@@ -328,13 +307,12 @@ fetch("https://raw.githubusercontent.com/SamilSen/matchaipro/main/predictions.cs
       return{ t1:c[0].trim(), t2:c[1].trim(), code1:fixCode(c[0].trim()), code2:fixCode(c[1].trim()), h:parseFloat(c[4]), d:parseFloat(c[5]), a:parseFloat(c[6]) };
     });
     document.getElementById("status").innerHTML = "✅ Ready";
-    updateUsesBadge();
   });
 
 function predict(){
   if(window._userPaid){ runPrediction(); return; }
   if(isLoggedIn()){ openPay(); return; }
-  if(getUses() < MAX_FREE){ addUse(); updateUsesBadge(); runPrediction(); return; }
+  if(getUses() < MAX_FREE){ addUse(); runPrediction(); return; }
   window._pendingPredict = true;
   openAuth("You've used your 3 free predictions — sign in to continue", false);
 }
@@ -362,8 +340,6 @@ function runPrediction(){
     document.getElementById("b3").style.width=m.a+"%";
   },120);
 }
-
-updateUsesBadge();
 </script>
 </body>
 </html>
